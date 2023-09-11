@@ -35,6 +35,12 @@ public class SNControl
         set { m_showFAMPopupInputEvent = value; }
     }
 
+    private string[] unloadScenes = new string[]
+    {
+        SNConstant.SCENE_MAIN,
+        SNConstant.SCENE_MENU,
+    };
+
     public static SNControl Api
     {
         get
@@ -51,35 +57,29 @@ public class SNControl
     {
         //init other controls here
         PrefsUtils.Api = new PrefsUtils();
+        SNMainControl.Api = new SNMainControl();
+        SNMenuControl.Api = new SNMenuControl();
 
         //merge language general object folder
         /*TextAsset goLanguage = ResourceObject.GetResource<TextAsset>(HAGOConstant.PATH_LANGUAGE);
         I18N.instance.MergeMoreData(goLanguage.text, false);*/
 
-        if (PlayerPrefs.HasKey(SNConstant.BEARER_TOKEN_CACHE))
-        {
-            CheckingSchoolIdEvent?.Invoke();
-        }
-        else
-        {
-            LoadScene(SNConstant.SCENE_LOGIN);
-        }
+        //if (PlayerPrefs.HasKey(SNConstant.BEARER_TOKEN_CACHE))
+        //{
+        //    CheckingSchoolIdEvent?.Invoke();
+        //}
+        //else
+        //{
+        //    LoadScene(SNConstant.SCENE_LOGIN);
+        //}
     }
 
     public void UnloadAllScenes()
     {
-        UnLoadScene(SNConstant.SCENE_LOGIN);
-        UnLoadScene(SNConstant.SCENE_MAIN);
-        UnLoadScene(SNConstant.SCENE_NEWS_AND_EVENTS);
-        UnLoadScene(SNConstant.SCENE_MEMBERS);
-        UnLoadScene(SNConstant.SCENE_MEMBERS_APPROVE);
-        UnLoadScene(SNConstant.SCENE_SETTINGS);
-        UnLoadScene(SNConstant.SCENE_PROFILE);
-        UnLoadScene(SNConstant.SCENE_DETAILS);
-        UnLoadScene(SNConstant.SCENE_MEMBERS_CLASS);
-        UnLoadScene(SNConstant.SCENE_MEMBERS_GRADE);
-        UnLoadScene(SNConstant.SCENE_POST);
-        UnLoadScene(SNConstant.SCENE_SCHOOL_DETAIL);
+        foreach (string scene in unloadScenes)
+        {
+            UnLoadScene(scene);
+        }
     }
 
     // Unload all scene in the currentScenes array and load main and menu
@@ -100,58 +100,6 @@ public class SNControl
         LoadScene(SNConstant.SCENE_MAIN);
         LoadScene(SNConstant.SCENE_MENU);
     }
-
-    public bool CheckMainOrLoginOn()
-    {
-        return SceneManager.GetSceneByName(SNConstant.SCENE_MAIN).isLoaded
-            || SceneManager.GetSceneByName(SNConstant.SCENE_LOGIN).isLoaded;
-    }
-
-    /*public void LoginWithPwd(string email, string password)
-    {
-        auth.SignInWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
-        {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("SignInWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                //Debug.LogError("SignInWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                CreateUserFirebaseAuth(email, password);
-                LoginWithPwd(email, password);
-                return;
-            }
-
-            AuthResult result = task.Result;
-            Debug.LogFormat("User signed in successfully: {0} ({1})",
-                result.User.DisplayName, result.User.UserId);
-            Debug.Log(result);
-        });
-    }
-
-    public void CreateUserFirebaseAuth(string email, string password)
-    {
-        auth.CreateUserWithEmailAndPasswordAsync(email, password).ContinueWith(task =>
-        {
-            if (task.IsCanceled)
-            {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync was canceled.");
-                return;
-            }
-            if (task.IsFaulted)
-            {
-                Debug.LogError("CreateUserWithEmailAndPasswordAsync encountered an error: " + task.Exception);
-                return;
-            }
-
-            // Firebase user has been created.
-            AuthResult result = task.Result;
-            Debug.LogFormat("Firebase user created successfully: {0} ({1})",
-                result.User.DisplayName, result.User.UserId);
-        });
-    }*/
 
     #region UTILS
 
@@ -203,10 +151,14 @@ public class SNControl
         ShowFAMPopupInputEvent?.Invoke(title, content, btnConfirmText, btnElseText, onConfirm, onElse, onExit, isShowInputField);
     }
 
-    public void UnloadAllThenLoadScene(string sceneName)
+    public void UnloadAllThenLoadScene(string[] sceneName)
     {
         UnloadAllScenes();
-        LoadScene(sceneName);
+
+        foreach (string scene in sceneName)
+        {
+            LoadScene(scene);
+        }
     }
 
     // Need about 0.5sec to load

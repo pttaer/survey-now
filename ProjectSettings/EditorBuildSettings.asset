@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/SNLoadFirst.unity
     guid: bef14d87fcae28548941d94378688080
+  - enabled: 1
+    path: Assets/3.Scenes/SNMainView.unity
+    guid: 008bf492eeec12a4887ec920e5df3b58
+  - enabled: 1
+    path: Assets/3.Scenes/SNMenuView.unity
+    guid: ff33f1eb98802bb439b2737941a4f608
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 1dd8976815238da488a35aca8a470d4d, type: 2}
