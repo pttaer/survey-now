@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/SNMenuView.unity
     guid: ff33f1eb98802bb439b2737941a4f608
+  - enabled: 1
+    path: Assets/3.Scenes/SNSurveyList.unity
+    guid: 26d1ce4661a13a345a9c0e34ad13703a
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 1dd8976815238da488a35aca8a470d4d, type: 2}
