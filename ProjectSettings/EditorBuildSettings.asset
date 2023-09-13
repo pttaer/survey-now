@@ -9,6 +9,14 @@ EditorBuildSettings:
     path: Assets/3.Scenes/SNLoadFirst.unity
     guid: bef14d87fcae28548941d94378688080
   - enabled: 1
+    path: Assets/3.Scenes/SNMainView.unity
+    guid: 008bf492eeec12a4887ec920e5df3b58
+  - enabled: 1
+    path: Assets/3.Scenes/SNMenuView.unity
+    guid: ff33f1eb98802bb439b2737941a4f608
+  - enabled: 1
+    path: Assets/3.Scenes/SNSurveyList.unity
+    guid: 26d1ce4661a13a345a9c0e34ad13703a
     path: Assets/3.Scenes/SNLogin.unity
     guid: 4d703f815a4176f42a5bfae0d314337f
   m_configObjects:
