@@ -22,14 +22,14 @@ public class SNLoadFirstView : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             // Check if main or login on
-            if (!SNControl.Api.CheckMainOrLoginOn())
-            {
-                SNControl.Api.BackToMainScene(unloadAll: true);
-            }
-            else
-            {
-                Application.Quit();
-            }
+            //if (!SNControl.Api.CheckMainOrLoginOn())
+            //{
+            //    SNControl.Api.BackToMainScene(unloadAll: true);
+            //}
+            //else
+            //{
+            //    Application.Quit();
+            //}
         }
         yield return null;
     }
@@ -38,12 +38,7 @@ public class SNLoadFirstView : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            SNControl.Api.UnloadAllThenLoadScene("SNBundle");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            SNControl.Api.UnloadAllThenLoadScene(SNConstant.SCENE_MEMBERS_CLASS);
+            SNControl.Api.UnloadAllThenLoadScene(sceneName: new string[] { SNConstant.SCENE_MAIN, SNConstant.SCENE_MENU });
         }
     }
 }

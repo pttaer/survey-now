@@ -6,75 +6,19 @@ public class SNConstant
 
     // Scene names
 
-    public static string SCENE_LOADFIRST // name scene load first
+    public static string SCENE_LOADFIRST
     {
-        get { return "FAMLoadFirst"; }
+        get { return "SNLoadFirst"; }
+    }
+    public static string SCENE_MENU
+    {
+        get { return "SNMenuView"; }
+    }
+    public static string SCENE_MAIN
+    {
+        get { return "SNMainView"; }
     }
 
-    public static string SCENE_LOGIN // name scene LOGIN
-    {
-        get { return "FAMLogin"; }
-    }
-
-    public static string SCENE_MAIN // name scene HOME
-    {
-        get { return "FAMMain"; }
-    }
-
-    public static string SCENE_MENU // name scene MENU
-    {
-        get { return "FAMMenu"; }
-    }
-
-    public static string SCENE_NEWS_AND_EVENTS // name scene NEWS
-    {
-        get { return "FAMNewsAndEvents"; }
-    }
-
-    public static string SCENE_POST // name scene NEWS
-    {
-        get { return "FAMPost"; }
-    }
-
-    public static string SCENE_DETAILS // name scene NEWS
-    {
-        get { return "FAMDetails"; }
-    }
-
-    public static string SCENE_MEMBERS_APPROVE // name scene EVENTS
-    {
-        get { return "FAMMembersApprove"; }
-    }
-
-    public static string SCENE_MEMBERS // name scene EVENTS
-    {
-        get { return "FAMMembers"; }
-    }
-
-    public static string SCENE_MEMBERS_GRADE // name scene EVENTS
-    {
-        get { return "FAMMembers.Grade"; }
-    }
-
-    public static string SCENE_MEMBERS_CLASS // name scene EVENTS
-    {
-        get { return "FAMMembers.Class"; }
-    }
-
-    public static string SCENE_SETTINGS // name scene SETTINGS
-    {
-        get { return "FAMSettings"; }
-    }
-
-    public static string SCENE_PROFILE // name scene PROFILE
-    {
-        get { return "FAMProfile"; }
-    }
-
-    public static string SCENE_SCHOOL_DETAIL // name scene PROFILE
-    {
-        get { return "FAMSchool"; }
-    }
 
     #endregion SCENE_NAMES
 
@@ -174,27 +118,8 @@ public class SNConstant
     public const string METHOD_DELETE = "DELETE";
 
     // title text
-    public const string TITLE_HOME = "Admin";
-
-    public const string TITLE_MEMBERS = "Members";
-    public const string TITLE_GRADES = "Grades";
-    public const string TITLE_CLASSES = "Classes";
-    public const string TITLE_MEMBERS_APPROVE = "Members Approve";
-    public const string TITLE_MEMBERS_DETAILS = "Members Details";
-    public const string TITLE_NEWS_DETAILS = "News Details";
-    public const string TITLE_EVENTS_DETAILS = "Events Details";
-    public const string TITLE_PROFILE = "Profile";
-    public const string TITLE_SETTINGS = "Settings";
-    public const string TITLE_POST = "News & Events Post";
-    public const string TITLE_SCHOOL_DETAIL = "School Detail";
 
     // keys
-    public const string KEY_HOME = "Home";
-
-    public const string KEY_NEWS_AND_EVENTS = "News";
-    public const string KEY_EVENTS = "Events";
-
-    public const string KEY_MEMBERS = "Members";
 
     // playerprefs
     public const string EMAIL_CACHE = "email_cache";
