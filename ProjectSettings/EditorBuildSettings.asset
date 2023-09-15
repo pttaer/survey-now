@@ -9,6 +9,8 @@ EditorBuildSettings:
     path: Assets/3.Scenes/SNLoadFirst.unity
     guid: bef14d87fcae28548941d94378688080
   - enabled: 1
+    path: Assets/3.Scenes/SNBundle.unity
+    guid: 1b86e42f92115384ea288347d5d79040
     path: Assets/3.Scenes/SNMainView.unity
     guid: 008bf492eeec12a4887ec920e5df3b58
   - enabled: 1
