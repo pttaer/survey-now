@@ -38,7 +38,7 @@ public class SNLoadFirstView : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            SNControl.Api.UnloadAllThenLoadScene(SNConstant.SCENE_MEMBERS_GRADE);
+            SNControl.Api.UnloadAllThenLoadScene("SNBundle");
         }
 
         if (Input.GetKeyDown(KeyCode.F2))
