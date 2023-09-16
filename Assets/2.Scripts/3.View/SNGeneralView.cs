@@ -20,7 +20,7 @@ public class SNGeneralView : MonoBehaviour
     private void OnDestroy()
     {
         // unregister event
-        SNControl.Api.ShowFAMPopupEvent -= ShowFAMPopup;
+        SNControl.Api.ShowSNPopupEvent -= ShowFAMPopup;
         SNControl.Api.ShowFAMPopupInputEvent -= ShowFAMPopup;
         SNControl.Api.OnLoadShowLoading -= ShowLoading;
         SNControl.Api.OnLoadFailShowSorry -= ShowSorryTxt;
@@ -37,7 +37,7 @@ public class SNGeneralView : MonoBehaviour
         m_popupMessagePrefab = ResourceObject.GetResource<GameObject>(SNConstant.CONFIG_PREFAB_POPUP_MESSAGE);
 
         // register event
-        SNControl.Api.ShowFAMPopupEvent += ShowFAMPopup;
+        SNControl.Api.ShowSNPopupEvent += ShowFAMPopup;
         SNControl.Api.ShowFAMPopupInputEvent += ShowFAMPopup;
         SNControl.Api.OnLoadShowLoading += ShowLoading;
         SNControl.Api.OnLoadFailShowSorry += ShowSorryTxt;

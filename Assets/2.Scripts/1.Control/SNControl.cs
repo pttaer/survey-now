@@ -1,16 +1,15 @@
 using DG.Tweening;
 //using Firebase.Auth;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SNControl
 {
-    //private FirebaseAuth auth = FirebaseAuth.DefaultInstance;
-    private string googleIdToken = "529134634305-oin934ukcggp0qspi786jqgvsoqq52o1.apps.googleusercontent.com";
-    private string googleAccessToken = "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";
-
     // Start is called before the first frame update
     private static SNControl m_api;
 
@@ -19,12 +18,12 @@ public class SNControl
     public Action<bool, string> OnLoadFailShowSorry;
     public Action<bool> OnCheckSchoolSetMain;
 
-    private Action<string, string, string, string, Action, Action, Action> m_showFAMPopupEvent; //notify show popup message
+    private Action<string, string, string, string, Action, Action, Action> m_showSNPopupEvent; //notify show popup message
 
-    public Action<string, string, string, string, Action, Action, Action> ShowFAMPopupEvent
+    public Action<string, string, string, string, Action, Action, Action> ShowSNPopupEvent
     {
-        get { return m_showFAMPopupEvent; }
-        set { m_showFAMPopupEvent = value; }
+        get { return m_showSNPopupEvent; }
+        set { m_showSNPopupEvent = value; }
     }
 
     private Action<string, string, string, string, Action<string>, Action, Action, bool> m_showFAMPopupInputEvent; //notify show popup message
@@ -34,12 +33,6 @@ public class SNControl
         get { return m_showFAMPopupInputEvent; }
         set { m_showFAMPopupInputEvent = value; }
     }
-
-    private string[] unloadScenes = new string[]
-    {
-        SNConstant.SCENE_MAIN,
-        SNConstant.SCENE_MENU,
-    };
 
     public static SNControl Api
     {
@@ -60,47 +53,11 @@ public class SNControl
         SNMainControl.Api = new SNMainControl();
         SNMenuControl.Api = new SNMenuControl();
 
-        //merge language general object folder
-        /*TextAsset goLanguage = ResourceObject.GetResource<TextAsset>(HAGOConstant.PATH_LANGUAGE);
-        I18N.instance.MergeMoreData(goLanguage.text, false);*/
-
-        //if (PlayerPrefs.HasKey(SNConstant.BEARER_TOKEN_CACHE))
-        //{
-        //    CheckingSchoolIdEvent?.Invoke();
-        //}
-        //else
-        //{
-        //    LoadScene(SNConstant.SCENE_LOGIN);
-        //}
-    }
-
-    public void UnloadAllScenes()
-    {
-        foreach (string scene in unloadScenes)
-        {
-            UnLoadScene(scene);
-        }
-    }
-
-    // Unload all scene in the currentScenes array and load main and menu
-    public void BackToMainScene(bool unloadAll = false, params string[] scenesToUnload)
-    {
-        if (!unloadAll)
-        {
-            foreach (string scene in scenesToUnload)
-            {
-                UnLoadScene(scene);
-            }
-        }
-        else
-        {
-            UnloadAllScenes();
-        }
-
-        LoadScene(SNConstant.SCENE_MAIN);
+        // Default value
+        SNModel.Api.ScenesLoaded.Clear();
+        UnloadThenLoadScene(SNConstant.SCENE_LOGIN);
         LoadScene(SNConstant.SCENE_MENU);
     }
-
     #region UTILS
 
     //show hide loading
@@ -143,7 +100,7 @@ public class SNControl
 
     public void ShowFAMPopup(string title, string content, string btnConfirmText, string btnElseText, Action onConfirm = null, Action onElse = null, Action onExit = null)
     {
-        ShowFAMPopupEvent?.Invoke(title, content, btnConfirmText, btnElseText, onConfirm, onElse, onExit);
+        ShowSNPopupEvent?.Invoke(title, content, btnConfirmText, btnElseText, onConfirm, onElse, onExit);
     }
 
     public void ShowFAMPopup(string title, string content, string btnConfirmText, string btnElseText, Action<string> onConfirm, Action onElse = null, Action onExit = null, bool isShowInputField = false)
@@ -151,96 +108,55 @@ public class SNControl
         ShowFAMPopupInputEvent?.Invoke(title, content, btnConfirmText, btnElseText, onConfirm, onElse, onExit, isShowInputField);
     }
 
-    public void UnloadAllThenLoadScene(string[] sceneName)
+    public void UnloadThenLoadScene(string sceneToLoad)
     {
-        UnloadAllScenes();
+        // Unload the current scene & remove scenes loaded beside loadfirst
+        List<string> sceneNames = SceneManager.GetAllScenes()
+                                              .Select(scene => scene.name)
+                                              .ToList();
 
-        foreach (string scene in sceneName)
+        foreach (var sceneName in sceneNames)
         {
-            LoadScene(scene);
-        }
-    }
-
-    // Need about 0.5sec to load
-    public void LoadScene(string sceneName)
-    {
-        HideSorry();
-        if (SNModel.Api.IsUnloadingScene)
-        {
-            DOVirtual.DelayedCall(0.1f, () =>
+            if (sceneName != SNConstant.SCENE_LOADFIRST && sceneName != SNConstant.SCENE_MENU)
             {
-                LoadScene(sceneName);
-            });
-            return;
-        }
-
-        if (!SceneManager.GetSceneByName(sceneName).isLoaded)
-        {
-            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-
-            DOVirtual.DelayedCall(0.025f, () =>
-            {
-                Scene targetScene = SceneManager.GetSceneByName(sceneName);
-
-                GameObject[] rootObjects = targetScene.GetRootGameObjects();
-
-                if (rootObjects.Length > 0)
+                if (SNModel.Api.ScenesLoaded.Contains(sceneName) && SNModel.Api.ScenesLoaded.Contains(sceneToLoad))
                 {
-                    Transform sceneContainer = rootObjects[0].transform;
-                    CanvasGroup sceneCanvasGroup = sceneContainer.GetComponent<CanvasGroup>();
-                    TweenUtils.TweenFadeIn(sceneCanvasGroup, 0.3f);
+                    SNModel.Api.ScenesLoaded.Remove(sceneName);
                 }
-            });
+                UnLoadScene(sceneName);
+            }
         }
+
+        LoadScene(sceneToLoad);
     }
 
-    public void UnLoadScene(string sceneName)
+    // Load and add scene to scenes loaded list
+    private void LoadScene(string sceneToLoad)
     {
-        Scene targetScene = SceneManager.GetSceneByName(sceneName);
-
-        if (!targetScene.isLoaded || !targetScene.IsValid())
+        if (!SceneManager.GetSceneByName(sceneToLoad).isLoaded)
         {
-            return;
-        }
+            SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
-        GameObject[] rootObjects = targetScene.GetRootGameObjects();
-        if (rootObjects.Length > 0)
-        {
-            Transform sceneContainer = rootObjects[0].transform.Find("Container");
-
-            SNModel.Api.IsUnloadingScene = true;
-
-            TweenUtils.TweenSwipeOut(sceneContainer, Vector3.left, 0.3f, () =>
+            if (!SNModel.Api.ScenesLoaded.Contains(sceneToLoad))
             {
-                SceneManager.UnloadSceneAsync(sceneName);
-                SNModel.Api.IsUnloadingScene = false;
-            });
+                SNModel.Api.ScenesLoaded.Add(sceneToLoad);
+            }
+
+#if UNITY_EDITOR
+            foreach (var scene in SNModel.Api.ScenesLoaded)
+            {
+                Debug.Log("SCENE LOADED: " + scene);
+            }
+#endif
         }
     }
 
-    public void SetText(string targetTxt, Text txtToSet)
+    private void UnLoadScene(string sceneToUnLoad)
     {
-        string txt = "";
-        int duration = 1;
-
-        DOTween.To(
-            () => txt,
-            x => txt = x,
-            targetTxt,
-            duration
-        ).OnUpdate(() => txtToSet.text = txt).SetEase(Ease.OutExpo);
-    }
-
-    public void SetDuration(float toValue, Text txtToSet)
-    {
-        float fromValue = 0;
-        int duration = 1;
-
-        DOVirtual.Float(
-            fromValue,
-            toValue,
-            duration,
-            (v) => txtToSet.text = v.ToString("0") + SNConstant.TIME_UNIT).SetEase(Ease.OutExpo);
+        if (SceneManager.GetSceneByName(sceneToUnLoad).isLoaded)
+        {
+            SceneManager.UnloadSceneAsync(sceneToUnLoad);
+        }
     }
 
     #endregion UTILS

@@ -7865,7 +7865,7 @@ GameObject:
   - component: {fileID: 1990961697}
   - component: {fileID: 1990961701}
   m_Layer: 0
-  m_Name: PnlSurveyName_1
+  m_Name: SurveyItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
