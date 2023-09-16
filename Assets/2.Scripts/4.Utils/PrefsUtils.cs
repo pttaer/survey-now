@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PrefsUtils
 {
     public static PrefsUtils Api;

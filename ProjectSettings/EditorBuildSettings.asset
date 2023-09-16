@@ -11,8 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/SNBundle.unity
     guid: 1b86e42f92115384ea288347d5d79040
-    path: Assets/3.Scenes/SNMainView.unity
-    guid: 008bf492eeec12a4887ec920e5df3b58
   - enabled: 1
     path: Assets/3.Scenes/SNMenuView.unity
     guid: ff33f1eb98802bb439b2737941a4f608
@@ -25,5 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/SNCreateSurvey.unity
     guid: 16a9c2bf1f8601c4196501697f524aa0
+  - enabled: 1
+    path: Assets/3.Scenes/SNMainView.unity
+    guid: 008bf492eeec12a4887ec920e5df3b58
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 1dd8976815238da488a35aca8a470d4d, type: 2}

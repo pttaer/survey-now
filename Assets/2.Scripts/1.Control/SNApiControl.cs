@@ -1,13 +1,3 @@
-using DG.Tweening;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using UnityEngine.Networking;
-
 public class SNApiControl
 {
     /* public static FAMApiControl Api;
