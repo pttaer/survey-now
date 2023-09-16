@@ -1,6 +1,6 @@
+using DG.Tweening;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,11 +65,13 @@ public class SNMenuView : MonoBehaviour
     private void LoadMySurvey()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST);
+        DOVirtual.DelayedCall(0.3f, () => SNSurveyListControl.Api.OpenMySurvey());
     }
 
     private void LoadHistory()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST);
+        DOVirtual.DelayedCall(0.3f, () => SNSurveyListControl.Api.OpenSurveyHistory());
     }
 
     private void LoadBilling()
@@ -87,10 +89,11 @@ public class SNMenuView : MonoBehaviour
         LoadScene(SNConstant.SCENE_LOGIN);
     }
 
-    private void LoadScene(string sceneName)
+    private void LoadScene(string sceneName, Action callback = null)
     {
         CloseMenu();
         SNControl.Api.UnloadThenLoadScene(sceneName);
+        callback?.Invoke();
     }
 
     private void OpenMenu()

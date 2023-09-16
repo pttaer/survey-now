@@ -1,12 +1,9 @@
-using DG.Tweening;
 //using Firebase.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class SNControl
 {
@@ -52,11 +49,15 @@ public class SNControl
         PrefsUtils.Api = new PrefsUtils();
         SNMainControl.Api = new SNMainControl();
         SNMenuControl.Api = new SNMenuControl();
+        SNSurveyListControl.Api = new SNSurveyListControl();
+        SNCreateSurveyControl.Api = new SNCreateSurveyControl();
 
         // Default value
         SNModel.Api.ScenesLoaded.Clear();
         UnloadThenLoadScene(SNConstant.SCENE_LOGIN);
         LoadScene(SNConstant.SCENE_MENU);
+
+        Debug.Log("INIT");
     }
     #region UTILS
 
@@ -156,6 +157,20 @@ public class SNControl
         if (SceneManager.GetSceneByName(sceneToUnLoad).isLoaded)
         {
             SceneManager.UnloadSceneAsync(sceneToUnLoad);
+        }
+    }
+
+    // For opening one panel in the set of panels of one scene
+    public void OpenPanel(GameObject pnlToShow, List<GameObject> pnlList)
+    {
+        foreach (var pnl in pnlList)
+        {
+            if (pnl.gameObject == pnlToShow)
+            {
+                pnl.gameObject.SetActive(true);
+                continue;
+            }
+            pnl.SetActive(false);
         }
     }
 
