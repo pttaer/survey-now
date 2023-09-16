@@ -10,6 +10,10 @@ public class SNConstant
     {
         get { return "SNLoadFirst"; }
     }
+    public static string SCENE_LOGIN
+    {
+        get { return "SNLogin"; }
+    }
     public static string SCENE_MENU
     {
         get { return "SNMenuView"; }
@@ -18,7 +22,14 @@ public class SNConstant
     {
         get { return "SNMainView"; }
     }
-
+    public static string SCENE_SURVEY_LIST
+    {
+        get { return "SNSurveyList"; }
+    }
+    public static string SCENE_CREATE_SURVEY
+    {
+        get { return "SNCreateSurvey"; }
+    }
 
     #endregion SCENE_NAMES
 

@@ -17,5 +17,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/SNSurveyList.unity
     guid: 26d1ce4661a13a345a9c0e34ad13703a
+  - enabled: 1
+    path: Assets/3.Scenes/SNLogin.unity
+    guid: 4d703f815a4176f42a5bfae0d314337f
+  - enabled: 1
+    path: Assets/3.Scenes/SNCreateSurvey.unity
+    guid: 16a9c2bf1f8601c4196501697f524aa0
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 1dd8976815238da488a35aca8a470d4d, type: 2}

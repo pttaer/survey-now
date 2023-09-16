@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,14 @@ using UnityEngine.UI;
 
 public class SNMenuView : MonoBehaviour
 {
-    private Button m_btnMenu;
+    private Button m_BtnMenu;
+    private Button m_BtnProfile;
+    private Button m_BtnCreateSurvey;
+    private Button m_BtnMySurvey;
+    private Button m_BtnHistory;
+    private Button m_BtnBilling;
+    private Button m_BtnPoints;
+    private Button m_BtnLogout;
 
     // Start is called before the first frame update
     void Start()
@@ -15,11 +23,28 @@ public class SNMenuView : MonoBehaviour
 
     private void Init()
     {
-        m_btnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
+        m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
+        m_BtnProfile = transform.Find("Body/Viewport/Content/BtnProfile").GetComponent<Button>();
+        m_BtnCreateSurvey = transform.Find("Body/Viewport/Content/BtnCreateSurvey").GetComponent<Button>();
+        m_BtnMySurvey = transform.Find("Body/Viewport/Content/BtnMySurvey").GetComponent<Button>();
+        m_BtnHistory = transform.Find("Body/Viewport/Content/BtnHistory").GetComponent<Button>();
+        m_BtnBilling = transform.Find("Body/Viewport/Content/BtnBilling").GetComponent<Button>();
+        m_BtnPoints = transform.Find("Body/Viewport/Content/BtnPoints").GetComponent<Button>();
+        m_BtnLogout = transform.Find("Body/Viewport/Content/BtnLogout").GetComponent<Button>();
 
-        m_btnMenu.onClick.AddListener(CloseMenu);
+        m_BtnMenu.onClick.AddListener(CloseMenu);
+        m_BtnProfile.onClick.AddListener(LoadProfile);
+        m_BtnCreateSurvey.onClick.AddListener(LoadCreate);
+        m_BtnMySurvey.onClick.AddListener(LoadMySurvey);
+        m_BtnHistory.onClick.AddListener(LoadHistory);
+        m_BtnBilling.onClick.AddListener(LoadBilling);
+        m_BtnPoints.onClick.AddListener(LoadPoints);
+        m_BtnLogout.onClick.AddListener(Logout);
 
         SNMainControl.Api.onClickMenu += OpenMenu;
+
+        // Default value
+        gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -27,13 +52,56 @@ public class SNMenuView : MonoBehaviour
         SNMainControl.Api.onClickMenu -= OpenMenu;
     }
 
+    private void LoadProfile()
+    {
+        LoadScene(SNConstant.SCENE_MAIN);
+    }
+
+    private void LoadCreate()
+    {
+        LoadScene(SNConstant.SCENE_CREATE_SURVEY);
+    }
+
+    private void LoadMySurvey()
+    {
+        LoadScene(SNConstant.SCENE_SURVEY_LIST);
+    }
+
+    private void LoadHistory()
+    {
+        LoadScene(SNConstant.SCENE_SURVEY_LIST);
+    }
+
+    private void LoadBilling()
+    {
+        LoadScene(SNConstant.SCENE_MAIN);
+    }
+
+    private void LoadPoints()
+    {
+        LoadScene(SNConstant.SCENE_MAIN);
+    }
+
+    private void Logout()
+    {
+        LoadScene(SNConstant.SCENE_LOGIN);
+    }
+
+    private void LoadScene(string sceneName)
+    {
+        CloseMenu();
+        SNControl.Api.UnloadThenLoadScene(sceneName);
+    }
+
     private void OpenMenu()
     {
         print("aaaa");
+        gameObject.SetActive(true);
     }
 
     private void CloseMenu()
     {
         print("bbbb");
+        gameObject.SetActive(false);
     }
 }

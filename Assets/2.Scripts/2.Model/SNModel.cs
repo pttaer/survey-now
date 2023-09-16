@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public enum BWLoadingType
 {
     Default,
@@ -26,4 +28,5 @@ public class SNModel
     }
 
     public bool IsUnloadingScene = false;
+    public List<string> ScenesLoaded = new(); // For back state
 }

@@ -33,12 +33,4 @@ public class SNLoadFirstView : MonoBehaviour
         }
         yield return null;
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            SNControl.Api.UnloadAllThenLoadScene(sceneName: new string[] { SNConstant.SCENE_MAIN, SNConstant.SCENE_MENU });
-        }
-    }
 }

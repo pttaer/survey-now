@@ -97,7 +97,7 @@ public class SNLoginView : MonoBehaviour
 
         m_BtnForgotPassword.onClick.AddListener(() => SetPnlOn(m_PnlForgotPassword));
         m_BtnSendOTP.onClick.AddListener(() => SetPnlOn(m_PnlForgotPassword));
-        m_BtnLogin.onClick.AddListener(() => SetPnlOn(m_PnlForgotPassword));
+        m_BtnLogin.onClick.AddListener(LoadSceneMain);
         m_BtnGoToLogin.onClick.AddListener(() => SetPnlOn(m_PnlLogin));
 
         m_BtnNextRegister1.onClick.AddListener(() => SetPnlOn(m_PnlRegister2));
@@ -116,6 +116,11 @@ public class SNLoginView : MonoBehaviour
         m_BtnPreviousRegister5.onClick.AddListener(() => SetPnlOn(m_PnlRegister4));
 
         DefaultValue();
+    }
+
+    private void LoadSceneMain()
+    {
+        SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_SURVEY_LIST);
     }
 
     private void DefaultValue()
