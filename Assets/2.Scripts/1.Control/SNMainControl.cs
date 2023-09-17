@@ -5,10 +5,28 @@ public class SNMainControl : MonoBehaviour
 {
     public static SNMainControl Api;
 
-    public Action onClickMenu;
+    public Action OnClickMenuEvent;
+    public Action OnOpenProfileEvent;
+    public Action OnOpenAccountlEvent;
+    public Action OnOpenAccountPurchaseEvent;
 
     public void OpenMenuPnl()
     {
-        onClickMenu?.Invoke();
+        OnClickMenuEvent?.Invoke();
+    }
+
+    public void OpenProfile()
+    {
+        OnOpenProfileEvent?.Invoke();
+    }
+
+    public void OpenAccount()
+    {
+        OnOpenAccountlEvent?.Invoke();
+    }
+
+    public void OpenAccountPurchase()
+    {
+        OnOpenAccountPurchaseEvent?.Invoke();
     }
 }

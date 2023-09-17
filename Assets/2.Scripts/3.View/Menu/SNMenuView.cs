@@ -41,7 +41,7 @@ public class SNMenuView : MonoBehaviour
         m_BtnPoints.onClick.AddListener(LoadPoints);
         m_BtnLogout.onClick.AddListener(Logout);
 
-        SNMainControl.Api.onClickMenu += OpenMenu;
+        SNMainControl.Api.OnClickMenuEvent += OpenMenu;
 
         // Default value
         gameObject.SetActive(false);
@@ -49,12 +49,13 @@ public class SNMenuView : MonoBehaviour
 
     private void OnDestroy()
     {
-        SNMainControl.Api.onClickMenu -= OpenMenu;
+        SNMainControl.Api.OnClickMenuEvent -= OpenMenu;
     }
 
     private void LoadProfile()
     {
         LoadScene(SNConstant.SCENE_MAIN);
+        DOVirtual.DelayedCall(0.3f, () => SNMainControl.Api.OpenProfile());
     }
 
     private void LoadCreate()
@@ -76,12 +77,13 @@ public class SNMenuView : MonoBehaviour
 
     private void LoadBilling()
     {
-        LoadScene(SNConstant.SCENE_MAIN);
+        LoadScene(SNConstant.SCENE_BUNDLE);
     }
 
     private void LoadPoints()
     {
         LoadScene(SNConstant.SCENE_MAIN);
+        DOVirtual.DelayedCall(0.3f, () => SNMainControl.Api.OpenAccountPurchase());
     }
 
     private void Logout()
