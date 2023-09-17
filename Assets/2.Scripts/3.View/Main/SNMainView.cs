@@ -68,7 +68,7 @@ public class SNMainView : MonoBehaviour
     {
         ShowPnl(m_MainAccountView.gameObject);
     }
-    
+
     private void OpenAccountPurchase()
     {
         ShowPnl(m_MainAccountPurchaseView.gameObject);

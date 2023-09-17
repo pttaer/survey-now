@@ -42,6 +42,10 @@ public class SNMainAccountPurchaseView : MonoBehaviour
             m_BodyPointProfile,
             m_BodyPurchasePoint,
             m_BodyPointExchange,
+            m_PnlPurchaseHistory,
+            m_PnlExchangeHistory,
+            m_PnlPurchaseDetail,
+            m_PnlExchangeDetail,
         };
 
         m_BtnPnlPointInfo.onClick.AddListener(OpenPointInfoDetail);
@@ -52,20 +56,26 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private void OpenPointInfoDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyPointProfile, m_ListPnl);
+        ShowPnl(m_BodyPointProfile);
     }
 
     private void OpenPurchasePointDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyPurchasePoint, m_ListPnl);
+        ShowPnl(m_BodyPurchasePoint);
     }
 
     private void OpenPointExchangeDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyPointExchange, m_ListPnl);
+        ShowPnl(m_BodyPointExchange);
     }
 
     private void OpenPointHistoryDetail()
     {
+
+    }
+
+    private void ShowPnl(GameObject pnl)
+    {
+        SNControl.Api.OpenPanel(pnl, m_ListPnl, true);
     }
 }

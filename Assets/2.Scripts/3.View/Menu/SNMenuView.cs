@@ -55,7 +55,7 @@ public class SNMenuView : MonoBehaviour
     private void LoadProfile()
     {
         LoadScene(SNConstant.SCENE_MAIN);
-        DOVirtual.DelayedCall(0.3f, () => SNMainControl.Api.OpenProfile());
+        DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenProfile());
     }
 
     private void LoadCreate()
@@ -66,13 +66,13 @@ public class SNMenuView : MonoBehaviour
     private void LoadMySurvey()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST);
-        DOVirtual.DelayedCall(0.3f, () => SNSurveyListControl.Api.OpenMySurvey());
+        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenMySurvey());
     }
 
     private void LoadHistory()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST);
-        DOVirtual.DelayedCall(0.3f, () => SNSurveyListControl.Api.OpenSurveyHistory());
+        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenSurveyHistory());
     }
 
     private void LoadBilling()
@@ -83,7 +83,7 @@ public class SNMenuView : MonoBehaviour
     private void LoadPoints()
     {
         LoadScene(SNConstant.SCENE_MAIN);
-        DOVirtual.DelayedCall(0.3f, () => SNMainControl.Api.OpenAccountPurchase());
+        DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenAccountPurchase());
     }
 
     private void Logout()

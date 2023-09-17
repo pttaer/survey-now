@@ -10,7 +10,7 @@ public class SNMainProfileView : MonoBehaviour
     private Button m_BtnPnlContact;
     private Button m_BtnPnlCareer;
     private Button m_BtnPnlHobbies;
-    
+
     private GameObject m_BodyProfile;
     private GameObject m_BodyContact;
     private GameObject m_BodyCareer;
@@ -46,21 +46,26 @@ public class SNMainProfileView : MonoBehaviour
 
     private void OpenHobbiesDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyHobbies, m_ListPnl);
+        ShowPnl(m_BodyHobbies);
     }
 
     private void OpenCareerDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyCareer, m_ListPnl);
+        ShowPnl(m_BodyCareer);
     }
 
     private void OpenContactDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyContact, m_ListPnl);
+        ShowPnl(m_BodyContact);
     }
 
     private void OpenProfileDetail()
     {
-        SNControl.Api.OpenPanel(m_BodyProfile, m_ListPnl);
+        ShowPnl(m_BodyProfile);
+    }
+
+    private void ShowPnl(GameObject pnl)
+    {
+        SNControl.Api.OpenPanel(pnl, m_ListPnl, true);
     }
 }

@@ -160,9 +160,15 @@ public class SNControl
         }
     }
 
-    // For opening one panel in the set of panels of one scene
-    public void OpenPanel(GameObject pnlToShow, List<GameObject> pnlList)
+    // For opening one or many panels in the set of panels of one scene
+    public void OpenPanel(GameObject pnlToShow, List<GameObject> pnlList, bool isCheckToTurnPanelOff = false)
     {
+        if (pnlToShow.activeSelf && isCheckToTurnPanelOff)
+        {
+            pnlToShow.SetActive(false);
+            return;
+        }
+
         foreach (var pnl in pnlList)
         {
             if (pnl.gameObject == pnlToShow)
@@ -171,6 +177,17 @@ public class SNControl
                 continue;
             }
             pnl.SetActive(false);
+        }
+    }
+
+    public void OpeManyPanel(List<GameObject> pnlList, bool isCheckToTurnPanelOff = false, params GameObject[] pnlsToShow)
+    {
+        pnlList.ForEach(panel => panel.SetActive(!pnlsToShow.Contains(panel)));
+        pnlsToShow.ToList().ForEach(panelToShow => panelToShow.SetActive(true));
+
+        if (isCheckToTurnPanelOff)
+        {
+            pnlList.Where(panel => !pnlsToShow.Contains(panel)).ToList().ForEach(panel => panel.SetActive(false));
         }
     }
 
