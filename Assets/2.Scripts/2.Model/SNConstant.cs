@@ -30,6 +30,10 @@ public class SNConstant
     {
         get { return "SNCreateSurvey"; }
     }
+    public static string SCENE_BUNDLE
+    {
+        get { return "SNBundle"; }
+    }
 
     #endregion SCENE_NAMES
 

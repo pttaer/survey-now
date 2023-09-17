@@ -51,14 +51,14 @@ public class SNSurveyListView : MonoBehaviour
         m_BtnSearch.onClick.AddListener(OnClickSearch);
 
         SNSurveyListControl.Api.OnOpenSurveyDetailEvent += OpenSurveyDetail;
-        SNSurveyListControl.Api.OnOpenMySurveylEvent += OpenMySurvey;
+        SNSurveyListControl.Api.OnOpenMySurveyEvent += OpenMySurvey;
         SNSurveyListControl.Api.OnOpenSurveyHistoryEvent += OpenSurveyHistory;
     }
 
     private void OnDestroy()
     {
         SNSurveyListControl.Api.OnOpenSurveyDetailEvent -= OpenSurveyDetail;
-        SNSurveyListControl.Api.OnOpenMySurveylEvent -= OpenMySurvey;
+        SNSurveyListControl.Api.OnOpenMySurveyEvent -= OpenMySurvey;
         SNSurveyListControl.Api.OnOpenSurveyHistoryEvent -= OpenSurveyHistory;
     }
 
@@ -75,7 +75,6 @@ public class SNSurveyListView : MonoBehaviour
     private void OpenSurveyHistory()
     {
         ShowPnl(m_PnlSurveyHistory);
-        print("SHOW Here");
     }
 
     private void OpenMySurvey()

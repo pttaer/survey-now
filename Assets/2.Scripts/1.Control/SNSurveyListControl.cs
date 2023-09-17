@@ -8,7 +8,7 @@ public class SNSurveyListControl
     public static SNSurveyListControl Api;
 
     public Action OnOpenSurveyHistoryEvent;
-    public Action OnOpenMySurveylEvent;
+    public Action OnOpenMySurveyEvent;
     public Action OnOpenSurveyDetailEvent;
 
     public void OpenSurveyHistory()
@@ -18,7 +18,7 @@ public class SNSurveyListControl
 
     public void OpenMySurvey()
     {
-        OnOpenMySurveylEvent?.Invoke();
+        OnOpenMySurveyEvent?.Invoke();
     }
 
     public void OpenSurveyDetail()
