@@ -1,16 +1,24 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SNBundleView : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Button m_btnMenu;
+
     void Start()
     {
-        
+        Init();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Init()
     {
-        
+        m_btnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
+
+        m_btnMenu.onClick.AddListener(OnClickOpenMenu);
+    }
+
+    private void OnClickOpenMenu()
+    {
+        SNMainControl.Api.OpenMenuPnl();
     }
 }
