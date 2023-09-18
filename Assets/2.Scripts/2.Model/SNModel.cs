@@ -1,16 +1,9 @@
 using System.Collections.Generic;
 
-public enum BWLoadingType
+public enum SNHistoryRecordType
 {
-    Default,
-    WithBackground
-}
-
-public enum BWPopupIconType
-{
-    Normal,
-    Success,
-    Error
+    Purchase,
+    Exchange
 }
 
 public class SNModel
