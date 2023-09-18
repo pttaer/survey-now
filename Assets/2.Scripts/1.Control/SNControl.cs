@@ -180,7 +180,7 @@ public class SNControl
         }
     }
 
-    public void OpeManyPanel(List<GameObject> pnlList, bool isCheckToTurnPanelOff = false, params GameObject[] pnlsToShow)
+    /*public void OpeManyPanel(List<GameObject> pnlList, bool isCheckToTurnPanelOff = false, params GameObject[] pnlsToShow)
     {
         pnlList.ForEach(panel => panel.SetActive(!pnlsToShow.Contains(panel)));
         pnlsToShow.ToList().ForEach(panelToShow => panelToShow.SetActive(true));
@@ -189,6 +189,12 @@ public class SNControl
         {
             pnlList.Where(panel => !pnlsToShow.Contains(panel)).ToList().ForEach(panel => panel.SetActive(false));
         }
+    }*/
+
+    public void OpenManyPanel(List<GameObject> pnlList, List<GameObject> pnlsToShow)
+    {
+        pnlList.ForEach(panel => panel.SetActive(false));
+        pnlsToShow.ForEach(panel => panel.SetActive(true));
     }
 
     #endregion UTILS
