@@ -51,6 +51,7 @@ public class SNControl
         SNMenuControl.Api = new SNMenuControl();
         SNSurveyListControl.Api = new SNSurveyListControl();
         SNCreateSurveyControl.Api = new SNCreateSurveyControl();
+        SNApiControl.Api = new SNApiControl();
 
         // Default value
         SNModel.Api.ScenesLoaded.Clear();
