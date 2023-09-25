@@ -90,39 +90,13 @@ public class SNConstant
 
     #region API_URI
 
-    public const string EVENTS_GET_ALL = "https://alumniproject.azurewebsites.net/alumni/api/events?pageNo=1&pageSize=10";
-    public const string EVENTS_GET_ONE_PAGE = "https://alumniproject.azurewebsites.net/alumni/api/events?pageNo={0}&pageSize=10";
-
-    public const string NEWS_GET_ALL = "https://alumniproject.azurewebsites.net/tenant/api/news?pageNo=1&pageSize=10";
-    public const string NEWS_GET_ONE_PAGE = "https://alumniproject.azurewebsites.net/tenant/api/news?pageNo={0}&pageSize=10";
-    public const string NEWS_TAGS_GET_ALL = "https://alumniproject.azurewebsites.net/tenant/api/tagnews";
-    public const string NEWS_TAGS_POST = "https://alumniproject.azurewebsites.net/tenant/api/tagnews";
-
-    public const string GRADE_GET_ONE_PAGE = "https://alumniproject.azurewebsites.net/tenant/api/grades?pageNo={0}&pageSize=10";
-    public const string GRADE_POST = "https://alumniproject.azurewebsites.net/tenant/api/grades";
-
-    public const string CLASS_GET_ONE_PAGE = "https://alumniproject.azurewebsites.net/tenant/api/classes?gradeId={0}&pageNo={1}&pageSize=10";
-    public const string CLASS_POST = "https://alumniproject.azurewebsites.net/tenant/api/classes";
-
-    public const string MEMBER_GET_ALL = "https://alumniproject.azurewebsites.net/tenant/api/alumnis/filter?pageNo=1&pageSize=10";
-    public const string MEMBER_GET_ONE_PAGE = "https://alumniproject.azurewebsites.net/tenant/api/class/{0}/alumnis?pageNo={1}&pageSize=10";
-    public const string MEMBER_REQUEST_GET_ALL = "https://alumniproject.azurewebsites.net/tenant/api/accessReqeuest?pageNo=1&pageSize=10";
-    public const string MEMBER_REQUEST_GET_ONE_PAGE = "https://alumniproject.azurewebsites.net/tenant/api/accessReqeuest?pageNo={0}&pageSize=10";
-    public const string MEMBER_ACCESS_REQUEST = "https://alumniproject.azurewebsites.net/tenant/api/accessReqeuest";
-
-    public const string ALUMNI_GET_SELF_DETAILS = "https://alumniproject.azurewebsites.net/alumni/api/alumnis";
-    public const string ALUMNI_GET_SELF_SCHOOL_DETAILS = "https://alumniproject.azurewebsites.net/alumni/api/schools";
-
-    public const string SCHOOL_ACCESS_REQUEST = "https://alumniproject.azurewebsites.net/tenant/api/schools/id";
-    public const string SCHOOL_POST = "https://alumniproject.azurewebsites.net/alumni/api/schools";
-    public const string SCHOOL_CHECK_CREATE_REQUEST = "https://alumniproject.azurewebsites.net/tenant/api/schools/isAcceptRequest";
-    public const string SCHOOL_CHECK_EXIST_REQUEST = "https://alumniproject.azurewebsites.net/tenant/api/schools/isExistRequest";
-
-    public const string NEWS = "https://alumniproject.azurewebsites.net/tenant/api/news";
-    public const string EVENTS = "https://alumniproject.azurewebsites.net/tenant/api/events";
-
-    public const string GRADE = "https://alumniproject.azurewebsites.net/tenant/api/grades";
-    public const string CLASS = "https://alumniproject.azurewebsites.net/tenant/api/classes";
+    public const string LOGIN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/login";
+    public const string REGISTER = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/register";
+    
+    public const string PACKS_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/all";
+    public const string PACKS_CALCULATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/calculate";
+    public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";
+    public const string PACKS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/purchase";
 
     #endregion API_URI
 

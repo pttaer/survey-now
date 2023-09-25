@@ -32,6 +32,18 @@ public class SNLoginView : MonoBehaviour
     private Button m_BtnPreviousRegister4;
     private Button m_BtnPreviousRegister5;
 
+    private InputField m_IpfEmail_Login;
+    private InputField m_IpfPassword_Login;
+
+    private InputField m_IpfFirstname;
+    private InputField m_IpfLastname;
+    private InputField m_IpfEmail_Register;
+    private InputField m_IpfEmailConfirm_Register;
+    private InputField m_IpfPassword_Register;
+    private InputField m_IpfPasswordConfirm_Register;
+
+    private ToggleGroup m_TglGrGender;
+
     // no ref var
     private List<GameObject> m_PnlRegisterList;
 
@@ -52,6 +64,9 @@ public class SNLoginView : MonoBehaviour
         m_BtnLogin = body.Find("Content/PnlLogin/BtnLogin").GetComponent<Button>();
         m_BtnGoToLogin = body.Find("Content/PnlForgotPassword/BtnSendOTP/BtnLogin").GetComponent<Button>();
 
+        m_IpfEmail_Login = body.Find("Content/PnlLogin/IpfEmail").GetComponent<InputField>();
+        m_IpfPassword_Login = body.Find("Content/PnlLogin/IpfPassword").GetComponent<InputField>();
+
         m_PnlLogin = body.Find("Content/PnlLogin").gameObject;
         m_PnlForgotPassword = body.Find("Content/PnlForgotPassword").gameObject;
 
@@ -60,6 +75,14 @@ public class SNLoginView : MonoBehaviour
         m_PnlRegister3 = body.Find("Content/PnlRegister3").gameObject;
         m_PnlRegister4 = body.Find("Content/PnlRegister4").gameObject;
         m_PnlRegister5 = body.Find("Content/PnlRegister5").gameObject;
+
+        m_IpfFirstname = m_PnlRegister1.transform.Find("IpfFirstname").GetComponent<InputField>();
+        m_IpfLastname = m_PnlRegister1.transform.Find("IpfLastname").GetComponent<InputField>();
+        m_IpfEmail_Register = m_PnlRegister1.transform.Find("IpfEmail").GetComponent<InputField>();
+        m_IpfEmailConfirm_Register = m_PnlRegister1.transform.Find("IpfEmailConfirm").GetComponent<InputField>();
+
+        m_IpfPassword_Register = m_PnlRegister3.transform.Find("IpfPassword").GetComponent<InputField>();
+        m_IpfPasswordConfirm_Register = m_PnlRegister3.transform.Find("IpfReEnterPassword").GetComponent<InputField>();
 
         m_BtnNextRegister1 = body.Find("Content/PnlRegister1/BtnGroup/BtnNext").GetComponent<Button>();
         m_BtnNextRegister2 = body.Find("Content/PnlRegister2/BtnGroup/BtnNext").GetComponent<Button>();
@@ -89,13 +112,14 @@ public class SNLoginView : MonoBehaviour
         });
         m_BtnHaveAccount.onClick.AddListener(() =>
         {
+            Register();
             SetPnlOn(m_PnlLogin);
             SetBtnAccountExist(true);
         });
 
         m_BtnForgotPassword.onClick.AddListener(() => SetPnlOn(m_PnlForgotPassword));
         m_BtnSendOTP.onClick.AddListener(() => SetPnlOn(m_PnlForgotPassword));
-        m_BtnLogin.onClick.AddListener(LoadSceneMain);
+        m_BtnLogin.onClick.AddListener(Login);
         m_BtnGoToLogin.onClick.AddListener(() => SetPnlOn(m_PnlLogin));
 
         m_BtnNextRegister1.onClick.AddListener(() => SetPnlOn(m_PnlRegister2));
@@ -119,6 +143,29 @@ public class SNLoginView : MonoBehaviour
     private void LoadSceneMain()
     {
         SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_SURVEY_LIST);
+    }
+
+    private void Login()
+    {
+        if (!string.IsNullOrEmpty(m_IpfEmail_Login.text) && !string.IsNullOrEmpty(m_IpfPassword_Login.text))
+        {
+            StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
+            {
+                LoadSceneMain();
+            }));
+        }
+    }
+
+    private void Register()
+    {
+        SNUserDTO newUser = new SNUserDTO()
+        {
+            FullName = m_IpfFirstname.text + " " + m_IpfLastname.text,
+            Email = m_IpfEmail_Register.text,
+            Password = m_IpfPassword_Register.text,
+        };
+
+        StartCoroutine(SNApiControl.Api.Register(newUser));
     }
 
     private void DefaultValue()
