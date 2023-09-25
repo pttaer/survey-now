@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SNLoginView : MonoBehaviour
 {
+    private Button m_BtnSkip;
     private Button m_BtnNoAccount;
     private Button m_BtnHaveAccount;
 
@@ -56,6 +57,7 @@ public class SNLoginView : MonoBehaviour
     {
         Transform body = transform.Find("Body");
 
+        m_BtnSkip = transform.Find("BtnSkip").GetComponent<Button>();
         m_BtnNoAccount = body.Find("BtnNoAccount").GetComponent<Button>();
         m_BtnHaveAccount = body.Find("BtnHaveAccount").GetComponent<Button>();
 
@@ -76,8 +78,8 @@ public class SNLoginView : MonoBehaviour
         m_PnlRegister4 = body.Find("Content/PnlRegister4").gameObject;
         m_PnlRegister5 = body.Find("Content/PnlRegister5").gameObject;
 
-        m_IpfFirstname = m_PnlRegister1.transform.Find("IpfFirstname").GetComponent<InputField>();
-        m_IpfLastname = m_PnlRegister1.transform.Find("IpfLastname").GetComponent<InputField>();
+        m_IpfFirstname = m_PnlRegister1.transform.Find("IpfName").GetComponent<InputField>();
+        m_IpfLastname = m_PnlRegister1.transform.Find("IpfFamilyName").GetComponent<InputField>();
         m_IpfEmail_Register = m_PnlRegister1.transform.Find("IpfEmail").GetComponent<InputField>();
         m_IpfEmailConfirm_Register = m_PnlRegister1.transform.Find("IpfEmailConfirm").GetComponent<InputField>();
 
@@ -103,6 +105,11 @@ public class SNLoginView : MonoBehaviour
             m_PnlRegister4,
             m_PnlRegister5,
         };
+
+        m_BtnSkip.onClick.AddListener(() =>
+        {
+            LoadSceneMain();
+        });
 
         // Register OnClick
         m_BtnNoAccount.onClick.AddListener(() =>
@@ -173,6 +180,10 @@ public class SNLoginView : MonoBehaviour
         SetGO(m_PnlLogin, true);
         SetGO(m_PnlForgotPassword, false);
         SetBtnAccountExist(true);
+
+#if !UNITY_EDITOR
+        SetGO(m_BtnSkip.gameObject, false);
+#endif
 
         foreach (var pnl in m_PnlRegisterList)
         {
