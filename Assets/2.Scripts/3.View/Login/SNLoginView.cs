@@ -57,7 +57,7 @@ public class SNLoginView : MonoBehaviour
     {
         Transform body = transform.Find("Body");
 
-        m_BtnSkip = transform.Find("BtnSkip").GetComponent<Button>();
+        m_BtnSkip = transform.parent.transform.Find("BtnSkip").GetComponent<Button>();
         m_BtnNoAccount = body.Find("BtnNoAccount").GetComponent<Button>();
         m_BtnHaveAccount = body.Find("BtnHaveAccount").GetComponent<Button>();
 

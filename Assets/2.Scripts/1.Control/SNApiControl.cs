@@ -228,11 +228,11 @@ public class SNApiControl
         }
     }
 
-    private const string url = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys"; // Replace with the actual API endpoint URL
-
-    public IEnumerator PostSurveyTest()
+    public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
     {
-        SNSurveyRequestDTO postData = new SNSurveyRequestDTO()
+        // Example post data
+
+        /*postData = new SNSurveyRequestDTO()
         {
             Title = "okay",
             Description = "okay",
@@ -332,12 +332,11 @@ public class SNApiControl
                     }
                 }
             }
-        };
-
+        };*/
         string jsonData = JsonConvert.SerializeObject(postData, Formatting.Indented);
         byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
 
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(url, SNConstant.METHOD_POST);
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_POST, SNConstant.METHOD_POST);
         request.SetRequestHeader("Content-Type", "application/json");
         request.uploadHandler = new UploadHandlerRaw(jsonBytes);
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -350,7 +349,7 @@ public class SNApiControl
         }
         else
         {
-            Debug.Log("Data posted successfully!");
+            Debug.Log("Data posted successfully!\n\n" + jsonData);
         }
     }
 }

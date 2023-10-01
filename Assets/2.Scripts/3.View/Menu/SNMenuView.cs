@@ -52,15 +52,6 @@ public class SNMenuView : MonoBehaviour
         SNMainControl.Api.OnClickMenuEvent -= OpenMenu;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            print("RUNNING>>>>>>>>RUNNING>>>>>>>>RUNNING>>>>>>>>");
-            StartCoroutine(SNApiControl.Api.PostSurveyTest());
-        }
-    }
-
     private void LoadProfile()
     {
         LoadScene(SNConstant.SCENE_MAIN);
