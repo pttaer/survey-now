@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SNConstant
@@ -92,7 +93,7 @@ public class SNConstant
 
     public const string LOGIN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/login";
     public const string REGISTER = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/register";
-    
+
     public const string PACKS_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/all";
     public const string PACKS_CALCULATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/calculate";
     public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";
@@ -109,6 +110,34 @@ public class SNConstant
     // title text
 
     // keys
+    private static List<string> questionTypes = new List<string>
+    {
+        "Text",
+        "Radio",
+        "CheckBox",
+        "Selection",
+        "Rating",
+        "Likert"
+    };
+
+    private static List<string> multipleOptionTypes = new List<string>
+    {
+        "NoLimit",
+        "EqualTo",
+        "AtMost"
+    };
+
+    private static List<string> packTypes = new()
+    {
+        "Basic",
+        "Medium",
+        "Advanced",
+        "Expert"
+    };
+
+    public static List<string> MultipleOptionTypes { get => multipleOptionTypes; set => multipleOptionTypes = value; }
+    public static List<string> QuestionTypes { get => questionTypes; set => questionTypes = value; }
+    public static List<string> PackTypes { get => packTypes; set => packTypes = value; }
 
     // playerprefs
     public const string EMAIL_CACHE = "email_cache";
@@ -148,7 +177,7 @@ public class SNConstant
     }
 
 #if UNITY_EDITOR
-    public static string BEARER_TOKEN = "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJhbHVtbmlJZCI6IjkiLCJzY2hvb2xJZCI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ0ZW5hbnQiLCJleHAiOjE2OTAwNzUwNDJ9.LpyKk9j42kyGN76Qwr349mO_e1nwQjviRDlF1rUXez7P0Bdl6-KtoUeew_aTOPon7ZqVHS-Y84BahT_q2gP0dw";
+    public static string BEARER_TOKEN = "";
 #elif UNITY_ANDROID
     public static string BEARER_TOKEN = "";
 #endif
