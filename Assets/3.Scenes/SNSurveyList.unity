@@ -4886,7 +4886,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 368}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1243945541
 MonoBehaviour:
@@ -5068,8 +5068,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 375, y: 184}
-  m_SizeDelta: {x: 702, y: 272}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1361574661
 MonoBehaviour:
@@ -6698,13 +6698,14 @@ GameObject:
   - component: {fileID: 1663804799}
   - component: {fileID: 1663804798}
   - component: {fileID: 1663804797}
+  - component: {fileID: 1663804800}
   m_Layer: 0
   m_Name: MySurvey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1663804796
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6792,7 +6793,19 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663804795}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
+--- !u!114 &1663804800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663804795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6623f9c55c6e39f44ba0500576ccc276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1684408168
 GameObject:
   m_ObjectHideFlags: 0
@@ -7227,6 +7240,7 @@ GameObject:
   - component: {fileID: 1751779205}
   - component: {fileID: 1751779204}
   - component: {fileID: 1751779203}
+  - component: {fileID: 1751779206}
   m_Layer: 0
   m_Name: SurveyHistory
   m_TagString: Untagged
@@ -7321,7 +7335,19 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751779201}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
+--- !u!114 &1751779206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751779201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae7afa1864614f7469622e521bc08194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1962880061
 GameObject:
   m_ObjectHideFlags: 0
@@ -7409,6 +7435,7 @@ GameObject:
   - component: {fileID: 1991629479}
   - component: {fileID: 1991629478}
   - component: {fileID: 1991629477}
+  - component: {fileID: 1991629480}
   m_Layer: 0
   m_Name: SurveyDetail
   m_TagString: Untagged
@@ -7505,7 +7532,19 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1991629475}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
+--- !u!114 &1991629480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991629475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 212a9852469170144b5de829028434d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2010502802
 GameObject:
   m_ObjectHideFlags: 0

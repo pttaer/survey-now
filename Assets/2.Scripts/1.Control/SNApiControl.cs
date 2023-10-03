@@ -24,9 +24,12 @@ public class SNApiControl
         return request;
     }
 
-    public IEnumerator GetListData<T>(string uri, string method, Action<T[]> RenderPage, bool isNotShowSorry = false)
+    public IEnumerator GetListData<T>(string api, Action<T[]> RenderPage, bool isNotShowSorry = false)
     {
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(uri, method);
+        Debug.Log("CALL " + api);
+
+        SNControl.Api.ShowLoading();
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(api, SNConstant.METHOD_GET);
 
         request.downloadHandler = new DownloadHandlerBuffer();
         yield return request.SendWebRequest();
@@ -45,10 +48,29 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
+            if (!isNotShowSorry)
+            {
+                SNResponseDTO<T> jsondata = JsonConvert.DeserializeObject<SNResponseDTO<T>>(response);
+                T[] datas = jsondata.Results.Select(dto => dto).ToArray();
+                RenderPage(datas);
+                if (datas.Length == 0)
+                {
+                    SNControl.Api.ShowSorry("Sorry, there are <b>no more items.</b>");
+                }
+            }
+            if (isNotShowSorry)
+            {
+                T[] jsondata = JsonConvert.DeserializeObject<T[]>(response).Select(dto => dto).ToArray();
+                RenderPage(jsondata);
+            }
         }
         else
         {
+            SNControl.Api.HideLoading();
+            // Show popup error
+
             Debug.LogError("test error: " + request.error);
         }
     }

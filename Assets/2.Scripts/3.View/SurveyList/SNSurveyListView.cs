@@ -9,9 +9,9 @@ public class SNSurveyListView : MonoBehaviour
     private Button m_BtnBack;
     private Button m_BtnSearch;
 
-    private GameObject m_PnlSurveyHistory;
-    private GameObject m_PnlMySurvey;
-    private GameObject m_PnlSurveyDetail;
+    private SNSurveyListHistoryView m_PnlSurveyHistoryView;
+    private SNSurveyListMySurveyView m_PnlMySurveyView;
+    private SNSurveyListSurveyDetailView m_PnlSurveyDetailView;
 
     private Text m_TxtSceneTitle;
     private Text m_TxtSceneTitle2;
@@ -35,15 +35,15 @@ public class SNSurveyListView : MonoBehaviour
         m_TxtSceneTitle2 = transform.Find("TopBar/TxtTitleMySurvey").GetComponent<Text>();
         m_TxtSurveyTitle = transform.Find("TopBar/TxtSurveyTitle").GetComponent<Text>();
 
-        m_PnlSurveyHistory = transform.Find("SurveyHistory").gameObject;
-        m_PnlMySurvey = transform.Find("MySurvey").gameObject;
-        m_PnlSurveyDetail = transform.Find("SurveyDetail").gameObject;
+        m_PnlSurveyHistoryView = transform.Find("SurveyHistory").GetComponent<SNSurveyListHistoryView>();
+        m_PnlMySurveyView = transform.Find("MySurvey").GetComponent<SNSurveyListMySurveyView>();
+        m_PnlSurveyDetailView = transform.Find("SurveyDetail").GetComponent<SNSurveyListSurveyDetailView>();
 
         m_ListPnl = new()
         {
-            m_PnlSurveyHistory,
-            m_PnlMySurvey,
-            m_PnlSurveyDetail
+            m_PnlSurveyHistoryView.gameObject,
+            m_PnlMySurveyView.gameObject,
+            m_PnlSurveyDetailView.gameObject
         };
 
         m_BtnMenu.onClick.AddListener(OnClickOpenMenu);
@@ -74,12 +74,14 @@ public class SNSurveyListView : MonoBehaviour
 
     private void OpenSurveyHistory()
     {
-        ShowPnl(m_PnlSurveyHistory);
+        ShowPnl(m_PnlSurveyHistoryView.gameObject);
+        m_PnlSurveyHistoryView.Init();
     }
 
     private void OpenMySurvey()
     {
-        ShowPnl(m_PnlMySurvey);
+        ShowPnl(m_PnlMySurveyView.gameObject);
+        m_PnlMySurveyView.Init();
     }
 
     private void ShowPnl(GameObject pnl)
@@ -87,17 +89,20 @@ public class SNSurveyListView : MonoBehaviour
         SNControl.Api.OpenPanel(pnl, m_ListPnl);
         ShowTitle(true);
 
-        m_TxtSceneTitle.gameObject.SetActive(pnl == m_PnlSurveyHistory);
-        m_TxtSceneTitle2.gameObject.SetActive(pnl == m_PnlMySurvey);
+        m_TxtSceneTitle.gameObject.SetActive(pnl == m_PnlSurveyHistoryView);
+        m_TxtSceneTitle2.gameObject.SetActive(pnl == m_PnlMySurveyView);
 
         m_PreviousPnl = pnl;
     }
 
-    private void OpenSurveyDetail()
+    private void OpenSurveyDetail(SNSurveyResponseDTO data)
     {
-        m_PreviousPnl = m_PnlMySurvey.activeSelf ? m_PnlMySurvey : m_PnlSurveyHistory;
-        SNControl.Api.OpenPanel(m_PnlSurveyDetail, m_ListPnl);
+        // Show pnl detail
+
+        m_PreviousPnl = m_PnlMySurveyView.gameObject.activeSelf ? m_PnlMySurveyView.gameObject : m_PnlSurveyHistoryView.gameObject;
+        SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
         ShowTitle(false);
+        m_PnlSurveyDetailView.Init();
     }
 
     private void ShowTitle(bool isSceneTitleOn)
