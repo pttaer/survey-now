@@ -12,6 +12,7 @@ public class SNSurveyRecordView : MonoBehaviour
     private Text m_TxtPoints;
     private Text m_TxtDate;
     private Text m_TxtQuestionAmount;
+    private SNSurveyResponseDTO m_Data;
 
     public void Init(SNSurveyResponseDTO data)
     {
@@ -28,10 +29,12 @@ public class SNSurveyRecordView : MonoBehaviour
         m_TxtPoints.text = data.Point.ToString();
         m_TxtDate.text = data.StartDate;
         m_TxtQuestionAmount.text = data.TotalQuestion.ToString();
+
+        m_Data = data;
     }
 
     private void OpenDetail()
     {
-        SNSurveyListControl.Api.OpenSurveyDetail();
+        SNSurveyListControl.Api.OpenSurveyDetail(m_Data);
     }
 }
