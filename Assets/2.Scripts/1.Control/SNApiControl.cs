@@ -75,6 +75,47 @@ public class SNApiControl
         }
     }
 
+    public IEnumerator GetData<T>(string api, Action<T> RenderPage)
+    {
+        Debug.Log("CALL " + api);
+
+        SNControl.Api.ShowLoading();
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(api, SNConstant.METHOD_GET);
+
+        request.downloadHandler = new DownloadHandlerBuffer();
+        yield return request.SendWebRequest();
+
+        Debug.Log("request result= " + request.result);
+
+        // Check that downloadHandler is not null
+        if (request.downloadHandler != null)
+        {
+            Debug.Log("request data= " + request.downloadHandler.text);
+        }
+        else
+        {
+            Debug.Log("Error: downloadHandler is null");
+        }
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            SNControl.Api.HideLoading();
+            string response = request.downloadHandler.text;
+
+            Debug.Log("response = " + response);
+
+            T jsondata = JsonConvert.DeserializeObject<T>(response);
+            RenderPage(jsondata);
+        }
+        else
+        {
+            SNControl.Api.HideLoading();
+            // Show popup error
+
+            Debug.LogError("test error: " + request.error);
+        }
+    }
+
     public IEnumerator SetRequestMemberAccess(string url, int memberId, int requestAccess)
     {
         UnityWebRequest request = WebRequestWithAuthorizationHeader(url, SNConstant.METHOD_PUT);

@@ -98,11 +98,10 @@ public class SNSurveyListView : MonoBehaviour
     private void OpenSurveyDetail(SNSurveyResponseDTO data)
     {
         // Show pnl detail
-
         m_PreviousPnl = m_PnlMySurveyView.gameObject.activeSelf ? m_PnlMySurveyView.gameObject : m_PnlSurveyHistoryView.gameObject;
         SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
         ShowTitle(false);
-        m_PnlSurveyDetailView.Init();
+        m_PnlSurveyDetailView.Init(data.Id);
     }
 
     private void ShowTitle(bool isSceneTitleOn)
