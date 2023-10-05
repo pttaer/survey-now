@@ -67,7 +67,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                 GenerateMultipleQuestion(question, m_SurveyQuestionRatingView);
                 break;
             case "Likert":
-                //GenerateMultipleQuestion(question, m_SurveyQuestionLikertView);
+                GenerateMultipleQuestion(question, m_SurveyQuestionLikertView);
                 break;
             default:
                 break;

@@ -43,6 +43,8 @@ public class SNQuestionRadioView : SNInitView
     {
         GameObject go = Instantiate(m_ToggleItemPref, m_TglGroup.transform);
         SNQuestionToggleItemView view = go.GetComponent<SNQuestionToggleItemView>();
+        Toggle tgl = go.GetComponent<Toggle>();
+        tgl.group = m_TglGroup;
         m_ItemViewList.Add(view);
         view.Init(data);
     }
