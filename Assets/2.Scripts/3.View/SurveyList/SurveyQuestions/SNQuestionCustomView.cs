@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +7,7 @@ public class SNQuestionCustomView : SNInitView
     private Text m_Title;
     private GameObject m_RequireMark;
 
-    private GameObject m_ToggleItemPref;
-    private ToggleGroup m_TglGroup;
+    private InputField m_IpfAnswer;
 
     public override void Init(SNSectionQuestionDTO data)
     {
@@ -20,11 +17,15 @@ public class SNQuestionCustomView : SNInitView
         m_Title = transform.Find("TopBar/TxtTitle").GetComponent<Text>();
         m_RequireMark = transform.Find("TopBar/RequireMark").gameObject;
 
-        m_ToggleItemPref = transform.Find("ToggleGr/ToggleItem").gameObject;
-        m_TglGroup = transform.Find("ToggleGr").GetComponent<ToggleGroup>();
+        m_IpfAnswer = transform.Find("ToggleGr/IpfAnswer").GetComponent<InputField>();
 
         m_TxtOrder.text = data.order.ToString();
         m_Title.text = data.title;
         m_RequireMark.SetActive(data.isRequire);
+    }
+
+    public string GetAnswer()
+    {
+        return m_IpfAnswer.text;
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +10,8 @@ public class SNQuestionLikertView : SNInitView
 
     private GameObject m_ToggleItemPref;
     private ToggleGroup m_TglGroup;
+
+    private List<Toggle> m_ItemViewList;
 
     public override void Init(SNSectionQuestionDTO data)
     {

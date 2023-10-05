@@ -1,13 +1,14 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using static SNConstant;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
     private GameObject m_SurveyQuestionRadioView;
+    private GameObject m_SurveyQuestionMultipleView;
+    private GameObject m_SurveyQuestionRatingView;
+    private GameObject m_SurveyQuestionLikertView;
+    private GameObject m_SurveyQuestionCustomView;
+
     private Transform m_QuestionContainer;
 
     public void Init(int id)
@@ -16,6 +17,11 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderPage));
 
         m_SurveyQuestionRadioView = transform.Find("Viewport/Content/SurveyRecordRadio").gameObject;
+        m_SurveyQuestionMultipleView = transform.Find("Viewport/Content/SurveyRecordMultiple").gameObject;
+        m_SurveyQuestionRatingView = transform.Find("Viewport/Content/SurveyRecordRating").gameObject;
+        m_SurveyQuestionLikertView = transform.Find("Viewport/Content/SurveyRecordLikert").gameObject;
+        m_SurveyQuestionCustomView = transform.Find("Viewport/Content/SurveyRecordCustom").gameObject;
+
         m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
     }
 
@@ -46,17 +52,22 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         switch (question.type)
         {
             case "Text":
+                GenerateMultipleQuestion(question, m_SurveyQuestionCustomView);
                 break;
             case "Radio":
                 GenerateMultipleQuestion(question, m_SurveyQuestionRadioView);
                 break;
             case "CheckBox":
+                GenerateMultipleQuestion(question, m_SurveyQuestionMultipleView);
                 break;
             case "Selection":
+                //GenerateMultipleQuestion(question, m_SurveyQuestionRadioView);
                 break;
             case "Rating":
+                GenerateMultipleQuestion(question, m_SurveyQuestionRatingView);
                 break;
             case "Likert":
+                //GenerateMultipleQuestion(question, m_SurveyQuestionLikertView);
                 break;
             default:
                 break;

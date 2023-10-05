@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +32,10 @@ public class SNQuestionMultipleView : SNInitView
 
         foreach (var row in data?.rowOptions)
         {
-            GenerateQuestionChoices(row);
+            if(!string.IsNullOrEmpty(row.content))
+            {
+                GenerateQuestionChoices(row);
+            }
         }
     }
 

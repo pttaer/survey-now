@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +11,8 @@ public class SNQuestionRatingView : SNInitView
 
     private GameObject m_ToggleItemPref;
     private ToggleGroup m_TglGroup;
+
+    private List<Toggle> m_TglViewList;
 
     public override void Init(SNSectionQuestionDTO data)
     {
@@ -26,5 +28,29 @@ public class SNQuestionRatingView : SNInitView
         m_TxtOrder.text = data.order.ToString();
         m_Title.text = data.title;
         m_RequireMark.SetActive(data.isRequire);
+
+        m_TglViewList = new();
+
+        for (int i = 0; i < data.limitNumber; i++)
+        {
+            GenerateQuestionChoices();
+        }
+    }
+
+    private void GenerateQuestionChoices()
+    {
+        GameObject go = Instantiate(m_ToggleItemPref, m_TglGroup.transform);
+        Toggle tgl = go.GetComponent<Toggle>();
+        m_TglViewList.Add(tgl);
+        go.transform.Find("Background/TxtRate").GetComponent<Text>().text = m_TglViewList.Count.ToString();
+        tgl.group = m_TglGroup;
+        go.SetActive(true);
+    }
+
+    public string GetCurrentAnswer()
+    {
+        string answer;
+        answer = m_TglGroup?.ActiveToggles()?.ToList()?.FirstOrDefault()?.transform.Find("Background/TxtRate").GetComponent<Text>().text ?? "0";
+        return answer;
     }
 }
