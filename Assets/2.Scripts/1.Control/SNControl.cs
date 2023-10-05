@@ -51,6 +51,7 @@ public class SNControl
         SNMenuControl.Api = new SNMenuControl();
         SNSurveyListControl.Api = new SNSurveyListControl();
         SNCreateSurveyControl.Api = new SNCreateSurveyControl();
+        SNBundleControl.Api = new SNBundleControl();
         SNApiControl.Api = new SNApiControl();
 
         // Default value

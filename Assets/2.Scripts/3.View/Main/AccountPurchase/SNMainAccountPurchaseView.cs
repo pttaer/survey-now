@@ -14,6 +14,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private Button m_BtnPnlPurchaseHistory;
     private Button m_BtnPnlExchangeHistory;
 
+    private Button m_BtnPurchase;
+
     private GameObject m_BodyPointProfile;
     private GameObject m_BodyPurchasePoint;
     private GameObject m_BodyPointExchange;
@@ -36,6 +38,9 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private List<GameObject> m_ListNotPnlHistory;
     private List<GameObject> m_ListPnlHistory;
 
+    private Text m_PointsBalance;
+    private InputField m_PointsAmountToPurchase;
+
     public void Init()
     {
         m_BtnPnlPointInfo = transform.Find("Viewport/Content/PnlPointInfo/TopBar").GetComponent<Button>();
@@ -49,6 +54,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BodyPointProfile = transform.Find("Viewport/Content/PnlPointInfo/Body").gameObject;
         m_BodyPurchasePoint = transform.Find("Viewport/Content/PnlPurchasePoint/Body").gameObject;
         m_BodyPointExchange = transform.Find("Viewport/Content/PnlPointExchange/Body").gameObject;
+
+        m_BtnPurchase = m_BodyPurchasePoint.transform.Find("BtnGroup/BtnPurchase").GetComponent<Button>();
 
         m_BodyPurchaseHistory = transform.Find("Viewport/Content/PnlPurchaseHistory/Body").gameObject;
         m_BodyExchangeHistory = transform.Find("Viewport/Content/PnlExchangeHistory/Body").gameObject;
@@ -64,6 +71,9 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_PnlExchangeDetail = transform.Find("Viewport/Content/PnlExchangeDetail").gameObject;
 
         m_PrefRecord = transform.Find("Viewport/SpawnItems/Record").gameObject;
+
+        m_PointsBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_1").GetComponent<Text>();
+        m_PointsAmountToPurchase = m_BodyPurchasePoint.transform.Find("Body/RightSide/IpfPointAmount").GetComponent<InputField>();
 
         // 3 bodies of main panels and 4 sub panels
         m_ListPnl = new()
@@ -100,7 +110,17 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BtnPnlPurchaseHistory.onClick.AddListener(OpenPnlPurchaseHistory);
         m_BtnPnlExchangeHistory.onClick.AddListener(OpenPnlExchangeHistory);
 
+        m_BtnPurchase.onClick.AddListener(PurchasePoints);
+
         SNMainControl.Api.OnCallHistoryRecorDetailEvent += OpenHistoryRecord;
+
+
+        DefaultValue();
+    }
+
+    private void DefaultValue()
+    {
+        m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString();
     }
 
     private void OnDestroy()
@@ -163,5 +183,14 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private void ShowPnlNotHistory(GameObject pnl)
     {
         SNControl.Api.OpenPanel(pnl, m_ListPnl, true);
+    }
+
+    private void PurchasePoints()
+    {
+        StartCoroutine(SNApiControl.Api.PurchasePoints(int.Parse(m_PointsAmountToPurchase.text), (qrCodeUrl) =>
+        {
+            Debug.Log(qrCodeUrl);
+            Application.OpenURL(qrCodeUrl);
+        }));
     }
 }

@@ -7,10 +7,14 @@ public class SNUserDTO
     public string Email { get; set; }
     public string Password { get; set; }
     public string FullName { get; set; }
-    public GenderEnum Gender { get; set; }
+    public string Gender { get; set; }
     public string AvatarUrl { get; set; }
     public decimal Point { get; set; }
     public string Token { get; set; }
+    public string Role { get; set; }
+    public string IsDelete { get; set; }
+    public string LangKey { get; set; }
+    public string Currency { get; set; }
 
     public enum GenderEnum
     {

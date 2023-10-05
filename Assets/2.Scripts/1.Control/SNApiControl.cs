@@ -177,6 +177,11 @@ public class SNApiControl
         {
             string response = request.downloadHandler.text;
             Debug.Log($"Response from {SNConstant.LOGIN}: " + response);
+
+            SNModel.Api.CurrentUser = JsonConvert.DeserializeObject<SNUserDTO>(response);
+
+            PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
+
             callback?.Invoke();
         }
         else
@@ -213,6 +218,46 @@ public class SNApiControl
             string response = request.downloadHandler.text;
             Debug.Log($"Response from {SNConstant.REGISTER}: " + response);
             callback?.Invoke();
+        }
+        else
+        {
+            Debug.LogError("test error: " + request.error);
+        }
+    }
+
+    public IEnumerator PurchasePoints(int amount, Action<string> callback = null)
+    {
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.POINTS_PURCHASE, SNConstant.METHOD_POST.ToUpper());
+
+        SNPaymentDTO payment = new SNPaymentDTO(amount);
+
+        string jsonData = JsonConvert.SerializeObject(payment, Formatting.Indented);
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.uploadHandler = new UploadHandlerRaw(jsonBytes);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+
+        // Check that downloadHandler is not null
+        if (request.downloadHandler != null)
+        {
+            Debug.Log("request data= " + jsonData);
+        }
+        else
+        {
+            Debug.Log("Error: downloadHandler is null");
+        }
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string response = request.downloadHandler.text;
+            Debug.Log($"Response from {SNConstant.POINTS_PURCHASE}: " + response);
+
+            SNPointsPurchaseDTO data = JsonConvert.DeserializeObject<SNPointsPurchaseDTO>(response);
+
+            callback?.Invoke(data.qrCodeUrl);
         }
         else
         {

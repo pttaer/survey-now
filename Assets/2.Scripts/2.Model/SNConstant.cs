@@ -34,6 +34,10 @@ public class SNConstant
     {
         get { return "SNBundle"; }
     }
+    public static string SCENE_PAYMENT
+    {
+        get { return "SNPayment"; }
+    }
 
     #endregion SCENE_NAMES
 
@@ -98,6 +102,8 @@ public class SNConstant
     public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";
     public const string PACKS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/purchase";
 
+    public const string POINTS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo";
+
     #endregion API_URI
 
     // Methods
@@ -148,7 +154,7 @@ public class SNConstant
     }
 
 #if UNITY_EDITOR
-    public static string BEARER_TOKEN = "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJhbHVtbmlJZCI6IjkiLCJzY2hvb2xJZCI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ0ZW5hbnQiLCJleHAiOjE2OTAwNzUwNDJ9.LpyKk9j42kyGN76Qwr349mO_e1nwQjviRDlF1rUXez7P0Bdl6-KtoUeew_aTOPon7ZqVHS-Y84BahT_q2gP0dw";
+    public static string BEARER_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiZW1haWwiOiJ1c2VyMUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsIm5iZiI6MTY5NjQ3NzYwMCwiZXhwIjoxNjk2NzM2ODAwLCJpYXQiOjE2OTY0Nzc2MDB9.0wIsn-p-Cwtod9otv3cWMDO-Rx20LbsktHMDmZF9UgY";
 #elif UNITY_ANDROID
     public static string BEARER_TOKEN = "";
 #endif
