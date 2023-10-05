@@ -117,7 +117,7 @@ public class SNConstant
     // title text
 
     // keys
-    private static List<string> questionTypes = new List<string>
+    public static readonly List<string> questionTypes = new()
     {
         "Text",
         "Radio",
@@ -127,24 +127,20 @@ public class SNConstant
         "Likert"
     };
 
-    private static List<string> multipleOptionTypes = new List<string>
+    public static readonly List<string> multipleOptionTypes = new()
     {
         "NoLimit",
         "EqualTo",
         "AtMost"
     };
 
-    private static List<string> packTypes = new()
+    public static readonly List<string> packTypes = new()
     {
         "Basic",
         "Medium",
         "Advanced",
         "Expert"
     };
-
-    public static List<string> MultipleOptionTypes { get => multipleOptionTypes; set => multipleOptionTypes = value; }
-    public static List<string> QuestionTypes { get => questionTypes; set => questionTypes = value; }
-    public static List<string> PackTypes { get => packTypes; set => packTypes = value; }
 
     // playerprefs
     public const string EMAIL_CACHE = "email_cache";

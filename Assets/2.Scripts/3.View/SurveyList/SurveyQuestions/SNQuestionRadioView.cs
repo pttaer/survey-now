@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SNQuestionRadioView : MonoBehaviour
+public class SNQuestionRadioView : SNInitView
 {
     private Text m_TxtOrder;
     private Text m_Title;
@@ -15,7 +15,7 @@ public class SNQuestionRadioView : MonoBehaviour
 
     private List<SNQuestionToggleItemView> m_ItemViewList;
 
-    public void Init(SNSectionQuestionDTO data)
+    public override void Init(SNSectionQuestionDTO data)
     {
         if (data == null) return;
 

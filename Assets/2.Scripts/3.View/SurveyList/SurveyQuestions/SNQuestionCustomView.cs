@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SNQuestionCustomView : MonoBehaviour
+public class SNQuestionCustomView : SNInitView
 {
     private Text m_TxtOrder;
     private Text m_Title;
@@ -12,7 +12,7 @@ public class SNQuestionCustomView : MonoBehaviour
     private GameObject m_ToggleItemPref;
     private ToggleGroup m_TglGroup;
 
-    public void Init(SNSectionQuestionDTO data)
+    public override void Init(SNSectionQuestionDTO data)
     {
         if (data == null) return;
 

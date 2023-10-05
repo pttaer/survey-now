@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static SNConstant;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
     private GameObject m_SurveyQuestionRadioView;
+    private Transform m_QuestionContainer;
 
     public void Init(int id)
     {
@@ -14,6 +16,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderPage));
 
         m_SurveyQuestionRadioView = transform.Find("Viewport/Content/SurveyRecordRadio").gameObject;
+        m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
     }
 
     private void RenderPage(SNSurveyQuestionDetailDTO data)
@@ -26,34 +29,44 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                 section?.questions?.ForEach(
                     question =>
                     {
-                        if (question.type == "Radio")
-                        {
-                            questions.Add(question);
-                            question?.rowOptions.ForEach(
-                                option =>
-                                {
-                                    if (option.content != null) options.Add(option);
-                                });
-                            GenerateRadioQuestion(question);
-                        }
+                        SpawnQuestion(question, options, questions);
                     });
             });
+    }
 
-        foreach (var item in questions)
-        {
-            Debug.Log("Question " + item.title);
-        }
+    private void SpawnQuestion(SNSectionQuestionDTO question, List<SNSectionQuestionRowOptionDTO> options, List<SNSectionQuestionDTO> questions)
+    {
+        questions.Add(question);
+        question?.rowOptions.ForEach(
+            option =>
+            {
+                if (option.content != null) options.Add(option);
+            });
 
-        foreach (var item in options)
+        switch (question.type)
         {
-            Debug.Log("Content " + item.content);
+            case "Text":
+                break;
+            case "Radio":
+                GenerateMultipleQuestion(question, m_SurveyQuestionRadioView);
+                break;
+            case "CheckBox":
+                break;
+            case "Selection":
+                break;
+            case "Rating":
+                break;
+            case "Likert":
+                break;
+            default:
+                break;
         }
     }
 
-    private void GenerateRadioQuestion(SNSectionQuestionDTO data)
+    private void GenerateMultipleQuestion(SNSectionQuestionDTO data, GameObject goPref)
     {
-        GameObject go = Instantiate(m_SurveyQuestionRadioView, m_SurveyQuestionRadioView.transform.parent);
-        SNQuestionRadioView view = go.GetComponent<SNQuestionRadioView>();
+        GameObject go = Instantiate(goPref, m_QuestionContainer);
+        SNInitView view = go.GetComponent<SNInitView>();
         go.SetActive(true);
         view.Init(data);
     }
