@@ -11,6 +11,7 @@ public class SNCreateSurveyView : MonoBehaviour
     private Button m_BtnNext;
 
     private Transform m_Content;
+    private SNCreateQuestionTypePnlView m_CreateQuestionTypePnlView;
     private Text m_TxtTitleSurveyName;
     private Text m_TxtTitleSurveyAdd;
 
@@ -25,7 +26,7 @@ public class SNCreateSurveyView : MonoBehaviour
     private GameObject m_RatingQuestionSurveyItem;
     private GameObject m_LikertQuestionSurveyItem;
 
-    private List<GameObject> m_ItemList;
+    private List<SNSurveyQuestionBaseView> m_ItemViewList;
 
     void Start()
     {
@@ -35,6 +36,7 @@ public class SNCreateSurveyView : MonoBehaviour
     private void OnDestroy()
     {
         SNCreateSurveyControl.Api.OnClickChooseQuestionTypeEvent -= SelectQuestionType;
+        SNCreateSurveyControl.Api.OnDeleteItemReOrderQuestionListEvent -= ReOrderItemList;
     }
 
     public void Init()
@@ -42,9 +44,11 @@ public class SNCreateSurveyView : MonoBehaviour
         m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
         m_BtnAdd = transform.Find("SurveyAdd/BtnAdd").GetComponent<Button>();
         m_BtnExit = transform.Find("Popup/QuestionType/BtnExit").GetComponent<Button>();
-        m_BtnNext = transform.Find("SurveyAdd/BtbNext").GetComponent<Button>();
+        m_BtnNext = transform.Find("SurveyAdd/BtnNext").GetComponent<Button>();
 
         m_Content = transform.Find("SurveyAdd/Viewport/Content");
+        m_CreateQuestionTypePnlView = transform.Find("Popup/QuestionType").GetComponent<SNCreateQuestionTypePnlView>();
+
         m_TxtTitleSurveyName = transform.Find("TopBar/TxtTitleSurveyName").GetComponent<Text>();
         m_TxtTitleSurveyAdd = transform.Find("TopBar/TxtTitleSurveyAdd").GetComponent<Text>();
 
@@ -59,7 +63,7 @@ public class SNCreateSurveyView : MonoBehaviour
         m_LikertQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionLikert").gameObject;
         m_MultipleQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionMultiple").gameObject;
 
-        m_ItemList = new();
+        m_ItemViewList = new();
 
         m_BtnMenu.onClick.AddListener(OnClickOpenMenu);
         m_BtnAdd.onClick.AddListener(OpenQuestionTypePanel);
@@ -67,8 +71,11 @@ public class SNCreateSurveyView : MonoBehaviour
         m_BtnNext.onClick.AddListener(NextPnl);
 
         SNCreateSurveyControl.Api.OnClickChooseQuestionTypeEvent += SelectQuestionType;
+        SNCreateSurveyControl.Api.OnDeleteItemReOrderQuestionListEvent += ReOrderItemList;
 
         m_BtnAdd.gameObject.SetActive(false);
+        m_TxtTitleSurveyAdd.gameObject.SetActive(false);
+        m_CreateQuestionTypePnlView.Init();
     }
 
     private void NextPnl()
@@ -92,27 +99,49 @@ public class SNCreateSurveyView : MonoBehaviour
         switch (type)
         {
             case "Radio":
-                AddQuestion(m_RadioQuestionSurveyItem);
+                InitQuestion<SNSurveyQuestionRadioView>(AddQuestion(m_RadioQuestionSurveyItem));
                 break;
             case "Multiple":
-                AddQuestion(m_MultipleQuestionSurveyItem);
+                InitQuestion<SNSurveyQuestionMultipleView>(AddQuestion(m_MultipleQuestionSurveyItem));
                 break;
             case "Rating":
-                AddQuestion(m_RatingQuestionSurveyItem);
+                InitQuestion<SNSurveyQuestionRatingView>(AddQuestion(m_RatingQuestionSurveyItem));
                 break;
             case "Likert":
-                AddQuestion(m_LikertQuestionSurveyItem);
+                InitQuestion<SNSurveyQuestionLikertView>(AddQuestion(m_LikertQuestionSurveyItem));
                 break;
             case "Custom":
-                AddQuestion(m_CustomQuestionSurveyItem);
+                InitQuestion<SNSurveyQuestionCustomView>(AddQuestion(m_CustomQuestionSurveyItem));
                 break;
+        }
+
+        void InitQuestion<T>(SNSurveyQuestionBaseView view) where T : SNSurveyQuestionBaseView
+        {
+            var questionView = (T)view;
+            questionView.Init();
         }
     }
 
-    private void AddQuestion(GameObject spawnObject)
+    private SNSurveyQuestionBaseView AddQuestion(GameObject spawnObject)
     {
         GameObject go = Instantiate(spawnObject, m_Content);
-        m_ItemList.Add(go);
+        SNSurveyQuestionBaseView view = go.GetComponent<SNSurveyQuestionBaseView>();
+        m_ItemViewList.Add(view);
+        view.InitBase(m_ItemViewList.Count);
+
+        ExitQuestionTypePanel();
+
+        return view;
+    }
+
+    private void ReOrderItemList(GameObject deleteGameObject)
+    {
+        m_ItemViewList?.RemoveAll(view => view.gameObject == deleteGameObject);
+
+        for (int i = 0; i < m_ItemViewList.Count; i++)
+        {
+            m_ItemViewList[i].SetOrder(i + 1);
+        }
     }
 
     private void ExitQuestionTypePanel()
