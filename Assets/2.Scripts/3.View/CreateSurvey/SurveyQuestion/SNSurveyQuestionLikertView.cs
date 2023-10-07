@@ -9,6 +9,7 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
     private InputField m_IpfQuestion;
     private Button m_BtnAddQuestion;
     private Button m_BtnAddOption;
+
     private GameObject m_ItemQuestionOptionPref;
     private GameObject m_ItemOptionPref;
 
@@ -17,7 +18,7 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
 
     public override void Init()
     {
-        m_IpfQuestion = transform.Find("Option/IpfQuestion").GetComponent<InputField>();
+        m_IpfQuestion = transform.Find("IpfQuestion").GetComponent<InputField>();
         m_BtnAddQuestion = transform.Find("BtnAddQuestion").GetComponent<Button>();
         m_BtnAddOption = transform.Find("BtnAddOption").GetComponent<Button>();
 
@@ -64,7 +65,7 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
             };
             rowOptions.Add(rowOption);
         }
-        
+
         var columnOptions = new List<SNColumnOptionRequestDTO>();
 
         foreach (var ipf in m_IpfColumnQuestionsList)

@@ -14,7 +14,7 @@ public class SNSurveyQuestionRadioView : SNSurveyQuestionBaseView
 
     public override void Init()
     {
-        m_IpfQuestion = transform.Find("Option/IpfQuestion").GetComponent<InputField>();
+        m_IpfQuestion = transform.Find("IpfQuestion").GetComponent<InputField>();
         m_BtnAddOption = transform.Find("BtnAddOption").GetComponent<Button>();
         m_ItemOptionPref = transform.Find("Option").gameObject;
 
@@ -45,7 +45,7 @@ public class SNSurveyQuestionRadioView : SNSurveyQuestionBaseView
         {
             var rowOption = new SNRowOptionRequestDTO()
             {
-                Order = m_IpfQuestionsList.IndexOf(ipf) + 1, 
+                Order = m_IpfQuestionsList.IndexOf(ipf) + 1,
                 Content = ipf.text
             };
             rowOptions.Add(rowOption);
