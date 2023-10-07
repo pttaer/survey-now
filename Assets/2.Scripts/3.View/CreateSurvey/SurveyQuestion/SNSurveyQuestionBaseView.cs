@@ -10,6 +10,8 @@ public class SNSurveyQuestionBaseView : MonoBehaviour
     private Toggle m_TglRequire;
     private Button m_BtnDelete; // Re-arrage question order again
 
+    private int m_QuestionOrder;
+
     public void InitBase(int order)
     {
         m_TxtOrder = transform.Find("TopBar/TxtOrder").GetComponent<Text>();
@@ -38,6 +40,7 @@ public class SNSurveyQuestionBaseView : MonoBehaviour
         if (m_TxtOrder != null)
         {
             m_TxtOrder.text = $"{order}.";
+            m_QuestionOrder = order;
         }
         else
         {
@@ -45,9 +48,9 @@ public class SNSurveyQuestionBaseView : MonoBehaviour
         }
     }
 
-    public int GetOrder(int order)
+    public int GetOrder()
     {
-        return int.Parse(m_TxtOrder.text?.Replace(".", ""));
+        return m_QuestionOrder;
     }
 
     public bool GetRequire()

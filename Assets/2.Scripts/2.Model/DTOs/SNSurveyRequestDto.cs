@@ -45,7 +45,7 @@ public class SNQuestionRequestDTO
 
     public string? MultipleOptionType { get; set; }
 
-    public int LimitNumber { get; set; }
+    public int? LimitNumber { get; set; }
 
     public string Title { get; set; }
 

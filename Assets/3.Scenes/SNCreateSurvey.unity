@@ -4816,11 +4816,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1433581266}
   - {fileID: 1601368392}
+  - {fileID: 1433581266}
   - {fileID: 1926643664}
-  - {fileID: 902386924}
   - {fileID: 1041023106}
+  - {fileID: 902386924}
   m_Father: {fileID: 412500068}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6892,7 +6892,7 @@ GameObject:
   - component: {fileID: 626493632}
   - component: {fileID: 626493631}
   m_Layer: 0
-  m_Name: IpfFamilyName
+  m_Name: IpfQuestion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10751,7 +10751,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 49.99997, y: -11.166626}
+  m_AnchoredPosition: {x: 50.00003, y: -115.333435}
   m_SizeDelta: {x: 702, y: 564}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &902386925
@@ -16005,7 +16005,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 49.99997, y: 79.833374}
+  m_AnchoredPosition: {x: 50.00003, y: -24.333405}
   m_SizeDelta: {x: 702, y: 382}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1433581267
@@ -17738,7 +17738,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 49.99997, y: 112.833435}
+  m_AnchoredPosition: {x: 50.00003, y: 8.666595}
   m_SizeDelta: {x: 702, y: 316}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1601368393
@@ -20048,13 +20048,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1883530820}
   m_TextComponent: {fileID: 1703341254}
   m_Placeholder: {fileID: 1917871359}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnSubmit:
     m_PersistentCalls:
@@ -20503,7 +20503,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "S\u1ED1 c\xE2u h\u1ECFi"
+  m_Text: "S\u1ED1 c\xE2u h\u1ECFi (ch\u1EC9 nh\u1EADp s\u1ED1)"
 --- !u!222 &1917871360
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20710,7 +20710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 49.99997, y: 38.333374}
+  m_AnchoredPosition: {x: 50.00003, y: -65.833405}
   m_SizeDelta: {x: 702, y: 465}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1926643665
