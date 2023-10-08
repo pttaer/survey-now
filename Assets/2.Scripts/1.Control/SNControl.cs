@@ -46,12 +46,13 @@ public class SNControl
     public void Init()
     {
         //init other controls here
-        PrefsUtils.Api = new PrefsUtils();
-        SNMainControl.Api = new SNMainControl();
-        SNMenuControl.Api = new SNMenuControl();
-        SNSurveyListControl.Api = new SNSurveyListControl();
-        SNCreateSurveyControl.Api = new SNCreateSurveyControl();
-        SNApiControl.Api = new SNApiControl();
+        PrefsUtils.Api = new();
+        SNMainControl.Api = new();
+        SNMenuControl.Api = new();
+        SNSurveyListControl.Api = new();
+        SNCreateSurveyControl.Api = new();
+        SNApiControl.Api = new();
+        SNSurveyLikertQuestionControl.Api = new();
 
         // Default value
         SNModel.Api.ScenesLoaded.Clear();

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +8,9 @@ public class SNSurveyRecordView : MonoBehaviour
     private Text m_TxtPoints;
     private Text m_TxtDate;
     private Text m_TxtQuestionAmount;
+    private SNSurveyResponseDTO m_Data;
 
-    private void Start()
-    {
-        Init("none", "none", "none", "none"); // Test
-    }
-
-    public void Init(string title, string points, string date, string questionAmount)
+    public void Init(SNSurveyResponseDTO data)
     {
         m_BtnDetail = GetComponent<Button>();
         m_TxtTitle = transform.Find("TxtTitle").GetComponent<Text>();
@@ -28,14 +21,16 @@ public class SNSurveyRecordView : MonoBehaviour
         m_BtnDetail.onClick.AddListener(OpenDetail);
 
         //Default Value
-        m_TxtTitle.text = title;
-        m_TxtPoints.text = points;
-        m_TxtDate.text = date;
-        m_TxtQuestionAmount.text = questionAmount;
+        m_TxtTitle.text = data.Title;
+        m_TxtPoints.text = data.Point.ToString();
+        m_TxtDate.text = data.StartDate;
+        m_TxtQuestionAmount.text = data.TotalQuestion.ToString();
+
+        m_Data = data;
     }
 
     private void OpenDetail()
     {
-        SNSurveyListControl.Api.OpenSurveyDetail();
+        SNSurveyListControl.Api.OpenSurveyDetail(m_Data);
     }
 }

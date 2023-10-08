@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SNConstant
@@ -92,11 +93,18 @@ public class SNConstant
 
     public const string LOGIN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/login";
     public const string REGISTER = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/register";
-    
+
     public const string PACKS_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/all";
     public const string PACKS_CALCULATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/calculate";
     public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";
     public const string PACKS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/purchase";
+
+    public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_GET_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_GET_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
+    public const string SURVEY_PUT = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
+    public const string SURVEY_PATCH = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
+
 
     #endregion API_URI
 
@@ -109,6 +117,30 @@ public class SNConstant
     // title text
 
     // keys
+    public static readonly List<string> questionTypes = new()
+    {
+        "Text",
+        "Radio",
+        "CheckBox",
+        "Selection",
+        "Rating",
+        "Likert"
+    };
+
+    public static readonly List<string> multipleOptionTypes = new()
+    {
+        "NoLimit",
+        "EqualTo",
+        "AtMost"
+    };
+
+    public static readonly List<string> packTypes = new()
+    {
+        "Basic",
+        "Medium",
+        "Advanced",
+        "Expert"
+    };
 
     // playerprefs
     public const string EMAIL_CACHE = "email_cache";
@@ -148,7 +180,7 @@ public class SNConstant
     }
 
 #if UNITY_EDITOR
-    public static string BEARER_TOKEN = "Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJhbHVtbmlJZCI6IjkiLCJzY2hvb2xJZCI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJ0ZW5hbnQiLCJleHAiOjE2OTAwNzUwNDJ9.LpyKk9j42kyGN76Qwr349mO_e1nwQjviRDlF1rUXez7P0Bdl6-KtoUeew_aTOPon7ZqVHS-Y84BahT_q2gP0dw";
+    public static string BEARER_TOKEN = "";
 #elif UNITY_ANDROID
     public static string BEARER_TOKEN = "";
 #endif
