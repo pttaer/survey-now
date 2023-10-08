@@ -18,7 +18,10 @@ public class SNSurveyQuestionRadioView : SNSurveyQuestionBaseView
         m_BtnAddOption = transform.Find("BtnAddOption").GetComponent<Button>();
         m_ItemOptionPref = transform.Find("Option").gameObject;
 
-        m_IpfQuestionsList = new();
+        m_IpfQuestionsList = new()
+        {
+            m_ItemOptionPref.transform.Find("IpfOption").GetComponent<InputField>()
+        };
 
         m_BtnAddOption.onClick.AddListener(AddOption);
     }
@@ -26,6 +29,7 @@ public class SNSurveyQuestionRadioView : SNSurveyQuestionBaseView
     private void AddOption()
     {
         GameObject go = Instantiate(m_ItemOptionPref, transform);
+        m_IpfQuestionsList.Add(go.transform.Find("IpfOption").GetComponent<InputField>());
         go.transform.SetSiblingIndex(m_ItemOptionPref.transform.GetSiblingIndex() + 1);
     }
 
@@ -37,7 +41,7 @@ public class SNSurveyQuestionRadioView : SNSurveyQuestionBaseView
         }
     }
 
-    public SNQuestionRequestDTO GetQuestionData()
+    public override SNSectionQuestionRequestDTO GetQuestionData()
     {
         var rowOptions = new List<SNRowOptionRequestDTO>();
 
@@ -51,10 +55,11 @@ public class SNSurveyQuestionRadioView : SNSurveyQuestionBaseView
             rowOptions.Add(rowOption);
         }
 
-        var dto = new SNQuestionRequestDTO()
+        var dto = new SNSectionQuestionRequestDTO()
         {
             Order = GetOrder(),
             Type = "Radio",
+            IsRequired = GetRequire(),
             Title = m_IpfQuestion.text,
             LimitNumber = null,
             RowOptions = rowOptions,

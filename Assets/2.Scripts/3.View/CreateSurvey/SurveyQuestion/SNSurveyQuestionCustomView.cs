@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,12 +21,13 @@ public class SNSurveyQuestionCustomView : SNSurveyQuestionBaseView
         }
     }
 
-    public SNQuestionRequestDTO GetQuestionData()
+    public override SNSectionQuestionRequestDTO GetQuestionData()
     {
-        var dto = new SNQuestionRequestDTO()
+        var dto = new SNSectionQuestionRequestDTO()
         {
             Order = GetOrder(),
             Type = "Text",
+            IsRequired = GetRequire(),
             LimitNumber = null,
             Title = m_IpfQuestion.text,
             RowOptions = new List<SNRowOptionRequestDTO>(),

@@ -17,20 +17,21 @@ public class SNSurveyQuestionRatingView : SNSurveyQuestionBaseView
 
     private void Validate()
     {
-        if(m_IpfQuestion.text == string.Empty || m_IpfLimitNumber.text == string.Empty)
+        if (m_IpfQuestion.text == string.Empty || m_IpfLimitNumber.text == string.Empty)
         {
             // Error showing
         }
     }
 
-    public SNQuestionRequestDTO GetQuestionData()
+    public override SNSectionQuestionRequestDTO GetQuestionData()
     {
-        var dto = new SNQuestionRequestDTO()
+        var dto = new SNSectionQuestionRequestDTO()
         {
             Order = GetOrder(),
             Type = "Rating",
+            IsRequired = GetRequire(),
             Title = m_IpfQuestion.text,
-            LimitNumber = int.Parse(m_IpfLimitNumber.text),
+            LimitNumber = string.IsNullOrEmpty(m_IpfLimitNumber.text) ? 0 : int.Parse(m_IpfLimitNumber.text),
             RowOptions = new List<SNRowOptionRequestDTO>(),
             ColumnOptions = new List<SNColumnOptionRequestDTO>()
         };

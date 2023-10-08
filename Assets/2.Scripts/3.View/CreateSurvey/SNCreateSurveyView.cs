@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,9 @@ public class SNCreateSurveyView : MonoBehaviour
     private GameObject m_PopupSurveyVolunteer;
     private GameObject m_PnlQuestionType;
 
+    private InputField m_IpfSurveyName;
+    private InputField m_IpfSurveyDescription;
+
     private GameObject m_CustomQuestionSurveyItem;
     private GameObject m_MultipleQuestionSurveyItem;
     private GameObject m_RadioQuestionSurveyItem;
@@ -27,6 +31,8 @@ public class SNCreateSurveyView : MonoBehaviour
     private GameObject m_LikertQuestionSurveyItem;
 
     private List<SNSurveyQuestionBaseView> m_ItemViewList;
+    private List<SNSectionQuestionRequestDTO> m_SectionQuestionDTO;
+    private List<SNSectionRequestDTO> m_SectionDTO;
 
     void Start()
     {
@@ -57,6 +63,9 @@ public class SNCreateSurveyView : MonoBehaviour
         m_PopupSurveyVolunteer = transform.Find("Popup/SurveyVolunteer").gameObject;
         m_PnlQuestionType = transform.Find("Popup/QuestionType").gameObject;
 
+        m_IpfSurveyName = transform.Find("SurveyAdd/Viewport/Content/PnlSurveyName/IpfSurveyName").GetComponent<InputField>();
+        m_IpfSurveyDescription = transform.Find("SurveyAdd/Viewport/Content/PnlSurveyName/IpfSurveyDescription").GetComponent<InputField>();
+
         m_RatingQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionRating").gameObject;
         m_CustomQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionCustom").gameObject;
         m_RadioQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionRadio").gameObject;
@@ -64,6 +73,8 @@ public class SNCreateSurveyView : MonoBehaviour
         m_MultipleQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionMultiple").gameObject;
 
         m_ItemViewList = new();
+        m_SectionQuestionDTO = new();
+        m_SectionDTO = new();
 
         m_BtnMenu.onClick.AddListener(OnClickOpenMenu);
         m_BtnAdd.onClick.AddListener(OpenQuestionTypePanel);
@@ -80,17 +91,70 @@ public class SNCreateSurveyView : MonoBehaviour
 
     private void NextPnl()
     {
+
+        if (m_TxtTitleSurveyAdd.gameObject.activeSelf)
+        {
+            // Popup confirm & post survey
+
+            // Test
+            foreach (var view in m_ItemViewList)
+            {
+                string json = JsonConvert.SerializeObject(view.GetQuestionData());
+                m_SectionQuestionDTO.Add(view.GetQuestionData());
+                Debug.Log("json " + view.name + " " + json);
+                if (m_SectionQuestionDTO.Count > 9)
+                {
+                    var question = new List<SNSectionQuestionRequestDTO>(m_SectionQuestionDTO);
+
+                    SNSectionRequestDTO dto = new()
+                    {
+                        Order = m_SectionDTO.Count + 1,
+                        Questions = question
+                    };
+                    m_SectionDTO.Add(dto); // Add another section (page)
+                    m_SectionQuestionDTO.Clear();
+                }
+            }
+
+            Debug.Log("POST FORM count" + m_SectionDTO.Count);
+            Debug.Log("POST FORM count" + m_SectionQuestionDTO.Count);
+
+            if (m_SectionDTO.Count == 0)
+            {
+                var question = new List<SNSectionQuestionRequestDTO>(m_SectionQuestionDTO);
+
+                SNSectionRequestDTO dto = new()
+                {
+                    Order = m_SectionDTO.Count + 1,
+                    Questions = question
+                };
+                m_SectionDTO.Add(dto); // Add another section (page)
+                m_SectionQuestionDTO.Clear();
+            }
+
+            Debug.Log("POST FORM count" + m_SectionDTO.Count);
+
+            SNSurveyRequestDTO postData = new()
+            {
+                Title = m_IpfSurveyName.text,
+                Description = m_IpfSurveyDescription.text,
+                StartDate = DateTime.Now,
+                ExpiredDate = DateTime.Now.AddDays(14),
+                Sections = m_SectionDTO
+            };
+
+            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_POST, postData));
+
+            m_SectionDTO.Clear();
+            m_SectionQuestionDTO.Clear();
+        }
+
         if (m_PnlSurveyName.activeSelf)
         {
             m_TxtTitleSurveyName.gameObject.SetActive(false);
             m_TxtTitleSurveyAdd.gameObject.SetActive(true);
             m_PnlSurveyName.gameObject.SetActive(false);
             m_BtnAdd.gameObject.SetActive(true);
-        }
-
-        if (m_TxtTitleSurveyAdd.gameObject.activeSelf)
-        {
-            // Popup confirm & post survey
         }
     }
 

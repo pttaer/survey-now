@@ -17,7 +17,10 @@ public class SNSurveyQuestionMultipleView : SNSurveyQuestionBaseView
         m_BtnAddOption = transform.Find("BtnAddOption").GetComponent<Button>();
         m_ItemOptionPref = transform.Find("Option").gameObject;
 
-        m_IpfQuestionsList = new();
+        m_IpfQuestionsList = new()
+        {
+            m_ItemOptionPref.transform.Find("IpfOption").GetComponent<InputField>()
+        };
 
         m_BtnAddOption.onClick.AddListener(AddOption);
     }
@@ -25,6 +28,7 @@ public class SNSurveyQuestionMultipleView : SNSurveyQuestionBaseView
     private void AddOption()
     {
         GameObject go = Instantiate(m_ItemOptionPref, transform);
+        m_IpfQuestionsList.Add(go.transform.Find("IpfOption").GetComponent<InputField>());
         go.transform.SetSiblingIndex(m_ItemOptionPref.transform.GetSiblingIndex() + 1);
     }
 
@@ -36,7 +40,7 @@ public class SNSurveyQuestionMultipleView : SNSurveyQuestionBaseView
         }
     }
 
-    public SNQuestionRequestDTO GetQuestionData()
+    public override SNSectionQuestionRequestDTO GetQuestionData()
     {
         var rowOptions = new List<SNRowOptionRequestDTO>();
 
@@ -50,10 +54,11 @@ public class SNSurveyQuestionMultipleView : SNSurveyQuestionBaseView
             rowOptions.Add(rowOption);
         }
 
-        var dto = new SNQuestionRequestDTO()
+        var dto = new SNSectionQuestionRequestDTO()
         {
             Order = GetOrder(),
             Type = "CheckBox",
+            IsRequired = GetRequire(),
             Title = m_IpfQuestion.text,
             MultipleOptionType = "NoLimit",
             LimitNumber = null,

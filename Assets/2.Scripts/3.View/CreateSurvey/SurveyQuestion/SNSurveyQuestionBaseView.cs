@@ -28,6 +28,13 @@ public class SNSurveyQuestionBaseView : MonoBehaviour
         // You can provide a default implementation here or leave it empty
     }
 
+    public virtual SNSectionQuestionRequestDTO GetQuestionData()
+    {
+        // Base implementation of the Init() method
+        // You can provide a default implementation here or leave it empty
+        return new SNSectionQuestionRequestDTO();
+    }
+
     private void DeleteItem()
     {
         Destroy(gameObject);

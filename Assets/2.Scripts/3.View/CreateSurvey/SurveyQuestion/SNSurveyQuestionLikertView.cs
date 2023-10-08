@@ -25,8 +25,15 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
         m_ItemQuestionOptionPref = transform.Find("IpfQuestion").gameObject;
         m_ItemOptionPref = transform.Find("Option").gameObject;
 
-        m_IpfRowQuestionsList = new();
-        m_IpfColumnQuestionsList = new();
+        m_IpfRowQuestionsList = new()
+        {
+            m_ItemQuestionOptionPref.GetComponent<InputField>()
+        };
+
+        m_IpfColumnQuestionsList = new()
+        {
+            m_ItemOptionPref.transform.Find("IpfOption").GetComponent<InputField>()
+        };
 
         m_BtnAddQuestion.onClick.AddListener(AddQuestion);
         m_BtnAddOption.onClick.AddListener(AddOption);
@@ -35,12 +42,14 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
     private void AddQuestion()
     {
         GameObject go = Instantiate(m_ItemQuestionOptionPref, transform);
+        m_IpfRowQuestionsList.Add(go.GetComponent<InputField>());
         go.transform.SetSiblingIndex(m_ItemQuestionOptionPref.transform.GetSiblingIndex() + 1);
     }
 
     private void AddOption()
     {
         GameObject go = Instantiate(m_ItemOptionPref, transform);
+        m_IpfColumnQuestionsList.Add(go.transform.Find("IpfOption").GetComponent<InputField>());
         go.transform.SetSiblingIndex(m_ItemOptionPref.transform.GetSiblingIndex() + 1);
     }
 
@@ -52,7 +61,7 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
         }
     }
 
-    public SNQuestionRequestDTO GetQuestionData()
+    public override SNSectionQuestionRequestDTO GetQuestionData()
     {
         var rowOptions = new List<SNRowOptionRequestDTO>();
 
@@ -78,10 +87,11 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
             columnOptions.Add(columnOption);
         }
 
-        var dto = new SNQuestionRequestDTO()
+        var dto = new SNSectionQuestionRequestDTO()
         {
             Order = GetOrder(),
             Type = "Likert",
+            IsRequired = GetRequire(),
             Title = m_IpfQuestion.text,
             LimitNumber = null,
             RowOptions = rowOptions,

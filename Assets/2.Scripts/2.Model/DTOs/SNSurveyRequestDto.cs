@@ -3,25 +3,15 @@ using System;
 
 public class SNSurveyRequestDTO
 {
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
     public string? Description { get; set; }
 
-    public string? PackType { get; set; }
-
     public DateTime? StartDate { get; set; }
 
-    public DateTime? ExpiredDate { get; set; }
+    public DateTime ExpiredDate { get; set; }
 
     public List<SNSectionRequestDTO> Sections { get; set; }
-}
-
-public enum PackType
-{
-    Basic,
-    Medium,
-    Advanced,
-    Expert
 }
 
 public class SNSectionRequestDTO
@@ -32,10 +22,10 @@ public class SNSectionRequestDTO
 
     public string? Description { get; set; }
 
-    public List<SNQuestionRequestDTO> Questions { get; set; }
+    public List<SNSectionQuestionRequestDTO> Questions { get; set; }
 }
 
-public class SNQuestionRequestDTO
+public class SNSectionQuestionRequestDTO
 {
     public int Order { get; set; }
 
@@ -54,23 +44,6 @@ public class SNQuestionRequestDTO
     public List<SNRowOptionRequestDTO> RowOptions { get; set; }
 
     public List<SNColumnOptionRequestDTO> ColumnOptions { get; set; }
-}
-
-public enum QuestionType
-{
-    Text,
-    Radio,
-    CheckBox,
-    Selection,
-    Rating,
-    Likert
-}
-
-public enum MultipleOptionType
-{
-    NoLimit,
-    EqualTo,
-    AtMost
 }
 
 public class SNRowOptionRequestDTO

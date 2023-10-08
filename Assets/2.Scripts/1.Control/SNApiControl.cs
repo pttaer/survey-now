@@ -171,12 +171,11 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-
+            Debug.LogError("SENT OK: ");
         }
         else
         {
             Debug.LogError("Error sending data: " + request.error);
-
         }
     }
 
