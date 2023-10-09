@@ -70,6 +70,7 @@ public class SNSurveyListView : MonoBehaviour
     private void OnClickBack()
     {
         ShowPnl(m_PreviousPnl);
+
     }
 
     private void OpenSurveyHistory()
@@ -87,10 +88,11 @@ public class SNSurveyListView : MonoBehaviour
     private void ShowPnl(GameObject pnl)
     {
         SNControl.Api.OpenPanel(pnl, m_ListPnl);
+
         ShowTitle(true);
 
-        m_TxtSceneTitle.gameObject.SetActive(pnl == m_PnlSurveyHistoryView);
-        m_TxtSceneTitle2.gameObject.SetActive(pnl == m_PnlMySurveyView);
+        m_TxtSceneTitle.gameObject.SetActive(pnl == m_PnlSurveyHistoryView.gameObject);
+        m_TxtSceneTitle2.gameObject.SetActive(pnl == m_PnlMySurveyView.gameObject);
 
         m_PreviousPnl = pnl;
     }
@@ -106,9 +108,9 @@ public class SNSurveyListView : MonoBehaviour
 
     private void ShowTitle(bool isSceneTitleOn)
     {
-        m_TxtSurveyTitle.gameObject.SetActive(!isSceneTitleOn);
         m_TxtSceneTitle.gameObject.SetActive(isSceneTitleOn);
         m_TxtSceneTitle2.gameObject.SetActive(isSceneTitleOn);
+        m_TxtSurveyTitle.gameObject.SetActive(!isSceneTitleOn);
 
         m_BtnSearch.gameObject.SetActive(isSceneTitleOn);
         m_BtnBack.gameObject.SetActive(!isSceneTitleOn);

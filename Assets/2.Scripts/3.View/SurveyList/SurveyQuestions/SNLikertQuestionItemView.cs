@@ -7,7 +7,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
 {
     private Button m_BtnQuestion;
     private GameObject m_Options;
-    private ToggleGroup m_TglGroupOptions;
+    private ToggleGroup m_TglGroup;
     private GameObject m_ToggleItemPref;
     private Text m_TxtTitle;
 
@@ -17,7 +17,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
     {
         m_BtnQuestion = transform.Find("BtnQuestion").GetComponent<Button>();
         m_Options = transform.Find("Options").gameObject;
-        m_TglGroupOptions = transform.Find("Options").GetComponent<ToggleGroup>();
+        m_TglGroup = transform.Find("Options").GetComponent<ToggleGroup>();
         m_ToggleItemPref = transform.Find("Options/ToggleItem").gameObject;
         m_TxtTitle = transform.Find("BtnQuestion/TxtTitle").GetComponent<Text>();
 
@@ -33,6 +33,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
                 GenerateQuestionChoices(option);
             }
         }
+        m_TglGroup.SetAllTogglesOff();
     }
 
     private void OnClickQuestion()
@@ -47,7 +48,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
         GameObject go = Instantiate(m_ToggleItemPref, m_Options.transform);
         SNQuestionToggleItemView view = go.GetComponent<SNQuestionToggleItemView>();
         Toggle tgl = go.GetComponent<Toggle>();
-        tgl.group = m_TglGroupOptions;
+        tgl.group = m_TglGroup;
         m_ItemViewList.Add(view);
         view.Init(data);
     }

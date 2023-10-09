@@ -99,13 +99,11 @@ public class SNMenuView : MonoBehaviour
 
     private void OpenMenu()
     {
-        print("aaaa");
         gameObject.SetActive(true);
     }
 
     private void CloseMenu()
     {
-        print("bbbb");
         gameObject.SetActive(false);
     }
 }

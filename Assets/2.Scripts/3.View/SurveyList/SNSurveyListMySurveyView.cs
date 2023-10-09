@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class SNSurveyListMySurveyView : MonoBehaviour
 {
-    private List<SNSurveyRecordView> m_NewsAndEventsPrefabList;
+    private List<SNSurveyRecordView> m_SurveyRecordList;
     private SNSurveyRecordView m_NewsAndEventsPrefab;
 
     public void Init()
     {
         StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_ALL, RenderPage));
-        m_NewsAndEventsPrefabList = new();
+        m_SurveyRecordList = new();
         m_NewsAndEventsPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
     }
 
@@ -18,7 +18,7 @@ public class SNSurveyListMySurveyView : MonoBehaviour
         foreach (var data in datas)
         {
             bool isAlreadyOk = false;
-            foreach (var prefab in m_NewsAndEventsPrefabList)
+            foreach (var prefab in m_SurveyRecordList)
             {
                 if (!prefab.gameObject.activeInHierarchy)
                 {
@@ -38,9 +38,9 @@ public class SNSurveyListMySurveyView : MonoBehaviour
     private void RenderItem<T>(T data, SNSurveyRecordView view)
     {
         view.gameObject.SetActive(true);
-        if (!m_NewsAndEventsPrefabList.Contains(view))
+        if (!m_SurveyRecordList.Contains(view))
         {
-            m_NewsAndEventsPrefabList.Add(view);
+            m_SurveyRecordList.Add(view);
         }
 
         if (data is SNSurveyResponseDTO newsData)

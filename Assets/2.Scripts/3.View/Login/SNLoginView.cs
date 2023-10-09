@@ -156,9 +156,11 @@ public class SNLoginView : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(m_IpfEmail_Login.text) && !string.IsNullOrEmpty(m_IpfPassword_Login.text))
         {
+            SNControl.Api.ShowLoading();
             StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
             {
                 LoadSceneMain();
+                SNControl.Api.HideLoading();
             }));
         }
     }

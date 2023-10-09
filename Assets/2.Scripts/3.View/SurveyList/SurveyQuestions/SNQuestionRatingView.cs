@@ -35,6 +35,7 @@ public class SNQuestionRatingView : SNInitView
         {
             GenerateQuestionChoices();
         }
+        m_TglGroup.SetAllTogglesOff();
     }
 
     private void GenerateQuestionChoices()

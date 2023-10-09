@@ -37,6 +37,7 @@ public class SNQuestionRadioView : SNInitView
                 GenerateQuestionChoices(row);
             }
         }
+        m_TglGroup.SetAllTogglesOff();
     }
 
     private void GenerateQuestionChoices(SNSectionQuestionRowOptionDTO data)
