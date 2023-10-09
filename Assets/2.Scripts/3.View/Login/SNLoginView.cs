@@ -177,6 +177,19 @@ public class SNLoginView : MonoBehaviour
         StartCoroutine(SNApiControl.Api.Register(newUser));
     }
 
+    private void Update()
+    {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            StartCoroutine(SNApiControl.Api.Login("user1@gmail.com", "12345678", () =>
+            {
+                LoadSceneMain();
+            }));
+        }
+#endif
+    }
+
     private void DefaultValue()
     {
         SetGO(m_PnlLogin, true);

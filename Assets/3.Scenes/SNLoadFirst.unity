@@ -487,6 +487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2140388967}
   - component: {fileID: 2140388966}
+  - component: {fileID: 2140388968}
   m_Layer: 0
   m_Name: LoadFirst
   m_TagString: Untagged

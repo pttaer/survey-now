@@ -22,4 +22,5 @@ public class SNModel
 
     public bool IsUnloadingScene = false;
     public List<string> ScenesLoaded = new(); // For back state
+    public SNUserDTO CurrentUser;
 }
