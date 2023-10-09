@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SNConstant
@@ -96,7 +97,7 @@ public class SNConstant
 
     public const string LOGIN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/login";
     public const string REGISTER = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/register";
-    
+
     public const string PACKS_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/all";
     public const string PACKS_CALCULATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/calculate";
     public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";
@@ -105,6 +106,11 @@ public class SNConstant
     public const string POINTS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo";
     public const string POINTS_PURCHASE_RETURN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo/return";
     public const string POINTS_PURCHASE_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/history";
+    public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_GET_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_GET_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
+    public const string SURVEY_PUT = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
+    public const string SURVEY_PATCH = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
 
     #endregion API_URI
 
@@ -117,6 +123,30 @@ public class SNConstant
     // title text
 
     // keys
+    public static readonly List<string> questionTypes = new()
+    {
+        "Text",
+        "Radio",
+        "CheckBox",
+        "Selection",
+        "Rating",
+        "Likert"
+    };
+
+    public static readonly List<string> multipleOptionTypes = new()
+    {
+        "NoLimit",
+        "EqualTo",
+        "AtMost"
+    };
+
+    public static readonly List<string> packTypes = new()
+    {
+        "Basic",
+        "Medium",
+        "Advanced",
+        "Expert"
+    };
 
     // playerprefs
     public const string EMAIL_CACHE = "email_cache";

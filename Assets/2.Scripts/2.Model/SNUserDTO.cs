@@ -1,6 +1,3 @@
-
-using UnityEngine.Analytics;
-
 public class SNUserDTO
 {
     public long? Id { get; set; }

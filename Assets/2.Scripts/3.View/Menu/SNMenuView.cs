@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -100,13 +99,11 @@ public class SNMenuView : MonoBehaviour
 
     private void OpenMenu()
     {
-        print("aaaa");
         gameObject.SetActive(true);
     }
 
     private void CloseMenu()
     {
-        print("bbbb");
         gameObject.SetActive(false);
     }
 }

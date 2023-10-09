@@ -24,13 +24,15 @@ public class SNApiControl
         Debug.Log("Calling with editor token: " + SNConstant.BEARER_TOKEN_EDITOR);
         request.SetRequestHeader("Authorization", SNConstant.BEARER_TOKEN_EDITOR);
 #endif
-
         return request;
     }
 
-    public IEnumerator GetListData<T>(string uri, string method, Action<T[]> RenderPage, bool isNotShowSorry = false)
+    public IEnumerator GetListData<T>(string api, Action<T[]> RenderPage, bool isNotShowSorry = false)
     {
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(uri, method);
+        Debug.Log("CALL " + api);
+
+        SNControl.Api.ShowLoading();
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(api, SNConstant.METHOD_GET);
 
         request.downloadHandler = new DownloadHandlerBuffer();
         yield return request.SendWebRequest();
@@ -49,6 +51,58 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            SNControl.Api.HideLoading();
+            string response = request.downloadHandler.text;
+            if (!isNotShowSorry)
+            {
+                SNResponseDTO<T> jsondata = JsonConvert.DeserializeObject<SNResponseDTO<T>>(response);
+                T[] datas = jsondata.Results.Select(dto => dto).ToArray();
+                RenderPage(datas);
+                if (datas.Length == 0)
+                {
+                    SNControl.Api.ShowSorry("Sorry, there are <b>no more items.</b>");
+                }
+            }
+            if (isNotShowSorry)
+            {
+                T[] jsondata = JsonConvert.DeserializeObject<T[]>(response).Select(dto => dto).ToArray();
+                RenderPage(jsondata);
+            }
+        }
+        else
+        {
+            SNControl.Api.HideLoading();
+            // Show popup error
+
+            Debug.LogError("test error: " + request.error);
+        }
+    }
+
+    public IEnumerator GetData<T>(string api, Action<T> RenderPage)
+    {
+        Debug.Log("CALL " + api);
+
+        SNControl.Api.ShowLoading();
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(api, SNConstant.METHOD_GET);
+
+        request.downloadHandler = new DownloadHandlerBuffer();
+        yield return request.SendWebRequest();
+
+        Debug.Log("request result= " + request.result);
+
+        // Check that downloadHandler is not null
+        if (request.downloadHandler != null)
+        {
+            Debug.Log("request data= " + request.downloadHandler.text);
+        }
+        else
+        {
+            Debug.Log("Error: downloadHandler is null");
+        }
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
             
             SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
@@ -57,6 +111,9 @@ public class SNApiControl
         }
         else
         {
+            SNControl.Api.HideLoading();
+            // Show popup error
+
             Debug.LogError("test error: " + request.error);
         }
     }
@@ -118,12 +175,11 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-
+            Debug.LogError("SENT OK: ");
         }
         else
         {
             Debug.LogError("Error sending data: " + request.error);
-
         }
     }
 
@@ -184,6 +240,10 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             string response = request.downloadHandler.text;
+
+            SNUserResponseDTO userData = JsonConvert.DeserializeObject<SNUserResponseDTO>(response);
+            string token = userData.token;
+
             Debug.Log($"Response from {SNConstant.LOGIN}: " + response);
 
             SNModel.Api.CurrentUser = JsonConvert.DeserializeObject<SNUserDTO>(response);
@@ -195,7 +255,6 @@ public class SNApiControl
 #if UNITY_EDITOR
             SNConstant.BEARER_TOKEN_EDITOR = "Bearer " + SNModel.Api.CurrentUser.Token;
 #endif
-
             callback?.Invoke();
         }
         else
@@ -305,6 +364,132 @@ public class SNApiControl
         else
         {
             Debug.LogError("test error: " + request.error);
+        }
+    }
+  
+  public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
+    {
+        // Example post data
+
+        /*postData = new SNSurveyRequestDTO()
+        {
+            Title = "okay",
+            Description = "okay",
+            PackType = "Basic",
+            StartDate = DateTime.Now,
+            ExpiredDate = DateTime.Now,
+            Sections = new List<SNSectionRequestDTO>()
+            {
+                new SNSectionRequestDTO()
+                {
+                    Order = 20,
+                    Title = "okay",
+                    Description = "okay",
+                    Questions = new List<SNQuestionRequestDTO>()
+                    {
+                        new SNQuestionRequestDTO()
+                        {
+                            Order = 100,
+                            Type = "Text",
+                            IsRequired = true,
+                            MultipleOptionType = "NoLimit",
+                            LimitNumber = 20,
+                            Title = "okay",
+                            ResourceUrl = "okay",
+                            RowOptions = new List<SNRowOptionRequestDTO>()
+                            {
+                                new SNRowOptionRequestDTO()
+                                {
+                                    Order = 20,
+                                    IsCustom = true,
+                                    Content = "okay"
+                                }
+                            },
+                            ColumnOptions = new List<SNColumnOptionRequestDTO>()
+                            {
+                                new SNColumnOptionRequestDTO()
+                                {
+                                    Order = 20,
+                                    Content = "okay"
+                                }
+                            }
+                        },
+                        new SNQuestionRequestDTO()
+                        {
+                            Order = 10,
+                            Type = "Text",
+                            IsRequired = true,
+                            MultipleOptionType = "NoLimit",
+                            LimitNumber = 20,
+                            Title = "okay",
+                            ResourceUrl = "okay",
+                            RowOptions = new List<SNRowOptionRequestDTO>()
+                            {
+                                new SNRowOptionRequestDTO()
+                                {
+                                    Order = 20,
+                                    IsCustom = true,
+                                    Content = "okay"
+                                }
+                            },
+                            ColumnOptions = new List<SNColumnOptionRequestDTO>()
+                            {
+                                new SNColumnOptionRequestDTO()
+                                {
+                                    Order = 20,
+                                    Content = "okay"
+                                }
+                            }
+                        },
+                        new SNQuestionRequestDTO()
+                        {
+                            Order = 88,
+                            Type = "Text",
+                            IsRequired = true,
+                            MultipleOptionType = "NoLimit",
+                            LimitNumber = 20,
+                            Title = "okay",
+                            ResourceUrl = "okay",
+                            RowOptions = new List<SNRowOptionRequestDTO>()
+                            {
+                                new SNRowOptionRequestDTO()
+                                {
+                                    Order = 20,
+                                    IsCustom = true,
+                                    Content = "okay"
+                                }
+                            },
+                            ColumnOptions = new List<SNColumnOptionRequestDTO>()
+                            {
+                                new SNColumnOptionRequestDTO()
+                                {
+                                    Order = 20,
+                                    Content = "okay"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };*/
+        string jsonData = JsonConvert.SerializeObject(postData, Formatting.Indented);
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_POST, SNConstant.METHOD_POST);
+  
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.uploadHandler = new UploadHandlerRaw(jsonBytes);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+  
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("Error posting data: " + request.error);
+        }
+        else
+        {
+            Debug.Log("Data posted successfully!\n\n" + jsonData);
         }
     }
 }

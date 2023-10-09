@@ -57,7 +57,7 @@ public class SNLoginView : MonoBehaviour
     {
         Transform body = transform.Find("Body");
 
-        m_BtnSkip = transform.Find("BtnSkip").GetComponent<Button>();
+        m_BtnSkip = transform.parent.transform.Find("BtnSkip").GetComponent<Button>();
         m_BtnNoAccount = body.Find("BtnNoAccount").GetComponent<Button>();
         m_BtnHaveAccount = body.Find("BtnHaveAccount").GetComponent<Button>();
 
@@ -156,9 +156,11 @@ public class SNLoginView : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(m_IpfEmail_Login.text) && !string.IsNullOrEmpty(m_IpfPassword_Login.text))
         {
+            SNControl.Api.ShowLoading();
             StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
             {
                 LoadSceneMain();
+                SNControl.Api.HideLoading();
             }));
         }
     }

@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class SNSurveyListControl
 {
@@ -9,7 +6,7 @@ public class SNSurveyListControl
 
     public Action OnOpenSurveyHistoryEvent;
     public Action OnOpenMySurveyEvent;
-    public Action OnOpenSurveyDetailEvent;
+    public Action<SNSurveyResponseDTO> OnOpenSurveyDetailEvent;
 
     public void OpenSurveyHistory()
     {
@@ -21,8 +18,8 @@ public class SNSurveyListControl
         OnOpenMySurveyEvent?.Invoke();
     }
 
-    public void OpenSurveyDetail()
+    public void OpenSurveyDetail(SNSurveyResponseDTO data)
     {
-        OnOpenSurveyDetailEvent?.Invoke();
+        OnOpenSurveyDetailEvent?.Invoke(data);
     }
 }
