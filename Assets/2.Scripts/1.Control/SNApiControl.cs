@@ -52,22 +52,12 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             SNControl.Api.HideLoading();
+
             string response = request.downloadHandler.text;
-            if (!isNotShowSorry)
-            {
-                SNResponseDTO<T> jsondata = JsonConvert.DeserializeObject<SNResponseDTO<T>>(response);
-                T[] datas = jsondata.Results.Select(dto => dto).ToArray();
-                RenderPage(datas);
-                if (datas.Length == 0)
-                {
-                    SNControl.Api.ShowSorry("Sorry, there are <b>no more items.</b>");
-                }
-            }
-            if (isNotShowSorry)
-            {
-                T[] jsondata = JsonConvert.DeserializeObject<T[]>(response).Select(dto => dto).ToArray();
-                RenderPage(jsondata);
-            }
+
+            SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
+
+            RenderPage?.Invoke(data.results);
         }
         else
         {
@@ -105,9 +95,9 @@ public class SNApiControl
             SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
             
-            SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
+            T data = JsonConvert.DeserializeObject<T>(response);
 
-            RenderPage?.Invoke(data.results);
+            RenderPage?.Invoke(data);
         }
         else
         {

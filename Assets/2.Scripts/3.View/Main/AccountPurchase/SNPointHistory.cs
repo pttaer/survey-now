@@ -27,7 +27,7 @@ public class SNPointHistory : MonoBehaviour
     private void DefaultValue()
     {
         Debug.Log("right here");
-        StartCoroutine(SNApiControl.Api.GetListData<SNPointsHistoryDTO>(SNConstant.POINTS_PURCHASE_HISTORY, SNConstant.METHOD_GET, RenderList));
+        StartCoroutine(SNApiControl.Api.GetListData<SNPointsHistoryDTO>(SNConstant.POINTS_PURCHASE_HISTORY, RenderList));
     }
 
     private void RenderList(SNPointsHistoryDTO[] data)

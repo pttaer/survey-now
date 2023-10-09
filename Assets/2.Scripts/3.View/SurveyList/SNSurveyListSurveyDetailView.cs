@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
@@ -14,8 +15,6 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     public void Init(int id)
     {
         Debug.Log("ID " + id);
-        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderPage));
-
         m_SurveyQuestionRadioView = transform.Find("Viewport/Content/SurveyRecordRadio").gameObject;
         m_SurveyQuestionMultipleView = transform.Find("Viewport/Content/SurveyRecordMultiple").gameObject;
         m_SurveyQuestionRatingView = transform.Find("Viewport/Content/SurveyRecordRating").gameObject;
@@ -23,6 +22,15 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         m_SurveyQuestionCustomView = transform.Find("Viewport/Content/SurveyRecordCustom").gameObject;
 
         m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
+
+        foreach (var item in from Transform item in m_QuestionContainer
+                             where item.gameObject.name.Contains("Clone")
+                             select item)
+        {
+            Destroy(item.gameObject);
+        }
+
+        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderPage));
     }
 
     private void RenderPage(SNSurveyQuestionDetailDTO data)
