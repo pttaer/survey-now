@@ -6,9 +6,16 @@ public class SNSurveyListMySurveyView : MonoBehaviour
     private List<SNSurveyRecordView> m_SurveyRecordList;
     private SNSurveyRecordView m_NewsAndEventsPrefab;
 
-    public void Init()
+    public void InitHome()
     {
-        StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_ALL, RenderPage));
+        StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_HOME, RenderPage));
+        m_SurveyRecordList = new();
+        m_NewsAndEventsPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
+    }
+
+    public void InitMySurvey()
+    {
+        StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_MY_SURVEY, RenderPage));
         m_SurveyRecordList = new();
         m_NewsAndEventsPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
     }

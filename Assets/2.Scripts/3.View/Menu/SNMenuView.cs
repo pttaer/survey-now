@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SNMenuView : MonoBehaviour
 {
     private Button m_BtnMenu;
+    private Button m_BtnHome;
     private Button m_BtnProfile;
     private Button m_BtnCreateSurvey;
     private Button m_BtnMySurvey;
@@ -23,6 +24,7 @@ public class SNMenuView : MonoBehaviour
     private void Init()
     {
         m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
+        m_BtnHome = transform.Find("Body/Viewport/Content/BtnHome").GetComponent<Button>();
         m_BtnProfile = transform.Find("Body/Viewport/Content/BtnProfile").GetComponent<Button>();
         m_BtnCreateSurvey = transform.Find("Body/Viewport/Content/BtnCreateSurvey").GetComponent<Button>();
         m_BtnMySurvey = transform.Find("Body/Viewport/Content/BtnMySurvey").GetComponent<Button>();
@@ -32,6 +34,7 @@ public class SNMenuView : MonoBehaviour
         m_BtnLogout = transform.Find("Body/Viewport/Content/BtnLogout").GetComponent<Button>();
 
         m_BtnMenu.onClick.AddListener(CloseMenu);
+        m_BtnHome.onClick.AddListener(LoadHome);
         m_BtnProfile.onClick.AddListener(LoadProfile);
         m_BtnCreateSurvey.onClick.AddListener(LoadCreate);
         m_BtnMySurvey.onClick.AddListener(LoadMySurvey);
@@ -44,6 +47,11 @@ public class SNMenuView : MonoBehaviour
 
         // Default value
         gameObject.SetActive(false);
+    }
+
+    private void LoadHome()
+    {
+        LoadScene(SNConstant.SCENE_BUNDLE);
     }
 
     private void OnDestroy()

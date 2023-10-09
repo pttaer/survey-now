@@ -149,7 +149,7 @@ public class SNLoginView : MonoBehaviour
 
     private void LoadSceneMain()
     {
-        SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_SURVEY_LIST);
+        SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_HOME);
     }
 
     private void Login()
