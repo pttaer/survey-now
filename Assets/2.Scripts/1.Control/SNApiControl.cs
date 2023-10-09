@@ -15,10 +15,14 @@ public class SNApiControl
     {
         UnityWebRequest request = new UnityWebRequest(url, method.ToUpper());
         //Debug.Log("Token " + FAMConstant.BEARER_TOKEN);
-        request.SetRequestHeader("Authorization", PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
+#if UNITY_ANDROID
+        Debug.Log("Calling api with token: " + PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
+        request.SetRequestHeader("Authorization", "Bearer " + PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
+#endif
 
 #if UNITY_EDITOR
-        request.SetRequestHeader("Authorization", SNConstant.BEARER_TOKEN);
+        Debug.Log("Calling with editor token: " + SNConstant.BEARER_TOKEN_EDITOR);
+        request.SetRequestHeader("Authorization", SNConstant.BEARER_TOKEN_EDITOR);
 #endif
 
         return request;
@@ -46,6 +50,10 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             string response = request.downloadHandler.text;
+            
+            SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
+
+            RenderPage?.Invoke(data.results);
         }
         else
         {
@@ -182,6 +190,12 @@ public class SNApiControl
 
             PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
 
+            Debug.Log("Set token: " + PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
+
+#if UNITY_EDITOR
+            SNConstant.BEARER_TOKEN_EDITOR = "Bearer " + SNModel.Api.CurrentUser.Token;
+#endif
+
             callback?.Invoke();
         }
         else
@@ -257,7 +271,36 @@ public class SNApiControl
 
             SNPointsPurchaseDTO data = JsonConvert.DeserializeObject<SNPointsPurchaseDTO>(response);
 
-            callback?.Invoke(data.qrCodeUrl);
+            callback?.Invoke(data.deeplink);
+        }
+        else
+        {
+            Debug.LogError("test error: " + request.error);
+        }
+    }
+
+    public IEnumerator MomoReturn(SNMomoRedirect momoData, string param, Action callback = null)
+    {
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.POINTS_PURCHASE_RETURN + param + "userId=" + SNModel.Api.CurrentUser.Id, SNConstant.METHOD_GET.ToUpper());
+
+        yield return request.SendWebRequest();
+
+        // Check that downloadHandler is not null
+        if (request.downloadHandler != null)
+        {
+            Debug.Log("request data= " + SNConstant.POINTS_PURCHASE_RETURN + param + "userId=" + SNModel.Api.CurrentUser.Id);
+        }
+        else
+        {
+            Debug.Log("Error: downloadHandler is null");
+        }
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string response = request.downloadHandler.text;
+            Debug.Log($"Response from {SNConstant.POINTS_PURCHASE_RETURN}: " + response);
+
+            callback?.Invoke();
         }
         else
         {

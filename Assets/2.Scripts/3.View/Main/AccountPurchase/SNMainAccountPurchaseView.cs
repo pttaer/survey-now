@@ -21,6 +21,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private GameObject m_BodyPointExchange;
     private GameObject m_BodyPurchaseHistory;
     private GameObject m_BodyExchangeHistory;
+    private GameObject m_BodyPointHistory;
 
     private GameObject m_PnlPointInfo;
     private GameObject m_PnlPurchasePoint;
@@ -39,6 +40,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private List<GameObject> m_ListPnlHistory;
 
     private Text m_PointsBalance;
+    private Text m_PointsConfirm;
+    private Text m_PointsToCurrency;
     private InputField m_PointsAmountToPurchase;
 
     public void Init()
@@ -54,6 +57,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BodyPointProfile = transform.Find("Viewport/Content/PnlPointInfo/Body").gameObject;
         m_BodyPurchasePoint = transform.Find("Viewport/Content/PnlPurchasePoint/Body").gameObject;
         m_BodyPointExchange = transform.Find("Viewport/Content/PnlPointExchange/Body").gameObject;
+        m_BodyPointHistory = transform.Find("Viewport/Content/PnlPointHistory/Body").gameObject;
 
         m_BtnPurchase = m_BodyPurchasePoint.transform.Find("BtnGroup/BtnPurchase").GetComponent<Button>();
 
@@ -73,6 +77,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_PrefRecord = transform.Find("Viewport/SpawnItems/Record").gameObject;
 
         m_PointsBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_1").GetComponent<Text>();
+        m_PointsConfirm = m_BodyPurchasePoint.transform.Find("Body_1/RightSide/TxtLabel").GetComponent<Text>();
+        m_PointsToCurrency = m_BodyPurchasePoint.transform.Find("Body_1/RightSide/TxtLabel_2").GetComponent<Text>();
         m_PointsAmountToPurchase = m_BodyPurchasePoint.transform.Find("Body/RightSide/IpfPointAmount").GetComponent<InputField>();
 
         // 3 bodies of main panels and 4 sub panels
@@ -84,7 +90,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
             m_PnlPurchaseHistory,
             m_PnlExchangeHistory,
             m_PnlPurchaseDetail,
-            m_PnlExchangeDetail
+            m_PnlExchangeDetail,
+            m_BodyPointHistory
         };
 
         // The 4 main panels
@@ -110,10 +117,14 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BtnPnlPurchaseHistory.onClick.AddListener(OpenPnlPurchaseHistory);
         m_BtnPnlExchangeHistory.onClick.AddListener(OpenPnlExchangeHistory);
 
+        m_PointsAmountToPurchase.onValueChanged.AddListener(OnUpdatePointsDisplay);
+
         m_BtnPurchase.onClick.AddListener(PurchasePoints);
 
         SNMainControl.Api.OnCallHistoryRecorDetailEvent += OpenHistoryRecord;
+        SNDeeplinkControl.Api.onReturnFromMomo += ProcessMomoReturnData;
 
+        m_PnlPointHistory.GetComponent<SNPointHistory>().Init();
 
         DefaultValue();
     }
@@ -126,6 +137,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private void OnDestroy()
     {
         SNMainControl.Api.OnCallHistoryRecorDetailEvent -= OpenHistoryRecord;
+        SNDeeplinkControl.Api.onReturnFromMomo -= ProcessMomoReturnData;
     }
 
     private void OpenHistoryRecord(SNHistoryRecordType type, string date, string points)
@@ -177,7 +189,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private void OpenPointHistoryDetail()
     {
-        SNControl.Api.OpenManyPanel(m_ListNotPnlHistory, new List<GameObject> { m_PnlPurchaseHistory, m_PnlExchangeHistory });
+        //SNControl.Api.OpenManyPanel(m_ListNotPnlHistory, new List<GameObject> { m_PnlPurchaseHistory, m_PnlExchangeHistory });
+        ShowPnlNotHistory(m_BodyPointHistory);
     }
 
     private void ShowPnlNotHistory(GameObject pnl)
@@ -185,12 +198,28 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         SNControl.Api.OpenPanel(pnl, m_ListPnl, true);
     }
 
+    private void OnUpdatePointsDisplay(string points)
+    {
+        m_PointsConfirm.text = points;
+        m_PointsToCurrency.text = ((int.Parse(points) * 10)).ToString() + "VND";
+    }
+
     private void PurchasePoints()
     {
-        StartCoroutine(SNApiControl.Api.PurchasePoints(int.Parse(m_PointsAmountToPurchase.text), (qrCodeUrl) =>
+        StartCoroutine(SNApiControl.Api.PurchasePoints(int.Parse(m_PointsAmountToPurchase.text), (momoUrl) =>
         {
-            Debug.Log(qrCodeUrl);
-            Application.OpenURL(qrCodeUrl);
+            Debug.Log(momoUrl);
+            Application.OpenURL(momoUrl);
         }));
     }
+
+    private void ProcessMomoReturnData(SNMomoRedirect momoData, string momoParam)
+    {
+        StartCoroutine(SNApiControl.Api.MomoReturn(momoData, momoParam, () =>
+        {
+
+        }));
+    }
+
+
 }

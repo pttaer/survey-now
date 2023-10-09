@@ -4,7 +4,7 @@ using UnityEngine;
 public class SNLoadFirstView : MonoBehaviour
 {
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         Application.runInBackground = true;//run in background
         Screen.sleepTimeout = SleepTimeout.NeverSleep;//never sleep screen

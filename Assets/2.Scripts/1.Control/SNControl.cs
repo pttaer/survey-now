@@ -53,6 +53,7 @@ public class SNControl
         SNCreateSurveyControl.Api = new SNCreateSurveyControl();
         SNBundleControl.Api = new SNBundleControl();
         SNApiControl.Api = new SNApiControl();
+        SNDeeplinkControl.Api = new SNDeeplinkControl();
 
         // Default value
         SNModel.Api.ScenesLoaded.Clear();

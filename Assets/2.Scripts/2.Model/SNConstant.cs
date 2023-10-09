@@ -103,6 +103,8 @@ public class SNConstant
     public const string PACKS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/purchase";
 
     public const string POINTS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo";
+    public const string POINTS_PURCHASE_RETURN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo/return";
+    public const string POINTS_PURCHASE_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/history";
 
     #endregion API_URI
 
@@ -158,4 +160,5 @@ public class SNConstant
 #elif UNITY_ANDROID
     public static string BEARER_TOKEN = "";
 #endif
+    public static string BEARER_TOKEN_EDITOR;
 }
