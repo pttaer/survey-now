@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
+using static SNDoSurveyDTO;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
@@ -10,7 +12,10 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     private GameObject m_SurveyQuestionLikertView;
     private GameObject m_SurveyQuestionCustomView;
 
+    private Button m_BtnComplete;
+
     private Transform m_QuestionContainer;
+    private List<SNInitView> m_InitViewList;
 
     public void Init(int id)
     {
@@ -21,6 +26,10 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         m_SurveyQuestionLikertView = transform.Find("Viewport/Content/SurveyRecordLikert").gameObject;
         m_SurveyQuestionCustomView = transform.Find("Viewport/Content/SurveyRecordCustom").gameObject;
 
+        m_BtnComplete = transform.Find("SurveyDetail/BtnComplete").GetComponent<Button>();
+        m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id, GetAllAnswers()));
+
+        m_InitViewList = new();
         m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
 
         foreach (var item in from Transform item in m_QuestionContainer
@@ -31,6 +40,25 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         }
 
         StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderPage));
+    }
+
+    private List<AnswerDTO> GetAllAnswers()
+    {
+        List<AnswerDTO> answers = new();
+
+
+        return answers;
+    }
+
+    private void OnClickCompleteSurvey(int id, List<AnswerDTO> answers)
+    {
+        SurveyDTO data = new SurveyDTO()
+        {
+            SurveyId = id,
+            Answers = answers
+        };
+
+        StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data));
     }
 
     private void RenderPage(SNSurveyQuestionDetailDTO data)
@@ -86,6 +114,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     {
         GameObject go = Instantiate(goPref, m_QuestionContainer);
         SNInitView view = go.GetComponent<SNInitView>();
+        m_InitViewList.Add(view);
         go.SetActive(true);
         view.Init(data);
     }

@@ -32,4 +32,9 @@ public class SNQuestionToggleItemView : MonoBehaviour
         gameObject.SetActive(true);
         m_Tgl.SetIsOnWithoutNotify(false);
     }
+
+    public bool IsTglOn()
+    {
+        return m_Tgl.isOn;
+    }
 }

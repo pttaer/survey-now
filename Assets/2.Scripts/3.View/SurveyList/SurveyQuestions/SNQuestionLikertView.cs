@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static SNDoSurveyDTO;
 
 public class SNQuestionLikertView : SNInitView
 {
@@ -13,6 +14,7 @@ public class SNQuestionLikertView : SNInitView
 
     private List<SNLikertQuestionItemView> m_ItemViewList;
     private SNSectionQuestionDTO m_Data;
+    private int m_QuestionId;
 
     private void OnDestroy()
     {
@@ -23,6 +25,7 @@ public class SNQuestionLikertView : SNInitView
     {
         if (data == null) return;
         m_Data = data;
+        m_QuestionId = data.id;
 
         m_TxtOrder = transform.Find("TopBar/TxtOrder").GetComponent<Text>();
         m_Title = transform.Find("TopBar/TxtTitle").GetComponent<Text>();
@@ -40,21 +43,37 @@ public class SNQuestionLikertView : SNInitView
 
         foreach (var option in data.rowOptions)
         {
-            GenerateQuestionChoices(option.content);
+            GenerateQuestionChoices(option.content, option.order);
         }
     }
 
-    private void GenerateQuestionChoices(string title)
+    private void GenerateQuestionChoices(string title, int order)
     {
         GameObject go = Instantiate(m_QuestionItemPref, m_TQuestionGroup);
         SNLikertQuestionItemView view = go.GetComponent<SNLikertQuestionItemView>();
         go.SetActive(true);
         m_ItemViewList.Add(view);
-        view.Init(title, m_Data.columnOptions);
+        view.Init(title, order, m_Data.columnOptions);
     }
 
     private void TurnOptionsOff()
     {
         m_ItemViewList?.ForEach(item => item.TurnOptionOff());
+    }
+
+    public override AnswerDTO GetAnswer()
+    {
+        foreach (SNLikertQuestionItemView view in m_ItemViewList)
+        {
+
+        }
+
+        return new AnswerDTO()
+        {
+            QuestionId = m_QuestionId,
+            Content = null,
+            RateNumber = null,
+            AnswerOptions =
+        };
     }
 }

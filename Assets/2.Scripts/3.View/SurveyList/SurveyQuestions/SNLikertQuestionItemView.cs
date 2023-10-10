@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static SNDoSurveyDTO;
 
 public class SNLikertQuestionItemView : MonoBehaviour
 {
@@ -12,9 +13,12 @@ public class SNLikertQuestionItemView : MonoBehaviour
     private Text m_TxtTitle;
 
     private List<SNQuestionToggleItemView> m_ItemViewList;
+    private int m_Order;
 
-    public void Init(string title, List<SNSectionQuestionColumnOptionDTO> columnOptions)
+    public void Init(string title, int order, List<SNSectionQuestionColumnOptionDTO> columnOptions)
     {
+        m_Order = order;
+
         m_BtnQuestion = transform.Find("BtnQuestion").GetComponent<Button>();
         m_Options = transform.Find("Options").gameObject;
         m_TglGroup = transform.Find("Options").GetComponent<ToggleGroup>();
@@ -56,5 +60,30 @@ public class SNLikertQuestionItemView : MonoBehaviour
     public void TurnOptionOff()
     {
         m_Options.SetActive(false);
+    }
+
+    private AnswerOptionDTO GetAnswer()
+    {
+        List<AnswerOptionDTO> answerOptions = new();
+
+        foreach (SNQuestionToggleItemView view in m_ItemViewList)
+        {
+            if (view.IsTglOn())
+            {
+                AnswerOptionDTO answer = new()
+                {
+                    RowOrder = m_ItemViewList.IndexOf(view),
+                    ColumnOrder = null,
+                    Content = null
+                };
+                answerOptions.Add(answer);
+            }
+        }
+
+        return new AnswerOptionDTO()
+        {
+            RowOrder = m_Order,
+            ColumnOrder = ,
+        };
     }
 }

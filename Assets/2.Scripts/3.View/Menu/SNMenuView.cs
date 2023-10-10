@@ -51,7 +51,7 @@ public class SNMenuView : MonoBehaviour
 
     private void LoadHome()
     {
-        LoadScene(SNConstant.SCENE_BUNDLE);
+        LoadScene(SNConstant.SCENE_HOME);
     }
 
     private void OnDestroy()
