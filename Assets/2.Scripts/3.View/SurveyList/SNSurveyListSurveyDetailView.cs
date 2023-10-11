@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
 using static SNDoSurveyDTO;
+using Newtonsoft.Json;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
@@ -17,20 +18,28 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     private Transform m_QuestionContainer;
     private List<SNInitView> m_InitViewList;
 
+    private bool m_IsInit = false;
+
     public void Init(int id)
     {
         Debug.Log("ID " + id);
-        m_SurveyQuestionRadioView = transform.Find("Viewport/Content/SurveyRecordRadio").gameObject;
-        m_SurveyQuestionMultipleView = transform.Find("Viewport/Content/SurveyRecordMultiple").gameObject;
-        m_SurveyQuestionRatingView = transform.Find("Viewport/Content/SurveyRecordRating").gameObject;
-        m_SurveyQuestionLikertView = transform.Find("Viewport/Content/SurveyRecordLikert").gameObject;
-        m_SurveyQuestionCustomView = transform.Find("Viewport/Content/SurveyRecordCustom").gameObject;
 
-        m_BtnComplete = transform.Find("SurveyDetail/BtnComplete").GetComponent<Button>();
-        m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id, GetAllAnswers()));
+        if (!m_IsInit)
+        {
+            m_SurveyQuestionRadioView = transform.Find("Viewport/Content/SurveyRecordRadio").gameObject;
+            m_SurveyQuestionMultipleView = transform.Find("Viewport/Content/SurveyRecordMultiple").gameObject;
+            m_SurveyQuestionRatingView = transform.Find("Viewport/Content/SurveyRecordRating").gameObject;
+            m_SurveyQuestionLikertView = transform.Find("Viewport/Content/SurveyRecordLikert").gameObject;
+            m_SurveyQuestionCustomView = transform.Find("Viewport/Content/SurveyRecordCustom").gameObject;
 
-        m_InitViewList = new();
-        m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
+            m_BtnComplete = transform.Find("BtnComplete").GetComponent<Button>();
+            m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id));
+
+            m_InitViewList = new();
+            m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
+
+            m_IsInit = true;
+        }
 
         foreach (var item in from Transform item in m_QuestionContainer
                              where item.gameObject.name.Contains("Clone")
@@ -39,32 +48,58 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
             Destroy(item.gameObject);
         }
 
-        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderPage));
+        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderDetailPage));
+    }
+
+    private bool ValidateAnswers()
+    {
+        foreach (var view in m_InitViewList)
+        {
+            Debug.Log("GOO " + view.Validate());
+            if (!view.Validate())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private List<AnswerDTO> GetAllAnswers()
     {
         List<AnswerDTO> answers = new();
-
-
+        foreach (var view in m_InitViewList)
+        {
+            answers.Add(view.GetAnswer());
+        }
         return answers;
     }
 
-    private void OnClickCompleteSurvey(int id, List<AnswerDTO> answers)
+    private void OnClickCompleteSurvey(int id)
     {
+        if (!ValidateAnswers())
+        {
+            // POPUP WARNING SOMETHING WRONG
+            Debug.Log("SURVEY NOT FINISH");
+            return;
+        }
+
         SurveyDTO data = new SurveyDTO()
         {
             SurveyId = id,
-            Answers = answers
+            Answers = GetAllAnswers()
         };
 
-        StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data));
+        string postData = JsonConvert.SerializeObject(data);
+        print("Data post: " + postData);
+
+        //StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data));
     }
 
-    private void RenderPage(SNSurveyQuestionDetailDTO data)
+    private void RenderDetailPage(SNSurveyQuestionDetailDTO data)
     {
         List<SNSectionQuestionRowOptionDTO> options = new List<SNSectionQuestionRowOptionDTO>();
         List<SNSectionQuestionDTO> questions = new List<SNSectionQuestionDTO>();
+        m_InitViewList.Clear();
 
         data?.sections?.ForEach(section =>
             {

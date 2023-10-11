@@ -38,4 +38,10 @@ public class SNQuestionCustomView : SNInitView
             AnswerOptions = new List<AnswerOptionDTO>()
         };
     }
+
+    public override bool Validate()
+    {
+        string answer = m_IpfAnswer.text;
+        return !string.IsNullOrEmpty(answer);
+    }
 }

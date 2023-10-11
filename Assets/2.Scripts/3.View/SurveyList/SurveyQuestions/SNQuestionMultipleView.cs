@@ -41,6 +41,9 @@ public class SNQuestionMultipleView : SNInitView
                 GenerateQuestionChoices(row);
             }
         }
+
+        m_TglGroup.allowSwitchOff = true;
+        m_TglGroup.SetAllTogglesOff();
     }
 
     private void GenerateQuestionChoices(SNSectionQuestionRowOptionDTO data)
@@ -76,5 +79,20 @@ public class SNQuestionMultipleView : SNInitView
             RateNumber = null,
             AnswerOptions = answerOptions
         };
+    }
+
+    public override bool Validate()
+    {
+        bool answerSelected = false;
+
+        foreach (var item in m_ItemViewList)
+        {
+            if (item.IsTglOn())
+            {
+                return true;
+            }
+        }
+
+        return answerSelected;
     }
 }

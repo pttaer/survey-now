@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static SNDoSurveyDTO;
@@ -63,9 +64,11 @@ public class SNQuestionLikertView : SNInitView
 
     public override AnswerDTO GetAnswer()
     {
+        List<AnswerOptionDTO> answerOptions = new();
+
         foreach (SNLikertQuestionItemView view in m_ItemViewList)
         {
-
+            answerOptions.Add(view.GetAnswer());
         }
 
         return new AnswerDTO()
@@ -73,7 +76,21 @@ public class SNQuestionLikertView : SNInitView
             QuestionId = m_QuestionId,
             Content = null,
             RateNumber = null,
-            AnswerOptions =
+            AnswerOptions = answerOptions
         };
+    }
+
+    public override bool Validate()
+    {
+        bool isAnswerAllSelect = true;
+        foreach (SNLikertQuestionItemView view in m_ItemViewList)
+        {
+            if (!view.Validate())
+            {
+                isAnswerAllSelect = false;
+            }
+        }
+
+        return isAnswerAllSelect;
     }
 }

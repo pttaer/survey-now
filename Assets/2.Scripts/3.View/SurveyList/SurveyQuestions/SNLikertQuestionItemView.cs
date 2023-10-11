@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static SNDoSurveyDTO;
@@ -37,7 +38,10 @@ public class SNLikertQuestionItemView : MonoBehaviour
                 GenerateQuestionChoices(option);
             }
         }
+
+        m_TglGroup.allowSwitchOff = true;
         m_TglGroup.SetAllTogglesOff();
+        m_ToggleItemPref.SetActive(false);
     }
 
     private void OnClickQuestion()
@@ -51,6 +55,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
     {
         GameObject go = Instantiate(m_ToggleItemPref, m_Options.transform);
         SNQuestionToggleItemView view = go.GetComponent<SNQuestionToggleItemView>();
+        go.SetActive(true);
         Toggle tgl = go.GetComponent<Toggle>();
         tgl.group = m_TglGroup;
         m_ItemViewList.Add(view);
@@ -62,28 +67,28 @@ public class SNLikertQuestionItemView : MonoBehaviour
         m_Options.SetActive(false);
     }
 
-    private AnswerOptionDTO GetAnswer()
+    public AnswerOptionDTO GetAnswer()
     {
-        List<AnswerOptionDTO> answerOptions = new();
+        int columnOrder = -1; // Not choose yet
 
         foreach (SNQuestionToggleItemView view in m_ItemViewList)
         {
             if (view.IsTglOn())
             {
-                AnswerOptionDTO answer = new()
-                {
-                    RowOrder = m_ItemViewList.IndexOf(view),
-                    ColumnOrder = null,
-                    Content = null
-                };
-                answerOptions.Add(answer);
+                columnOrder = view.GetOrder();
             }
         }
 
         return new AnswerOptionDTO()
         {
             RowOrder = m_Order,
-            ColumnOrder = ,
+            ColumnOrder = columnOrder,
+            Content = null
         };
+    }
+
+    public bool Validate()
+    {
+        return m_TglGroup?.ActiveToggles()?.ToList().Count > 0;
     }
 }

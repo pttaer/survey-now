@@ -41,6 +41,8 @@ public class SNQuestionRadioView : SNInitView
                 GenerateQuestionChoices(row);
             }
         }
+
+        m_TglGroup.allowSwitchOff = true;
         m_TglGroup.SetAllTogglesOff();
     }
 
@@ -79,5 +81,11 @@ public class SNQuestionRadioView : SNInitView
             RateNumber = null,
             AnswerOptions = answerOptions
         };
+    }
+
+    public override bool Validate()
+    {
+        bool answerSelected = m_TglGroup?.ActiveToggles()?.ToList().Count > 0;
+        return answerSelected;
     }
 }

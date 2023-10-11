@@ -38,6 +38,8 @@ public class SNQuestionRatingView : SNInitView
         {
             GenerateQuestionChoices();
         }
+
+        m_TglGroup.allowSwitchOff = true;
         m_TglGroup.SetAllTogglesOff();
     }
 
@@ -53,7 +55,7 @@ public class SNQuestionRatingView : SNInitView
 
     public override AnswerDTO GetAnswer()
     {
-        string rate = m_TglGroup?.ActiveToggles()?.ToList()?.FirstOrDefault()?.transform.Find("Background/TxtRate").GetComponent<Text>().text;
+        string rate = m_TglGroup?.ActiveToggles()?.ToList()?.FirstOrDefault()?.transform.Find("Background/TxtRate").GetComponent<Text>().text ?? "";
         return new AnswerDTO()
         {
             QuestionId = m_QuestionId,
@@ -61,5 +63,11 @@ public class SNQuestionRatingView : SNInitView
             RateNumber = int.Parse(rate),
             AnswerOptions = new List<AnswerOptionDTO>()
         };
+    }
+
+    public override bool Validate()
+    {
+        string rate = m_TglGroup?.ActiveToggles()?.ToList()?.FirstOrDefault()?.transform.Find("Background/TxtRate").GetComponent<Text>().text ?? "";
+        return !string.IsNullOrEmpty(rate);
     }
 }
