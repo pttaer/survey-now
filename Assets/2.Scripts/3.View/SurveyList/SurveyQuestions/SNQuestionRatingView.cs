@@ -67,6 +67,7 @@ public class SNQuestionRatingView : SNInitView
 
     public override bool Validate()
     {
+        Debug.Log("GOOOO");
         string rate = m_TglGroup?.ActiveToggles()?.ToList()?.FirstOrDefault()?.transform.Find("Background/TxtRate").GetComponent<Text>().text ?? "";
         return !string.IsNullOrEmpty(rate);
     }

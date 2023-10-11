@@ -92,20 +92,16 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
-            
             T data = JsonConvert.DeserializeObject<T>(response);
-
             RenderPage?.Invoke(data);
         }
         else
         {
-            SNControl.Api.HideLoading();
             // Show popup error
-
             Debug.LogError("test error: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator SetRequestMemberAccess(string url, int memberId, int requestAccess)
@@ -138,8 +134,10 @@ public class SNApiControl
         }
     }
 
-    public IEnumerator PostData<T>(string uri, T formData, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false)
+    public IEnumerator PostData<T>(string uri, T formData, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
+
         string jsonData = JsonConvert.SerializeObject(formData, Formatting.Indented);
         byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
@@ -166,11 +164,13 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.LogError("SENT OK: ");
+            callback?.Invoke();
         }
         else
         {
             Debug.LogError("Error sending data: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator DelItem(string uri)
@@ -356,8 +356,8 @@ public class SNApiControl
             Debug.LogError("test error: " + request.error);
         }
     }
-  
-  public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
+
+    public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
     {
         // Example post data
 
@@ -466,13 +466,13 @@ public class SNApiControl
         byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
 
         UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_POST, SNConstant.METHOD_POST);
-  
+
         request.SetRequestHeader("Content-Type", "application/json");
         request.uploadHandler = new UploadHandlerRaw(jsonBytes);
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
-  
+
         if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Error posting data: " + request.error);

@@ -41,6 +41,7 @@ public class SNQuestionCustomView : SNInitView
 
     public override bool Validate()
     {
+        Debug.Log("GOOOO");
         string answer = m_IpfAnswer.text;
         return !string.IsNullOrEmpty(answer);
     }

@@ -66,7 +66,7 @@ public class SNQuestionRadioView : SNInitView
             {
                 AnswerOptionDTO answer = new()
                 {
-                    RowOrder = m_ItemViewList.IndexOf(view),
+                    RowOrder = m_ItemViewList.IndexOf(view) + 1, // Index
                     ColumnOrder = null,
                     Content = null
                 };
@@ -85,6 +85,7 @@ public class SNQuestionRadioView : SNInitView
 
     public override bool Validate()
     {
+        Debug.Log("GOOOO");
         bool answerSelected = m_TglGroup?.ActiveToggles()?.ToList().Count > 0;
         return answerSelected;
     }

@@ -75,7 +75,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
         {
             if (view.IsTglOn())
             {
-                columnOrder = view.GetOrder();
+                columnOrder = view.GetColumnOrder();
             }
         }
 
@@ -89,6 +89,13 @@ public class SNLikertQuestionItemView : MonoBehaviour
 
     public bool Validate()
     {
-        return m_TglGroup?.ActiveToggles()?.ToList().Count > 0;
+        foreach (SNQuestionToggleItemView view in m_ItemViewList)
+        {
+            if (view.IsTglOn())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

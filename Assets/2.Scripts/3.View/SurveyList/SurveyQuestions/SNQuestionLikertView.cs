@@ -82,15 +82,13 @@ public class SNQuestionLikertView : SNInitView
 
     public override bool Validate()
     {
-        bool isAnswerAllSelect = true;
         foreach (SNLikertQuestionItemView view in m_ItemViewList)
         {
             if (!view.Validate())
             {
-                isAnswerAllSelect = false;
+                return false;
             }
         }
-
-        return isAnswerAllSelect;
+        return true;
     }
 }

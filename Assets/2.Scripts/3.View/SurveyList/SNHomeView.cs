@@ -42,15 +42,17 @@ public class SNHomeView : MonoBehaviour
         m_BtnSearch.onClick.AddListener(OnClickSearch);
 
         SNSurveyListControl.Api.OnOpenSurveyDetailEvent += OpenSurveyDetail;
-        SNSurveyListControl.Api.OnOpenMySurveyEvent += OpenMySurvey;
+        SNSurveyListControl.Api.OnOpenMySurveyEvent += OpenHome;
+        SNSurveyListControl.Api.OnClickBackToHomeEvent += OnClickBack;
 
-        OpenMySurvey();
+        OpenHome();
     }
 
     private void OnDestroy()
     {
         SNSurveyListControl.Api.OnOpenSurveyDetailEvent -= OpenSurveyDetail;
-        SNSurveyListControl.Api.OnOpenMySurveyEvent -= OpenMySurvey;
+        SNSurveyListControl.Api.OnOpenMySurveyEvent -= OpenHome;
+        SNSurveyListControl.Api.OnClickBackToHomeEvent -= OnClickBack;
     }
 
     private void OnClickSearch()
@@ -63,7 +65,7 @@ public class SNHomeView : MonoBehaviour
         ShowPnl(m_PreviousPnl);
     }
 
-    private void OpenMySurvey()
+    private void OpenHome()
     {
         ShowPnl(m_PnlMySurveyView.gameObject);
         m_PnlMySurveyView.InitHome();

@@ -12,7 +12,6 @@ public class SNQuestionToggleItemView : MonoBehaviour
     public void Init(SNSectionQuestionRowOptionDTO data)
     {
         if (data == null) return;
-        m_ItemOrder = data.order;
 
         m_Tgl = GetComponent<Toggle>();
         m_TxtLabel = transform.Find("TxtLabel").GetComponent<Text>();
@@ -26,6 +25,7 @@ public class SNQuestionToggleItemView : MonoBehaviour
     public void Init(SNSectionQuestionColumnOptionDTO data)
     {
         if (data == null) return;
+        m_ItemOrder = data.order;
 
         m_Tgl = GetComponent<Toggle>();
         m_TxtLabel = transform.Find("TxtLabel").GetComponent<Text>();
@@ -41,7 +41,7 @@ public class SNQuestionToggleItemView : MonoBehaviour
         return m_Tgl.isOn;
     }
 
-    public int GetOrder()
+    public int GetColumnOrder()
     {
         return m_ItemOrder;
     }

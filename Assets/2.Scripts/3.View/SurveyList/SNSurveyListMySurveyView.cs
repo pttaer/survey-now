@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SNSurveyListMySurveyView : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class SNSurveyListMySurveyView : MonoBehaviour
             }
             if (!isAlreadyOk)
             {
+                if (data is SNSurveyResponseDTO newsData)
+                {
+                    if (SceneManager.GetSceneByName(SNConstant.SCENE_HOME).isLoaded && newsData.Status != "Active")
+                    {
+                        continue;
+                    }
+                }
+
                 GameObject go = Instantiate(m_NewsAndEventsPrefab.gameObject, transform.Find("Viewport/Content"));
                 RenderItem(data, go.GetComponent<SNSurveyRecordView>());
             }

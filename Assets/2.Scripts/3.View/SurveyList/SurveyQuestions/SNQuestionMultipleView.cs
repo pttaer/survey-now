@@ -64,7 +64,7 @@ public class SNQuestionMultipleView : SNInitView
             {
                 AnswerOptionDTO answer = new()
                 {
-                    RowOrder = m_ItemViewList.IndexOf(view),
+                    RowOrder = m_ItemViewList.IndexOf(view) + 1,
                     ColumnOrder = null,
                     Content = null
                 };
@@ -83,8 +83,7 @@ public class SNQuestionMultipleView : SNInitView
 
     public override bool Validate()
     {
-        bool answerSelected = false;
-
+        Debug.Log("GOOOO");
         foreach (var item in m_ItemViewList)
         {
             if (item.IsTglOn())
@@ -92,7 +91,6 @@ public class SNQuestionMultipleView : SNInitView
                 return true;
             }
         }
-
-        return answerSelected;
+        return false;
     }
 }

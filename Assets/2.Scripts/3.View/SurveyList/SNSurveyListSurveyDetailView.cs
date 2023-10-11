@@ -12,8 +12,12 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     private GameObject m_SurveyQuestionRatingView;
     private GameObject m_SurveyQuestionLikertView;
     private GameObject m_SurveyQuestionCustomView;
+    private GameObject m_PnlCompleteSurvey;
+    private GameObject m_PnlPnlAlreadyCompleteSurvey;
 
     private Button m_BtnComplete;
+    private Button m_BtnBackToHome;
+    private Button m_BtnGoToHistory;
 
     private Transform m_QuestionContainer;
     private List<SNInitView> m_InitViewList;
@@ -31,9 +35,15 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
             m_SurveyQuestionRatingView = transform.Find("Viewport/Content/SurveyRecordRating").gameObject;
             m_SurveyQuestionLikertView = transform.Find("Viewport/Content/SurveyRecordLikert").gameObject;
             m_SurveyQuestionCustomView = transform.Find("Viewport/Content/SurveyRecordCustom").gameObject;
+            m_PnlCompleteSurvey = transform.Find("PnlCompleteSurvey").gameObject;
+            m_PnlPnlAlreadyCompleteSurvey = transform.Find("PnlCompleteSurvey").gameObject;
 
             m_BtnComplete = transform.Find("BtnComplete").GetComponent<Button>();
+            m_BtnBackToHome = transform.Find("PnlCompleteSurvey/BtnHome").GetComponent<Button>();
+            m_BtnGoToHistory = transform.Find("PnlAlreadyCompleteSurvey/BtnHistory").GetComponent<Button>();
+
             m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id));
+            m_BtnBackToHome.onClick.AddListener(() => SNSurveyListControl.Api.ClickBackToHome());
 
             m_InitViewList = new();
             m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
@@ -92,7 +102,12 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         string postData = JsonConvert.SerializeObject(data);
         print("Data post: " + postData);
 
-        //StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data));
+        // Show success finish survey after done
+        StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data, callback: () =>
+        {
+            m_QuestionContainer.gameObject.SetActive(false);
+            m_PnlCompleteSurvey.SetActive(true);
+        }));
     }
 
     private void RenderDetailPage(SNSurveyQuestionDetailDTO data)
