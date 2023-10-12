@@ -6,7 +6,7 @@ public class SNUserDTO
     public string FullName { get; set; }
     public string Gender { get; set; }
     public string AvatarUrl { get; set; }
-    public decimal Point { get; set; }
+    public float Point { get; set; }
     public string Token { get; set; }
     public string Role { get; set; }
     public string IsDelete { get; set; }

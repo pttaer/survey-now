@@ -41,6 +41,7 @@ public class SNMenuView : MonoBehaviour
         m_BtnLogout.onClick.AddListener(Logout);
 
         SNMainControl.Api.OnClickMenuEvent += OpenMenu;
+        SNMenuControl.Api.onOpenBuyPoints += LoadPoints;
 
         // Default value
         gameObject.SetActive(false);
@@ -49,6 +50,7 @@ public class SNMenuView : MonoBehaviour
     private void OnDestroy()
     {
         SNMainControl.Api.OnClickMenuEvent -= OpenMenu;
+        SNMenuControl.Api.onOpenBuyPoints -= LoadPoints;
     }
 
     private void LoadProfile()

@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -27,12 +28,23 @@ public class SNApiControl
         return request;
     }
 
-    public IEnumerator GetListData<T>(string api, Action<T[]> RenderPage, bool isNotShowSorry = false)
+    public IEnumerator GetListData<T>(string url, Dictionary<string, string> param = null, Action<T[]> RenderPage = null, bool isNotShowSorry = false)
     {
-        Debug.Log("CALL " + api);
-
         SNControl.Api.ShowLoading();
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(api, SNConstant.METHOD_GET);
+
+        if (param != null)
+        {
+            url += "?";
+
+            foreach (var item in param)
+            {
+                url = url + item.Key + "=" + item.Value + "&";
+            }
+        }
+
+        Debug.Log("CALL " + url);
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(url, SNConstant.METHOD_GET);
 
         request.downloadHandler = new DownloadHandlerBuffer();
         yield return request.SendWebRequest();
@@ -53,20 +65,18 @@ public class SNApiControl
         {
             SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
-            if (!isNotShowSorry)
+
+            if (JsonConvert.DeserializeObject(response).GetType() == typeof(JArray))
             {
-                SNResponseDTO<T> jsondata = JsonConvert.DeserializeObject<SNResponseDTO<T>>(response);
-                T[] datas = jsondata.Results.Select(dto => dto).ToArray();
-                RenderPage(datas);
-                if (datas.Length == 0)
-                {
-                    SNControl.Api.ShowSorry("Sorry, there are <b>no more items.</b>");
-                }
+                T[] dataArray = JsonConvert.DeserializeObject<T[]>(response);
+
+                RenderPage?.Invoke(dataArray);
             }
-            if (isNotShowSorry)
+            else
             {
-                T[] jsondata = JsonConvert.DeserializeObject<T[]>(response).Select(dto => dto).ToArray();
-                RenderPage(jsondata);
+                SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
+
+                RenderPage?.Invoke(data.results);
             }
         }
         else
@@ -78,12 +88,24 @@ public class SNApiControl
         }
     }
 
-    public IEnumerator GetData<T>(string api, Action<T> RenderPage)
+    public IEnumerator GetData<T>(string url, Dictionary<string, string> param = null, Action<T> RenderPage = null)
     {
-        Debug.Log("CALL " + api);
-
         SNControl.Api.ShowLoading();
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(api, SNConstant.METHOD_GET);
+
+        if (param != null)
+        {
+            url += "?";
+
+            foreach (var item in param)
+            {
+                url = url + item.Key + "=" + item.Value + "&";
+            }
+        }
+
+        Debug.Log("CALL " + url);
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(url, SNConstant.METHOD_GET);
+
 
         request.downloadHandler = new DownloadHandlerBuffer();
         yield return request.SendWebRequest();
@@ -104,10 +126,10 @@ public class SNApiControl
         {
             SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
-            
-            SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
 
-            RenderPage?.Invoke(data.results);
+            T data = JsonConvert.DeserializeObject<T>(response);
+
+            RenderPage?.Invoke(data);
         }
         else
         {
@@ -148,8 +170,10 @@ public class SNApiControl
         }
     }
 
-    public IEnumerator PostData<T>(string uri, T formData, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false)
+    public IEnumerator PostData<T>(string uri, T formData, Action callback = null, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false)
     {
+        SNControl.Api.ShowLoading();
+
         string jsonData = JsonConvert.SerializeObject(formData, Formatting.Indented);
         byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
@@ -175,7 +199,10 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            SNControl.Api.HideLoading();
+
             Debug.LogError("SENT OK: ");
+            callback?.Invoke();
         }
         else
         {
@@ -366,8 +393,8 @@ public class SNApiControl
             Debug.LogError("test error: " + request.error);
         }
     }
-  
-  public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
+
+    public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
     {
         // Example post data
 
@@ -476,13 +503,13 @@ public class SNApiControl
         byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
 
         UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_POST, SNConstant.METHOD_POST);
-  
+
         request.SetRequestHeader("Content-Type", "application/json");
         request.uploadHandler = new UploadHandlerRaw(jsonBytes);
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
-  
+
         if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Error posting data: " + request.error);
