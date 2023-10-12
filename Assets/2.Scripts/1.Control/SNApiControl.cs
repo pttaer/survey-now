@@ -239,6 +239,8 @@ public class SNApiControl
             SNModel.Api.CurrentUser = JsonConvert.DeserializeObject<SNUserDTO>(response);
 
             PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
+            PlayerPrefs.SetString(SNConstant.USER_EMAIL_CACHE, userData.email);
+            PlayerPrefs.SetString(SNConstant.USER_FULLNAME_CACHE, userData.fullName);
 
             Debug.Log("Set token: " + PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
 

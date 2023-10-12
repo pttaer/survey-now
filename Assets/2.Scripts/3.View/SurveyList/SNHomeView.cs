@@ -9,7 +9,7 @@ public class SNHomeView : MonoBehaviour
 {
     private Button m_BtnMenu;
     private Button m_BtnBack;
-    private Button m_BtnSearch;
+    //private Button m_BtnSearch;
 
     private SNSurveyListMySurveyView m_PnlMySurveyView;
     private SNSurveyListSurveyDetailView m_PnlSurveyDetailView;
@@ -26,7 +26,7 @@ public class SNHomeView : MonoBehaviour
     {
         m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
         m_BtnBack = transform.Find("TopBar/BtnBack").GetComponent<Button>();
-        m_BtnSearch = transform.Find("TopBar/BtnSearch").GetComponent<Button>();
+        //m_BtnSearch = transform.Find("TopBar/BtnSearch").GetComponent<Button>();
 
         m_PnlMySurveyView = transform.Find("MySurvey").GetComponent<SNSurveyListMySurveyView>();
         m_PnlSurveyDetailView = transform.Find("SurveyDetail").GetComponent<SNSurveyListSurveyDetailView>();
@@ -39,7 +39,7 @@ public class SNHomeView : MonoBehaviour
 
         m_BtnMenu.onClick.AddListener(OnClickOpenMenu);
         m_BtnBack.onClick.AddListener(OnClickBack);
-        m_BtnSearch.onClick.AddListener(OnClickSearch);
+        //m_BtnSearch.onClick.AddListener(OnClickSearch);
 
         SNSurveyListControl.Api.OnOpenSurveyDetailEvent += OpenSurveyDetail;
         SNSurveyListControl.Api.OnOpenMySurveyEvent += OpenHome;
@@ -91,7 +91,7 @@ public class SNHomeView : MonoBehaviour
 
     private void ShowBackBtn(bool isSceneTitleOn)
     {
-        m_BtnSearch.gameObject.SetActive(isSceneTitleOn);
+        //m_BtnSearch.gameObject.SetActive(isSceneTitleOn);
         m_BtnBack.gameObject.SetActive(!isSceneTitleOn);
     }
 

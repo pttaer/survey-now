@@ -14,8 +14,8 @@ public class SNSurveyRecordView : MonoBehaviour
     public void Init(SNSurveyResponseDTO data)
     {
         m_BtnDetail = GetComponent<Button>();
-        m_TxtTitle = transform.Find("TxtTitle").GetComponent<Text>();
-        m_TxtPoints = transform.Find("TxtTitle/TxtPoints").GetComponent<Text>();
+        m_TxtTitle = transform.Find("TopBar/TxtTitle").GetComponent<Text>();
+        m_TxtPoints = transform.Find("TopBar/TxtPoints").GetComponent<Text>();
         m_TxtDate = transform.Find("Body/LeftSide/TxtDate").GetComponent<Text>();
         m_TxtQuestionAmount = transform.Find("Body/LeftSide/TxtQuestionAmount").GetComponent<Text>();
 
@@ -23,9 +23,9 @@ public class SNSurveyRecordView : MonoBehaviour
 
         //Default Value
         m_TxtTitle.text = data.Title;
-        m_TxtPoints.text = data.Point.ToString();
-        m_TxtDate.text = data.StartDate;
-        m_TxtQuestionAmount.text = data.TotalQuestion.ToString();
+        m_TxtPoints.text = data.Point.ToString() + m_TxtPoints.text;
+        m_TxtDate.text = data.StartDate + " - " + data.ExpiredDate;
+        m_TxtQuestionAmount.text = data.TotalQuestion.ToString() + m_TxtQuestionAmount.text;
 
         m_Data = data;
     }

@@ -164,7 +164,9 @@ public class SNConstant
 
     public const string PROFILE_CACHE = "profile_cache";
 
-    public const string SCHOOL_CACHE = "school_cache";
+    public const string USER_EMAIL_CACHE = "user_email";
+
+    public const string USER_FULLNAME_CACHE = "full_name";
 
     // tween constant
     public const string TIME_UNIT = " mins";
@@ -181,7 +183,7 @@ public class SNConstant
 
     public static Color MAIN_LIGHT_COLOR_GREEN { get => m_MainLightColor; }
 
-    private static Color m_MainColor = new Color(115f / 255f, 209f / 255f, 61f / 255f);
+    private static Color m_MainColor = new Color(0f, 0.69f, 0.31f);
 
     private static Color m_MainLightColor = new Color(115f / 255f, 209f / 255f, 61f / 255f, 86f / 255f);
 
