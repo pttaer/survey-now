@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static SNDoSurveyDTO;
 
 public class SNLikertQuestionItemView : MonoBehaviour
 {
@@ -12,9 +14,12 @@ public class SNLikertQuestionItemView : MonoBehaviour
     private Text m_TxtTitle;
 
     private List<SNQuestionToggleItemView> m_ItemViewList;
+    private int m_Order;
 
-    public void Init(string title, List<SNSectionQuestionColumnOptionDTO> columnOptions)
+    public void Init(string title, int order, List<SNSectionQuestionColumnOptionDTO> columnOptions)
     {
+        m_Order = order;
+
         m_BtnQuestion = transform.Find("BtnQuestion").GetComponent<Button>();
         m_Options = transform.Find("Options").gameObject;
         m_TglGroup = transform.Find("Options").GetComponent<ToggleGroup>();
@@ -33,7 +38,10 @@ public class SNLikertQuestionItemView : MonoBehaviour
                 GenerateQuestionChoices(option);
             }
         }
+
+        m_TglGroup.allowSwitchOff = true;
         m_TglGroup.SetAllTogglesOff();
+        m_ToggleItemPref.SetActive(false);
     }
 
     private void OnClickQuestion()
@@ -47,6 +55,7 @@ public class SNLikertQuestionItemView : MonoBehaviour
     {
         GameObject go = Instantiate(m_ToggleItemPref, m_Options.transform);
         SNQuestionToggleItemView view = go.GetComponent<SNQuestionToggleItemView>();
+        go.SetActive(true);
         Toggle tgl = go.GetComponent<Toggle>();
         tgl.group = m_TglGroup;
         m_ItemViewList.Add(view);
@@ -56,5 +65,37 @@ public class SNLikertQuestionItemView : MonoBehaviour
     public void TurnOptionOff()
     {
         m_Options.SetActive(false);
+    }
+
+    public AnswerOptionDTO GetAnswer()
+    {
+        int columnOrder = -1; // Not choose yet
+
+        foreach (SNQuestionToggleItemView view in m_ItemViewList)
+        {
+            if (view.IsTglOn())
+            {
+                columnOrder = view.GetColumnOrder();
+            }
+        }
+
+        return new AnswerOptionDTO()
+        {
+            RowOrder = m_Order,
+            ColumnOrder = columnOrder,
+            Content = null
+        };
+    }
+
+    public bool Validate()
+    {
+        foreach (SNQuestionToggleItemView view in m_ItemViewList)
+        {
+            if (view.IsTglOn())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

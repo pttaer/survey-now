@@ -52,22 +52,12 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             SNControl.Api.HideLoading();
+
             string response = request.downloadHandler.text;
-            if (!isNotShowSorry)
-            {
-                SNResponseDTO<T> jsondata = JsonConvert.DeserializeObject<SNResponseDTO<T>>(response);
-                T[] datas = jsondata.Results.Select(dto => dto).ToArray();
-                RenderPage(datas);
-                if (datas.Length == 0)
-                {
-                    SNControl.Api.ShowSorry("Sorry, there are <b>no more items.</b>");
-                }
-            }
-            if (isNotShowSorry)
-            {
-                T[] jsondata = JsonConvert.DeserializeObject<T[]>(response).Select(dto => dto).ToArray();
-                RenderPage(jsondata);
-            }
+
+            SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
+
+            RenderPage?.Invoke(data.results);
         }
         else
         {
@@ -102,20 +92,16 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
-            
-            SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
-
-            RenderPage?.Invoke(data.results);
+            T data = JsonConvert.DeserializeObject<T>(response);
+            RenderPage?.Invoke(data);
         }
         else
         {
-            SNControl.Api.HideLoading();
             // Show popup error
-
             Debug.LogError("test error: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator SetRequestMemberAccess(string url, int memberId, int requestAccess)
@@ -148,8 +134,10 @@ public class SNApiControl
         }
     }
 
-    public IEnumerator PostData<T>(string uri, T formData, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false)
+    public IEnumerator PostData<T>(string uri, T formData, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
+
         string jsonData = JsonConvert.SerializeObject(formData, Formatting.Indented);
         byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
@@ -176,15 +164,19 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.LogError("SENT OK: ");
+            callback?.Invoke();
         }
         else
         {
             Debug.LogError("Error sending data: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
-    public IEnumerator DelItem(string uri)
+    public IEnumerator DelItem(string uri, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
+
         UnityWebRequest request = SNApiControl.WebRequestWithAuthorizationHeader(uri, SNConstant.METHOD_DELETE);
 
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -196,11 +188,14 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("Handled request access successfully: " + response);
+            callback?.Invoke();
         }
         else
         {
             Debug.Log("error: " + request.error);
+            callback?.Invoke();
         }
+        SNControl.Api.HideLoading();
     }
 
     public void Logout()
@@ -210,6 +205,7 @@ public class SNApiControl
 
     public IEnumerator Login(string email, string password, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
         UnityWebRequest request = new UnityWebRequest(SNConstant.LOGIN, SNConstant.METHOD_POST.ToUpper());
 
         JObject data = new JObject()
@@ -249,6 +245,8 @@ public class SNApiControl
             SNModel.Api.CurrentUser = JsonConvert.DeserializeObject<SNUserDTO>(response);
 
             PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
+            PlayerPrefs.SetString(SNConstant.USER_EMAIL_CACHE, userData.email);
+            PlayerPrefs.SetString(SNConstant.USER_FULLNAME_CACHE, userData.fullName);
 
             Debug.Log("Set token: " + PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
 
@@ -260,11 +258,14 @@ public class SNApiControl
         else
         {
             Debug.LogError("test error: " + request.error);
+            SNControl.Api.FailLogin();
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator Register(SNUserDTO data, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
         UnityWebRequest request = new UnityWebRequest(SNConstant.REGISTER, SNConstant.METHOD_POST.ToUpper());
 
         string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -296,6 +297,7 @@ public class SNApiControl
         {
             Debug.LogError("test error: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator PurchasePoints(int amount, Action<string> callback = null)
@@ -366,8 +368,8 @@ public class SNApiControl
             Debug.LogError("test error: " + request.error);
         }
     }
-  
-  public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
+
+    public IEnumerator PostSurveyTest(SNSurveyRequestDTO postData)
     {
         // Example post data
 
@@ -476,13 +478,13 @@ public class SNApiControl
         byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
 
         UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_POST, SNConstant.METHOD_POST);
-  
+
         request.SetRequestHeader("Content-Type", "application/json");
         request.uploadHandler = new UploadHandlerRaw(jsonBytes);
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
-  
+
         if (request.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("Error posting data: " + request.error);

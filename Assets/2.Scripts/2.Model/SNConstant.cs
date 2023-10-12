@@ -19,6 +19,10 @@ public class SNConstant
     {
         get { return "SNMenuView"; }
     }
+    public static string SCENE_HOME
+    {
+        get { return "SNHome"; }
+    }
     public static string SCENE_MAIN
     {
         get { return "SNMainView"; }
@@ -106,11 +110,15 @@ public class SNConstant
     public const string POINTS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo";
     public const string POINTS_PURCHASE_RETURN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo/return";
     public const string POINTS_PURCHASE_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/history";
+
     public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
-    public const string SURVEY_GET_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_GET_HOME = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_GET_MY_SURVEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys";
     public const string SURVEY_GET_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_PUT = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_PATCH = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
+    public const string SURVEY_DO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/do-survey";
+    public const string SURVEY_DELETE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
 
     #endregion API_URI
 
@@ -157,7 +165,9 @@ public class SNConstant
 
     public const string PROFILE_CACHE = "profile_cache";
 
-    public const string SCHOOL_CACHE = "school_cache";
+    public const string USER_EMAIL_CACHE = "user_email";
+
+    public const string USER_FULLNAME_CACHE = "full_name";
 
     // tween constant
     public const string TIME_UNIT = " mins";
@@ -174,7 +184,7 @@ public class SNConstant
 
     public static Color MAIN_LIGHT_COLOR_GREEN { get => m_MainLightColor; }
 
-    private static Color m_MainColor = new Color(115f / 255f, 209f / 255f, 61f / 255f);
+    private static Color m_MainColor = new Color(0f, 0.69f, 0.31f);
 
     private static Color m_MainLightColor = new Color(115f / 255f, 209f / 255f, 61f / 255f, 86f / 255f);
 

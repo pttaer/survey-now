@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static SNDoSurveyDTO;
 
 public class SNQuestionMultipleView : SNInitView
 {
@@ -12,10 +14,12 @@ public class SNQuestionMultipleView : SNInitView
     private ToggleGroup m_TglGroup;
 
     private List<SNQuestionToggleItemView> m_ItemViewList;
+    private int m_QuestionId;
 
     public override void Init(SNSectionQuestionDTO data)
     {
         if (data == null) return;
+        m_QuestionId = data.id;
 
         m_TxtOrder = transform.Find("TopBar/TxtOrder").GetComponent<Text>();
         m_Title = transform.Find("TopBar/TxtTitle").GetComponent<Text>();
@@ -32,11 +36,14 @@ public class SNQuestionMultipleView : SNInitView
 
         foreach (var row in data?.rowOptions)
         {
-            if(!string.IsNullOrEmpty(row.content))
+            if (!string.IsNullOrEmpty(row.content))
             {
                 GenerateQuestionChoices(row);
             }
         }
+
+        m_TglGroup.allowSwitchOff = true;
+        m_TglGroup.SetAllTogglesOff();
     }
 
     private void GenerateQuestionChoices(SNSectionQuestionRowOptionDTO data)
@@ -45,5 +52,45 @@ public class SNQuestionMultipleView : SNInitView
         SNQuestionToggleItemView view = go.GetComponent<SNQuestionToggleItemView>();
         m_ItemViewList.Add(view);
         view.Init(data);
+    }
+
+    public override AnswerDTO GetAnswer()
+    {
+        List<AnswerOptionDTO> answerOptions = new();
+
+        foreach (SNQuestionToggleItemView view in m_ItemViewList)
+        {
+            if (view.IsTglOn())
+            {
+                AnswerOptionDTO answer = new()
+                {
+                    RowOrder = m_ItemViewList.IndexOf(view) + 1,
+                    ColumnOrder = null,
+                    Content = null
+                };
+                answerOptions.Add(answer);
+            }
+        }
+
+        return new AnswerDTO()
+        {
+            QuestionId = m_QuestionId,
+            Content = null,
+            RateNumber = null,
+            AnswerOptions = answerOptions
+        };
+    }
+
+    public override bool Validate()
+    {
+        Debug.Log("GOOOO");
+        foreach (var item in m_ItemViewList)
+        {
+            if (item.IsTglOn())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

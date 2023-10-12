@@ -10,12 +10,18 @@ public class SNCreateSurveyView : MonoBehaviour
     private Button m_BtnAdd;
     private Button m_BtnExit;
     private Button m_BtnNext;
+    private Button m_BtnBackToPnlName;
 
     private Transform m_Content;
     private SNCreateQuestionTypePnlView m_CreateQuestionTypePnlView;
     private Text m_TxtTitleSurveyName;
     private Text m_TxtTitleSurveyAdd;
 
+    private Text m_TxtWarning;
+    private Text m_TxtWarningDescription;
+    private Text m_TxtConfirm;
+    private Text m_TxtAreYouSure;
+    private Text m_TxtNo;
     private GameObject m_Popup;
     private GameObject m_PnlSurveyName;
     private GameObject m_PopupSurveyVolunteer;
@@ -51,12 +57,19 @@ public class SNCreateSurveyView : MonoBehaviour
         m_BtnAdd = transform.Find("SurveyAdd/BtnAdd").GetComponent<Button>();
         m_BtnExit = transform.Find("Popup/QuestionType/BtnExit").GetComponent<Button>();
         m_BtnNext = transform.Find("SurveyAdd/BtnNext").GetComponent<Button>();
+        m_BtnBackToPnlName = transform.Find("TopBar/BtnBack").GetComponent<Button>();
 
         m_Content = transform.Find("SurveyAdd/Viewport/Content");
         m_CreateQuestionTypePnlView = transform.Find("Popup/QuestionType").GetComponent<SNCreateQuestionTypePnlView>();
 
         m_TxtTitleSurveyName = transform.Find("TopBar/TxtTitleSurveyName").GetComponent<Text>();
         m_TxtTitleSurveyAdd = transform.Find("TopBar/TxtTitleSurveyAdd").GetComponent<Text>();
+
+        m_TxtWarning = transform.Find("TxtWarning").GetComponent<Text>();
+        m_TxtWarningDescription = transform.Find("TxtWarningDescription").GetComponent<Text>();
+        m_TxtConfirm = transform.Find("TxtConfirm").GetComponent<Text>();
+        m_TxtAreYouSure = transform.Find("TxtAreYouSure").GetComponent<Text>();
+        m_TxtNo = transform.Find("TxtNo").GetComponent<Text>();
 
         m_Popup = transform.Find("Popup").gameObject;
         m_PnlSurveyName = transform.Find("SurveyAdd/Viewport/Content/PnlSurveyName").gameObject;
@@ -80,6 +93,13 @@ public class SNCreateSurveyView : MonoBehaviour
         m_BtnAdd.onClick.AddListener(OpenQuestionTypePanel);
         m_BtnExit.onClick.AddListener(ExitQuestionTypePanel);
         m_BtnNext.onClick.AddListener(NextPnl);
+        m_BtnBackToPnlName.onClick.AddListener(() =>
+        {
+            SNControl.Api.ShowFAMPopup(m_TxtWarning.text, m_TxtAreYouSure.text, m_TxtConfirm.text, m_TxtNo.text, onConfirm: () =>
+            {
+                SetPnls(false);
+            });
+        });
 
         SNCreateSurveyControl.Api.OnClickChooseQuestionTypeEvent += SelectQuestionType;
         SNCreateSurveyControl.Api.OnDeleteItemReOrderQuestionListEvent += ReOrderItemList;
@@ -89,9 +109,17 @@ public class SNCreateSurveyView : MonoBehaviour
         m_CreateQuestionTypePnlView.Init();
     }
 
+    private void SetPnls(bool isNext)
+    {
+        m_TxtTitleSurveyName.gameObject.SetActive(!isNext);
+        m_TxtTitleSurveyAdd.gameObject.SetActive(isNext);
+        m_PnlSurveyName.gameObject.SetActive(!isNext);
+        m_BtnAdd.gameObject.SetActive(isNext);
+        m_BtnBackToPnlName.gameObject.SetActive(isNext);
+    }
+
     private void NextPnl()
     {
-
         if (m_TxtTitleSurveyAdd.gameObject.activeSelf)
         {
             // Popup confirm & post survey
@@ -151,10 +179,12 @@ public class SNCreateSurveyView : MonoBehaviour
 
         if (m_PnlSurveyName.activeSelf)
         {
-            m_TxtTitleSurveyName.gameObject.SetActive(false);
-            m_TxtTitleSurveyAdd.gameObject.SetActive(true);
-            m_PnlSurveyName.gameObject.SetActive(false);
-            m_BtnAdd.gameObject.SetActive(true);
+            if (string.IsNullOrEmpty(m_IpfSurveyName.text))
+            {
+                SNControl.Api.ShowFAMPopup(m_TxtWarning.text, m_TxtWarningDescription.text, m_TxtConfirm.text, "NotShow");
+                return;
+            }
+            SetPnls(true);
         }
     }
 
