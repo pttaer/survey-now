@@ -9,6 +9,8 @@ public class SNHomeView : MonoBehaviour
 {
     private Button m_BtnMenu;
     private Button m_BtnBack;
+    private Text m_Title;
+    private Text m_TxtSurveyTitle;
     //private Button m_BtnSearch;
 
     private SNSurveyListMySurveyView m_PnlMySurveyView;
@@ -26,6 +28,8 @@ public class SNHomeView : MonoBehaviour
     {
         m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
         m_BtnBack = transform.Find("TopBar/BtnBack").GetComponent<Button>();
+        m_Title = transform.Find("TopBar/TxtTitleHome").GetComponent<Text>();
+        m_TxtSurveyTitle = transform.Find("TopBar/TxtSurveyTitle").GetComponent<Text>();
         //m_BtnSearch = transform.Find("TopBar/BtnSearch").GetComponent<Button>();
 
         m_PnlMySurveyView = transform.Find("MySurvey").GetComponent<SNSurveyListMySurveyView>();
@@ -63,6 +67,7 @@ public class SNHomeView : MonoBehaviour
     private void OnClickBack()
     {
         ShowPnl(m_PreviousPnl);
+        m_TxtSurveyTitle.gameObject.SetActive(false);
     }
 
     private void OpenHome()
@@ -75,6 +80,8 @@ public class SNHomeView : MonoBehaviour
     {
         SNControl.Api.OpenPanel(pnl, m_ListPnl);
 
+        m_Title.gameObject.SetActive(true);
+
         ShowBackBtn(true);
 
         m_PreviousPnl = pnl;
@@ -83,10 +90,11 @@ public class SNHomeView : MonoBehaviour
     private void OpenSurveyDetail(SNSurveyResponseDTO data)
     {
         // Show pnl detail
+        m_Title.gameObject.SetActive(false);
         m_PreviousPnl = m_PnlMySurveyView.gameObject;
         SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
         ShowBackBtn(false);
-        m_PnlSurveyDetailView.Init(data.Id);
+        m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status);
     }
 
     private void ShowBackBtn(bool isSceneTitleOn)

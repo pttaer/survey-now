@@ -60,6 +60,7 @@ public class SNMenuView : MonoBehaviour
         }
 
         SNMainControl.Api.OnClickMenuEvent += OpenMenu;
+        SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent += LoadMySurvey;
 
         // Default value
         gameObject.SetActive(false);
@@ -69,6 +70,7 @@ public class SNMenuView : MonoBehaviour
     private void OnDestroy()
     {
         SNMainControl.Api.OnClickMenuEvent -= OpenMenu;
+        SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent -= LoadMySurvey;
     }
 
     private void LoadHome()
@@ -112,6 +114,10 @@ public class SNMenuView : MonoBehaviour
 
     private void Logout()
     {
+        foreach (var view in m_MenuIconViewList)
+        {
+            view.SetButtonColor("BtnHome");
+        }
         LoadScene(SNConstant.SCENE_LOGIN);
     }
 

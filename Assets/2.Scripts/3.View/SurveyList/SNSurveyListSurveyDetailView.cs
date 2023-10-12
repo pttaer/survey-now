@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine.UI;
 using static SNDoSurveyDTO;
 using Newtonsoft.Json;
+using System;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
@@ -15,18 +16,36 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     private GameObject m_PnlCompleteSurvey;
     private GameObject m_PnlPnlAlreadyCompleteSurvey;
 
+    private Text m_TxtSurveyTitle;
+    private Text m_TxtSurveyStatus;
+
     private Button m_BtnComplete;
     private Button m_BtnBackToHome;
     private Button m_BtnGoToHistory;
+    private Button m_BtnDeleteSurvey;
 
     private Transform m_QuestionContainer;
     private List<SNInitView> m_InitViewList;
 
     private bool m_IsInit = false;
+    private int m_Id;
+    private string m_TxtStat;
 
-    public void Init(int id)
+    [SerializeField] string m_TxtWarning;
+    [SerializeField] string m_TxtDoYouSureDeleteSurvey;
+    [SerializeField] string m_TxtConfirm;
+    [SerializeField] string m_TxtNo;
+
+    [SerializeField] string m_TxtActive;
+    [SerializeField] string m_TxtInActive;
+    [SerializeField] string m_TxtDraft;
+    [SerializeField] string m_TxtExpired;
+    [SerializeField] string m_TxtPackPurchased;
+
+    public void Init(int id, string title, string status)
     {
         Debug.Log("ID " + id);
+        m_Id = id;
 
         if (!m_IsInit)
         {
@@ -38,17 +57,23 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
             m_PnlCompleteSurvey = transform.Find("PnlCompleteSurvey").gameObject;
             m_PnlPnlAlreadyCompleteSurvey = transform.Find("PnlCompleteSurvey").gameObject;
 
+            m_TxtSurveyTitle = transform.parent.transform.Find("TopBar/TxtSurveyTitle").GetComponent<Text>();
+            m_TxtSurveyStatus = transform.parent.transform.Find("TopBar/TxtSurveyStatus").GetComponent<Text>();
+
             m_BtnComplete = transform.Find("BtnComplete").GetComponent<Button>();
             m_BtnBackToHome = transform.Find("PnlCompleteSurvey/BtnHome").GetComponent<Button>();
             m_BtnGoToHistory = transform.Find("PnlAlreadyCompleteSurvey/BtnHistory").GetComponent<Button>();
+            m_BtnDeleteSurvey = transform.Find("BtnDeleteSurvey").GetComponent<Button>();
 
             m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id));
             m_BtnBackToHome.onClick.AddListener(() => SNSurveyListControl.Api.ClickBackToHome());
+            m_BtnDeleteSurvey.onClick.AddListener(DeleteSurvey);
 
             m_InitViewList = new();
             m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
 
             m_IsInit = true;
+            m_TxtStat = m_TxtSurveyStatus.text;
         }
 
         foreach (var item in from Transform item in m_QuestionContainer
@@ -58,7 +83,37 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
             Destroy(item.gameObject);
         }
 
+        m_TxtSurveyTitle.text = title;
+        m_TxtSurveyStatus.text = GetStatus(status);
+        m_TxtSurveyTitle.gameObject.SetActive(true);
+
         StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderDetailPage));
+    }
+
+    private string GetStatus(string status)
+    {
+        string txtStatus = status switch
+        {
+            "Active" => m_TxtActive,
+            "InActive" => m_TxtInActive,
+            "Draft" => m_TxtDraft,
+            "Expired" => m_TxtExpired,
+            "PackPurchased" => m_TxtPackPurchased,
+            _ => "N/A"
+        };
+
+        return m_TxtStat + $"\n<b>{txtStatus}</b>";
+    }
+
+    private void DeleteSurvey()
+    {
+        SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtDoYouSureDeleteSurvey, m_TxtConfirm, m_TxtNo, onConfirm: () =>
+        {
+            StartCoroutine(SNApiControl.Api.DelItem(string.Format(SNConstant.SURVEY_DELETE, m_Id), callback: () =>
+            {
+                SNMainControl.Api.DeleteSurveyBackToMySurvey();
+            }));
+        });
     }
 
     private bool ValidateAnswers()

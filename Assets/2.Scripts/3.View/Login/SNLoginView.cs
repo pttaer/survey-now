@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -43,10 +44,17 @@ public class SNLoginView : MonoBehaviour
     private InputField m_IpfPassword_Register;
     private InputField m_IpfPasswordConfirm_Register;
 
+    private Text m_TxtFailLogin;
+
     private ToggleGroup m_TglGrGender;
 
     // no ref var
     private List<GameObject> m_PnlRegisterList;
+
+    [SerializeField] string m_TxtWarning;
+    [SerializeField] string m_TxtConfirmPasswordNotCorrect;
+    [SerializeField] string m_TxtConfirm;
+    [SerializeField] string m_TxtNotAllInfoFilledTryAgain;
 
     private void Start()
     {
@@ -97,6 +105,8 @@ public class SNLoginView : MonoBehaviour
         m_BtnPreviousRegister4 = body.Find("Content/PnlRegister4/BtnGroup/BtnPrevious").GetComponent<Button>();
         m_BtnPreviousRegister5 = body.Find("Content/PnlRegister5/BtnGroup/BtnPrevious").GetComponent<Button>();
 
+        m_TxtFailLogin = m_PnlLogin.transform.Find("TxtFailLogin").GetComponent<Text>();
+
         m_PnlRegisterList = new List<GameObject>
         {
             m_PnlRegister1,
@@ -129,9 +139,14 @@ public class SNLoginView : MonoBehaviour
         m_BtnLogin.onClick.AddListener(Login);
         m_BtnGoToLogin.onClick.AddListener(() => SetPnlOn(m_PnlLogin));
 
-        m_BtnNextRegister1.onClick.AddListener(() => SetPnlOn(m_PnlRegister2));
+        m_BtnNextRegister1.onClick.AddListener(() => SetPnlOn(m_PnlRegister3));
         m_BtnNextRegister2.onClick.AddListener(() => SetPnlOn(m_PnlRegister3));
-        m_BtnNextRegister3.onClick.AddListener(() => SetPnlOn(m_PnlRegister4));
+        m_BtnNextRegister3.onClick.AddListener(() =>
+        {
+            // Register
+            ValidateRegister();
+        });
+
         m_BtnNextRegister4.onClick.AddListener(() => SetPnlOn(m_PnlRegister5));
         m_BtnNextRegister5.onClick.AddListener(() =>
         {
@@ -140,28 +155,43 @@ public class SNLoginView : MonoBehaviour
         });
 
         m_BtnPreviousRegister2.onClick.AddListener(() => SetPnlOn(m_PnlRegister1));
-        m_BtnPreviousRegister3.onClick.AddListener(() => SetPnlOn(m_PnlRegister2));
+        m_BtnPreviousRegister3.onClick.AddListener(() => SetPnlOn(m_PnlRegister1));
         m_BtnPreviousRegister4.onClick.AddListener(() => SetPnlOn(m_PnlRegister3));
         m_BtnPreviousRegister5.onClick.AddListener(() => SetPnlOn(m_PnlRegister4));
+
+        SNControl.Api.OnFailLogin += FailLogin;
 
         DefaultValue();
     }
 
-    private void LoadSceneMain()
+    private void ValidateRegister()
     {
-        SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_HOME);
-    }
-
-    private void Login()
-    {
-        if (!string.IsNullOrEmpty(m_IpfEmail_Login.text) && !string.IsNullOrEmpty(m_IpfPassword_Login.text))
+        if (!string.IsNullOrEmpty(m_IpfFirstname.text)
+            && !string.IsNullOrEmpty(m_IpfLastname.text)
+            && !string.IsNullOrEmpty(m_IpfEmail_Register.text)
+            && !string.IsNullOrEmpty(m_IpfPassword_Register.text)
+            && !string.IsNullOrEmpty(m_IpfPasswordConfirm_Register.text))
         {
-            SNControl.Api.ShowLoading();
-            StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
+            if (m_IpfPassword_Register.text == m_IpfPasswordConfirm_Register.text)
             {
-                LoadSceneMain();
-                SNControl.Api.HideLoading();
-            }));
+                Register();
+            }
+            else
+            {
+                SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtConfirmPasswordNotCorrect, m_TxtConfirm, "NotShow");
+            }
+        }
+        else
+        {
+            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtNotAllInfoFilledTryAgain, m_TxtConfirm, "NotShow", onConfirm: () =>
+            {
+                if (string.IsNullOrEmpty(m_IpfFirstname.text)
+                    && string.IsNullOrEmpty(m_IpfLastname.text)
+                    && string.IsNullOrEmpty(m_IpfEmail_Register.text))
+                {
+                    SetPnlOn(m_PnlRegister1);
+                }
+            });
         }
     }
 
@@ -175,6 +205,29 @@ public class SNLoginView : MonoBehaviour
         };
 
         StartCoroutine(SNApiControl.Api.Register(newUser));
+    }
+
+    private void OnDestroy()
+    {
+        SNControl.Api.OnFailLogin -= FailLogin;
+    }
+
+    private void LoadSceneMain()
+    {
+        SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_HOME);
+    }
+
+    private void Login()
+    {
+        if (!string.IsNullOrEmpty(m_IpfEmail_Login.text) && !string.IsNullOrEmpty(m_IpfPassword_Login.text))
+        {
+            StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
+            {
+                SetGO(m_TxtFailLogin.gameObject, false);
+                LoadSceneMain();
+                SNControl.Api.HideLoading();
+            }));
+        }
     }
 
     private void Update()
@@ -195,6 +248,7 @@ public class SNLoginView : MonoBehaviour
         SetGO(m_PnlLogin, true);
         SetGO(m_PnlForgotPassword, false);
         SetBtnAccountExist(true);
+        SetGO(m_TxtFailLogin.gameObject, false);
 
 #if !UNITY_EDITOR
         SetGO(m_BtnSkip.gameObject, false);
@@ -204,6 +258,11 @@ public class SNLoginView : MonoBehaviour
         {
             SetGO(pnl, false);
         }
+    }
+
+    private void FailLogin()
+    {
+        SetGO(m_TxtFailLogin.gameObject, true);
     }
 
     #region UTILS

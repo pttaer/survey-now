@@ -6,6 +6,7 @@ public class SNMainControl : MonoBehaviour
     public static SNMainControl Api;
 
     public Action OnClickMenuEvent;
+    public Action OnDeleteSurveyBackToMySurveyEvent;
     public Action OnOpenProfileEvent;
     public Action OnOpenAccountlEvent;
     public Action OnOpenAccountPurchaseEvent;
@@ -14,6 +15,11 @@ public class SNMainControl : MonoBehaviour
     public void OpenMenuPnl()
     {
         OnClickMenuEvent?.Invoke();
+    }
+
+    public void DeleteSurveyBackToMySurvey()
+    {
+        OnDeleteSurveyBackToMySurveyEvent?.Invoke();
     }
 
     public void OpenProfile()

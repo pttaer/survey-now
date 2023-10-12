@@ -118,6 +118,7 @@ public class SNConstant
     public const string SURVEY_PUT = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_PATCH = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
     public const string SURVEY_DO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/do-survey";
+    public const string SURVEY_DELETE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
 
     #endregion API_URI
 
