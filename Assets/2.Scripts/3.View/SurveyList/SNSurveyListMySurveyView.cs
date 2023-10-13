@@ -9,7 +9,7 @@ public class SNSurveyListMySurveyView : MonoBehaviour
 
     public void InitHome()
     {
-        StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_HOME, RenderPage));
+        StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_ALL, null, RenderPage));
         m_SurveyRecordList = new();
         m_SurveyRecordPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
     }

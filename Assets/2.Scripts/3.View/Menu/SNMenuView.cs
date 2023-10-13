@@ -60,6 +60,7 @@ public class SNMenuView : MonoBehaviour
         }
 
         SNMainControl.Api.OnClickMenuEvent += OpenMenu;
+        SNMenuControl.Api.onOpenBuyPoints += LoadPoints;
         SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent += LoadMySurvey;
 
         // Default value
@@ -70,6 +71,7 @@ public class SNMenuView : MonoBehaviour
     private void OnDestroy()
     {
         SNMainControl.Api.OnClickMenuEvent -= OpenMenu;
+        SNMenuControl.Api.onOpenBuyPoints -= LoadPoints;
         SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent -= LoadMySurvey;
     }
 
