@@ -119,7 +119,7 @@ public class SNCreateSurveyView : MonoBehaviour
         m_TxtTitleSurveyAdd.gameObject.SetActive(isNext);
         m_PnlSurveyName.gameObject.SetActive(!isNext);
         m_BtnAdd.gameObject.SetActive(isNext);
-        m_BtnBackToPnlName.gameObject.SetActive(isNext);
+        //m_BtnBackToPnlName.gameObject.SetActive(isNext);
     }
 
     private void NextPnl()

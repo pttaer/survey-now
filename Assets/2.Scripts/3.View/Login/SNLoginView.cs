@@ -280,7 +280,7 @@ public class SNLoginView : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            StartCoroutine(SNApiControl.Api.Login("user1@gmail.com", "12345678", () =>
+            StartCoroutine(SNApiControl.Api.Login("user@gmail.com", "12345678", () =>
             {
                 LoadSceneMain();
             }));
