@@ -123,6 +123,7 @@ public class SNConstant
     public const string SURVEY_DELETE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}/post-survey";
     public const string SURVEY_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/history";
+    public const string SURVEY_HISTORY_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys/{0}/answer";
 
     #endregion API_URI
 

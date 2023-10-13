@@ -98,4 +98,10 @@ public class SNLikertQuestionItemView : MonoBehaviour
         }
         return false;
     }
+
+    public void SetAnswer(SNSurveyAnswerDTO.AnswerOptionDTO answerOption)
+    {
+        Debug.Log("answerOption.columnOrder: " + (answerOption.columnOrder - 1) + " m_ItemViewList " + m_ItemViewList.Count);
+        m_ItemViewList[answerOption.columnOrder ?? 0 - 1].SetTglOn();
+    }
 }

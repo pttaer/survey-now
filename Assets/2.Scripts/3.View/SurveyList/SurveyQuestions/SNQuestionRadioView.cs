@@ -89,4 +89,9 @@ public class SNQuestionRadioView : SNInitView
         bool answerSelected = m_TglGroup?.ActiveToggles()?.ToList().Count > 0;
         return answerSelected;
     }
+
+    public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
+    {
+        m_ItemViewList[answer.answerOptions.FirstOrDefault().rowOrder - 1].SetTglOn();
+    }
 }

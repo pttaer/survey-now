@@ -168,7 +168,7 @@ public class SNApiControl
             Debug.Log("error: " + request.error);
         }
     }
-    
+
     public IEnumerator PatchData(string uri, Action callback = null)
     {
         SNControl.Api.ShowLoading();
@@ -193,7 +193,7 @@ public class SNApiControl
         }
         SNControl.Api.HideLoading();
     }
-    
+
     public IEnumerator EditData<T>(string uri, T formData, Action callback = null)
     {
         SNControl.Api.ShowLoading();
@@ -379,7 +379,7 @@ public class SNApiControl
         else
         {
             Debug.LogError("test error: " + request.error);
-            if(request.responseCode == 404 || request.responseCode == 500)
+            if (request.responseCode == 404 || request.responseCode == 500)
             {
                 SNControl.Api.FailLogin(false);
             }

@@ -91,4 +91,15 @@ public class SNQuestionLikertView : SNInitView
         }
         return true;
     }
+
+    public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
+    {
+        Debug.Log("answer " + answer.answerOptions.Count);
+        Debug.Log("m_ItemViewList " + m_ItemViewList.Count);
+        for (int i = 0; i < m_ItemViewList.Count; i++)
+        {
+            m_ItemViewList[i].SetAnswer(answer.answerOptions[i]);
+            m_TQuestionGroup.gameObject.SetActive(true);
+        }
+    }
 }

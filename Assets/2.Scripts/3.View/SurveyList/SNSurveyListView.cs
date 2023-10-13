@@ -115,7 +115,7 @@ public class SNSurveyListView : MonoBehaviour
             m_PreviousPnl = m_PnlMySurveyView.gameObject.activeSelf ? m_PnlMySurveyView.gameObject : m_PnlSurveyHistoryView.gameObject;
             SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
             ShowHistoryTitle(false);
-            m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status);
+            m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status, isHistoryPnl: true);
         }
     }
 

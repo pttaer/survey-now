@@ -71,4 +71,9 @@ public class SNQuestionRatingView : SNInitView
         string rate = m_TglGroup?.ActiveToggles()?.ToList()?.FirstOrDefault()?.transform.Find("Background/TxtRate").GetComponent<Text>().text ?? "";
         return !string.IsNullOrEmpty(rate);
     }
+
+    public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
+    {
+        m_TglViewList[answer.rateNumber ?? 0 + 1].SetIsOnWithoutNotify(true);
+    }
 }

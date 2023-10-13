@@ -45,4 +45,9 @@ public class SNQuestionCustomView : SNInitView
         string answer = m_IpfAnswer.text;
         return !string.IsNullOrEmpty(answer);
     }
+
+    public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
+    {
+        m_IpfAnswer.text = answer.content;
+    }
 }
