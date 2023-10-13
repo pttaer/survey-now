@@ -4862,6 +4862,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4daece70608b35547bb08ef0433faa07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtWarning: "L\u01B0u \xFD"
+  m_TxtYouCannotBuyThePack: "B\u1EA1n kh\xF4ng th\u1EC3 mua g\xF3i, h\xE3y t\u1EA1o
+    kh\u1EA3o s\xE1t"
+  m_TxtBack: "Quay l\u1EA1i"
 --- !u!1 &1984272723
 GameObject:
   m_ObjectHideFlags: 0

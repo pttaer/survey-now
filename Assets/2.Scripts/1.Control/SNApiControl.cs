@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class SNApiControl
 {
@@ -166,6 +167,72 @@ public class SNApiControl
         {
             Debug.Log("error: " + request.error);
         }
+    }
+    
+    public IEnumerator PatchData(string uri, Action callback = null)
+    {
+        SNControl.Api.ShowLoading();
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(uri, SNConstant.METHOD_PATCH);
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+
+        Debug.Log("request result= " + request.result);
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("PATCH OK: ");
+            SNControl.Api.HideLoading();
+            callback?.Invoke();
+        }
+        else
+        {
+            Debug.LogError("Error sending data: " + request.error);
+        }
+        SNControl.Api.HideLoading();
+    }
+    
+    public IEnumerator EditData<T>(string uri, T formData, Action callback = null)
+    {
+        SNControl.Api.ShowLoading();
+
+        string jsonData = JsonConvert.SerializeObject(formData, Formatting.Indented);
+        byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(uri, SNConstant.METHOD_PUT);
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.uploadHandler = new UploadHandlerRaw(jsonBytes);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return request.SendWebRequest();
+
+        Debug.Log("request result= " + request.result);
+
+        if (request.uploadHandler != null)
+        {
+            byte[] uploadedData = request.uploadHandler.data;
+            string uploadedDataString = System.Text.Encoding.UTF8.GetString(uploadedData);
+            Debug.Log("Uploaded data: " + uploadedDataString);
+        }
+        else
+        {
+            Debug.Log("Error: uploadHandler is null");
+        }
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            SNControl.Api.HideLoading();
+
+            Debug.LogError("SENT OK: ");
+            callback?.Invoke();
+        }
+        else
+        {
+            Debug.LogError("Error sending data: " + request.error);
+        }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator PostData<T>(string uri, T formData, Action callback = null, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false)
@@ -520,7 +587,7 @@ public class SNApiControl
         string jsonData = JsonConvert.SerializeObject(postData, Formatting.Indented);
         byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
 
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_POST, SNConstant.METHOD_POST);
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.SURVEY_CREATE, SNConstant.METHOD_POST);
 
         request.SetRequestHeader("Content-Type", "application/json");
         request.uploadHandler = new UploadHandlerRaw(jsonBytes);

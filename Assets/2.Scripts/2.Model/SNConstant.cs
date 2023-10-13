@@ -111,15 +111,17 @@ public class SNConstant
     public const string POINTS_PURCHASE_RETURN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo/return";
     public const string POINTS_PURCHASE_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/history";
 
-    public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
+    public const string SURVEY_CREATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
     public const string SURVEY_GET_HOME = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
     public const string SURVEY_GET_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
     public const string SURVEY_GET_MY_SURVEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys";
+    public const string SURVEY_SET_ACTIVE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
     public const string SURVEY_GET_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_PUT = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_PATCH = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
     public const string SURVEY_DO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/do-survey";
     public const string SURVEY_DELETE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
+    public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}/post-survey";
 
     #endregion API_URI
 
@@ -128,6 +130,7 @@ public class SNConstant
     public const string METHOD_POST = "POST";
     public const string METHOD_PUT = "PUT";
     public const string METHOD_DELETE = "DELETE";
+    public const string METHOD_PATCH = "PATCH";
 
     // title text
 

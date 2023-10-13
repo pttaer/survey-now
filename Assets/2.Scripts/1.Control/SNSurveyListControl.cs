@@ -9,6 +9,7 @@ public class SNSurveyListControl
     public Action OnClickBackToHomeEvent;
     public Action<int, bool> OnNotFinishSurveyPopupWarningEvent;
     public Action<SNSurveyResponseDTO> OnOpenSurveyDetailEvent;
+    public Action<int> OnOpenScenePacks;
 
     public void OpenSurveyHistory()
     {
@@ -23,6 +24,11 @@ public class SNSurveyListControl
     public void ClickBackToHome()
     {
         OnClickBackToHomeEvent?.Invoke();
+    }
+    
+    public void OpenScenePacks(int id)
+    {
+        OnOpenScenePacks?.Invoke(id);
     }
 
     public void NotFinishSurveyPopupWarning(int questionId, bool isQuestionFinish)

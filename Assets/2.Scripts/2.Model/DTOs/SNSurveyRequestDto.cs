@@ -61,3 +61,9 @@ public class SNColumnOptionRequestDTO
 
     public string? Content { get; set; }
 }
+
+public class SurveyPostDateDTO
+{
+    public DateTime startDate { get; set; }
+    public DateTime expiredDate { get; set; }
+}
