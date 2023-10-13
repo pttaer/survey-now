@@ -171,7 +171,7 @@ public class SNCreateSurveyView : MonoBehaviour
                 Sections = m_SectionDTO
             };
 
-            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_POST, postData));
+            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_CREATE, postData));
 
             m_SectionDTO.Clear();
             m_SectionQuestionDTO.Clear();

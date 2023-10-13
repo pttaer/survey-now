@@ -12,7 +12,11 @@ public class SNBundleFormView : MonoBehaviour
 
     private int m_ParticipantAmount;
 
-    public void Init()
+    [SerializeField] string m_TxtWarning;
+    [SerializeField] string m_TxtYouCannotBuyThePack;
+    [SerializeField] string m_TxtBack;
+
+    public void Init(int surveyId)
     {
         m_IpfParticipants = transform.Find("IpfParticipants").GetComponent<InputField>();
         m_TxtAmount = transform.Find("GroupCalculate/TxtAmount").GetComponent<Text>();
@@ -20,7 +24,7 @@ public class SNBundleFormView : MonoBehaviour
 
         m_IpfParticipants.onValueChanged.AddListener(OnUpdateForm);
 
-        m_BtnSubmit.onClick.AddListener(OnSubmit);
+        m_BtnSubmit.onClick.AddListener(() => OnSubmit(surveyId));
     }
 
     private void OnUpdateForm(string amount)
@@ -37,8 +41,13 @@ public class SNBundleFormView : MonoBehaviour
         }));
     }
 
-    private void OnSubmit()
+    private void OnSubmit(int surveyId)
     {
+        if(surveyId == -1)
+        {
+            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtYouCannotBuyThePack, m_TxtBack, "NotShow");
+        }
+
         // OPEN NOTICE PNL IF TOO BROKE, ELSE PROCEED
         if (float.Parse(m_TxtAmount.text) > SNModel.Api.CurrentUser.Point)
         {
@@ -46,7 +55,7 @@ public class SNBundleFormView : MonoBehaviour
         }
         else
         {
-            SNPacksPurchaseDTO data = new(SNBundleControl.Api.m_CurrentPackType, 1, m_ParticipantAmount);
+            SNPacksPurchaseDTO data = new(SNBundleControl.Api.m_CurrentPackType, surveyId, m_ParticipantAmount);
 
             _ = StartCoroutine(SNApiControl.Api.PostData(SNConstant.PACKS_PURCHASE, data, () =>
             {

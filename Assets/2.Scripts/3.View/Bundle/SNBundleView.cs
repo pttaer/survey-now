@@ -11,12 +11,12 @@ public class SNBundleView : MonoBehaviour
     private SNBundleFormView m_FormView;
     private SNBundleNoticeView m_NoticeView;
 
-    void Start()
+    private void Start()
     {
-        Init();
+        SNSurveyListControl.Api.OnOpenScenePacks += Init;
     }
 
-    public void Init()
+    public void Init(int surveyId = -1)
     {
         m_btnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
         m_SpawnItem = transform.Find("Body/Scroll View/Viewport/Content/PnlBundle").GetComponent<SNBundleItemView>();
@@ -25,7 +25,7 @@ public class SNBundleView : MonoBehaviour
 
         m_btnMenu.onClick.AddListener(OnClickOpenMenu);
 
-        m_FormView.Init();
+        m_FormView.Init(surveyId);
 
         SNBundleControl.Api.onOpenPopupForm += OpenPopupForm;
         SNBundleControl.Api.onOpenPopupNotice += OpenPopupNotice;
@@ -38,6 +38,7 @@ public class SNBundleView : MonoBehaviour
     {
         SNBundleControl.Api.onOpenPopupForm -= OpenPopupForm;
         SNBundleControl.Api.onOpenPopupNotice -= OpenPopupNotice;
+        SNSurveyListControl.Api.OnOpenScenePacks -= Init;
     }
 
     private void DefaultValue()
