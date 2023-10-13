@@ -122,6 +122,7 @@ public class SNConstant
     public const string SURVEY_DO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/do-survey";
     public const string SURVEY_DELETE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
     public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}/post-survey";
+    public const string SURVEY_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/history";
 
     #endregion API_URI
 
@@ -168,6 +169,8 @@ public class SNConstant
     public const string BEARER_TOKEN_CACHE = "bearer_token_cache";
 
     public const string PROFILE_CACHE = "profile_cache";
+
+    public const string USER_ID = "user_id";
 
     public const string USER_EMAIL_CACHE = "user_email";
 

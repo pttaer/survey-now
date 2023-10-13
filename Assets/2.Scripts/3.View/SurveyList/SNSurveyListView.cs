@@ -77,7 +77,7 @@ public class SNSurveyListView : MonoBehaviour
     private void OpenSurveyHistory()
     {
         ShowPnl(m_PnlSurveyHistoryView.gameObject);
-        m_PnlSurveyHistoryView.Init();
+        m_PnlSurveyHistoryView.InitMySurveyHistory();
     }
 
     private void OpenMySurvey()

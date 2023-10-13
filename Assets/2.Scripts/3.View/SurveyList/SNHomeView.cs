@@ -94,7 +94,7 @@ public class SNHomeView : MonoBehaviour
         m_PreviousPnl = m_PnlMySurveyView.gameObject;
         SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
         ShowBackBtn(false);
-        m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status);
+        m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status, data.CreatedUserId);
     }
 
     private void ShowBackBtn(bool isSceneTitleOn)

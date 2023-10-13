@@ -10462,7 +10462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TxtWarning: "Ch\xFA \xFD"
   m_TxtDoYouSureDeleteSurvey: "B\u1EA1n c\xF3 mu\u1ED1n x\xF3a kh\u1EA3o s\xE1t n\xE0y?"
-  m_TxtConfirmDelete: 
+  m_TxtConfirmDelete: "X\xF3a"
   m_TxtNo: "Quay l\u1EA1i"
   m_TxtActive: "\u0110ang ho\u1EA1t \u0111\u1ED9ng"
   m_TxtInActive: "B\u1ECB v\xF4 hi\u1EC7u h\xF3a"
@@ -10476,6 +10476,14 @@ MonoBehaviour:
   m_TxtPostSurveyNow: "\u0110\u0103ng kh\u1EA3o s\xE1t"
   m_TxtPurchasePack: "Mua g\xF3i"
   m_TxtConfirmPost: "\u0110\u0103ng"
+  m_TxtFail: 
+  m_TxtNotYetFinishSurvey: 
+  m_TxtYouCannotDoYourSurvey: 
+  m_TxtYouCannotDeleteAnySurveyThanDraft: "B\u1EA1n kh\xF4ng th\u1EC3 x\xF3a nh\u1EEFng
+    kh\u1EA3o s\xE1t ngo\xE0i c\xE1c kh\u1EA3o s\xE1t nh\xE1p, h\xE3y th\u1EED t\u1EAFt
+    kh\u1EA3o s\xE1t!"
+  m_TxtBack: "Quay l\u1EA1i"
+  m_TxtYes: Ok
 --- !u!1 &2016748057
 GameObject:
   m_ObjectHideFlags: 0

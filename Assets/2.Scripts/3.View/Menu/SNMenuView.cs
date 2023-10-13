@@ -102,13 +102,13 @@ public class SNMenuView : MonoBehaviour
     private void LoadHistory()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST, m_BtnHistory);
-        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenScenePacks(-1));
+        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenSurveyHistory());
     }
 
     private void LoadBilling()
     {
-        LoadScene(SNConstant.SCENE_BUNDLE, m_BtnHistory);
-        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenSurveyHistory());
+        LoadScene(SNConstant.SCENE_BUNDLE, m_BtnBilling);
+        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenScenePacks(-1));
     }
 
     private void LoadPoints()
