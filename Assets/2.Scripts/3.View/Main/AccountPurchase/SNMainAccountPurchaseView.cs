@@ -199,7 +199,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private void OnUpdatePointsDisplay(string points)
     {
         m_PointsConfirm.text = points;
-        m_PointsToCurrency.text = ((int.Parse(points) * 10)).ToString() + "VND";
+        m_PointsToCurrency.text = ((int.Parse(points) * 10)).ToString() + " VND";
     }
 
     private void PurchasePoints()
@@ -213,10 +213,17 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private void ProcessMomoReturnData(SNMomoRedirect momoData, string momoParam)
     {
-        StartCoroutine(SNApiControl.Api.MomoReturn(momoData, momoParam, () =>
+        StartCoroutine(SNApiControl.Api.MomoReturn(momoData, momoParam, (data) =>
         {
-
+            UpdateCurrentPoints(data.pointAmount);
         }));
+    }
+
+    private void UpdateCurrentPoints(int pointAmount)
+    {
+        int.TryParse(m_PointsBalance.text, out int result);
+
+        m_PointsBalance.text = (result + pointAmount).ToString();
     }
 
 

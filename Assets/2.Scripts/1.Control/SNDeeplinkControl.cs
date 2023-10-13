@@ -10,8 +10,10 @@ public class SNDeeplinkControl : MonoBehaviour
     public string deeplinkURL;
     public Action<SNMomoRedirect, string> onReturnFromMomo;
 
-    public void Awake()
+    public void Init()
     {
+        Debug.Log("init deeplink");
+
         if (Api == null)
         {
             Api = this;
@@ -31,7 +33,7 @@ public class SNDeeplinkControl : MonoBehaviour
         // Update DeepLink Manager global variable, so URL can be accessed from anywhere.
         deeplinkURL = url;
 
-        Debug.Log("Deeplink return: " + deeplinkURL);
+        Debug.Log("Deeplink return : " + deeplinkURL);
 
         // Decode the URL to determine action. 
         // In this example, the app expects a link formatted like this:
