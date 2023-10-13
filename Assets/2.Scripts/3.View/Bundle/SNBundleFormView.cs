@@ -15,6 +15,8 @@ public class SNBundleFormView : MonoBehaviour
     [SerializeField] string m_TxtWarning;
     [SerializeField] string m_TxtYouCannotBuyThePack;
     [SerializeField] string m_TxtBack;
+    [SerializeField] string m_TxtSuccess;
+    [SerializeField] string m_TxtYouWillBeRedirectToMySurvey;
 
     public void Init(int surveyId)
     {
@@ -60,13 +62,19 @@ public class SNBundleFormView : MonoBehaviour
         {
             SNPacksPurchaseDTO data = new(SNBundleControl.Api.m_CurrentPackType, surveyId, m_ParticipantAmount);
 
-            _ = StartCoroutine(SNApiControl.Api.PostData(SNConstant.PACKS_PURCHASE, data, () =>
+            _ = StartCoroutine(SNApiControl.Api.PurchasePack(SNConstant.PACKS_PURCHASE, data, () =>
             {
                 SNModel.Api.CurrentUser.Point -= float.Parse(m_TxtAmount.text);
+                SNControl.Api.ShowFAMPopup(m_TxtSuccess, m_TxtYouWillBeRedirectToMySurvey, m_TxtBack, "NotShow", () => BackToMySurvey(), onExit: () => BackToMySurvey());
             }));
         }
 
         transform.gameObject.SetActive(false);
 
+    }
+
+    private static void BackToMySurvey()
+    {
+        SNMainControl.Api.OpenMySurvey();
     }
 }

@@ -6,6 +6,7 @@ using static SNDoSurveyDTO;
 using Newtonsoft.Json;
 using System;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
@@ -55,10 +56,19 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
     [SerializeField] string m_TxtPurchasePack;
     [SerializeField] string m_TxtConfirmPost;
 
+    [SerializeField] string m_TxtFail;
+    [SerializeField] string m_TxtNotYetFinishSurvey;
+    [SerializeField] string m_TxtYouCannotDoYourSurvey;
+    [SerializeField] string m_TxtYouCannotDeleteAnySurveyThanDraft;
+    [SerializeField] string m_TxtBack;
+    [SerializeField] string m_TxtYes;
+
     private string m_Status;
 
-    public void Init(int id, string title, string status)
+    public void Init(int id, string title, string status, int userIdCreated = -1)
     {
+        bool isNotHome = !SceneManager.GetSceneByName(SNConstant.SCENE_HOME).isLoaded;
+
         Debug.Log("ID " + id);
         m_Id = id;
 
@@ -73,28 +83,28 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
             m_PnlPnlAlreadyCompleteSurvey = transform.Find("PnlCompleteSurvey").gameObject;
 
             m_TxtSurveyTitle = transform.parent.transform.Find("TopBar/TxtSurveyTitle").GetComponent<Text>();
-            m_TxtSurveyStatus = transform.parent.transform.Find("TopBar/TxtSurveyStatus").GetComponent<Text>();
+            if (isNotHome) m_TxtSurveyStatus = transform.parent.transform.Find("TopBar/TxtSurveyStatus").GetComponent<Text>();
 
             m_BtnComplete = transform.Find("BtnComplete").GetComponent<Button>();
             m_BtnBackToHome = transform.Find("PnlCompleteSurvey/BtnHome").GetComponent<Button>();
             m_BtnGoToHistory = transform.Find("PnlAlreadyCompleteSurvey/BtnHistory").GetComponent<Button>();
-            m_BtnDeleteSurvey = transform.Find("BtnDeleteSurvey").GetComponent<Button>();
-            m_BtnPostSurvey = transform.Find("BtnPostSurvey").GetComponent<Button>();
-            m_BtnActiveSurvey = transform.Find("BtnActiveSurvey").GetComponent<Button>();
-            m_TxtOn = transform.Find("BtnActiveSurvey/TxtOn").GetComponent<Text>();
-            m_TxtOff = transform.Find("BtnActiveSurvey/TxtOff").GetComponent<Text>();
+            if (isNotHome) m_BtnDeleteSurvey = transform.Find("BtnDeleteSurvey").GetComponent<Button>();
+            if (isNotHome) m_BtnPostSurvey = transform.Find("BtnPostSurvey").GetComponent<Button>();
+            if (isNotHome) m_BtnActiveSurvey = transform.Find("BtnActiveSurvey").GetComponent<Button>();
+            if (isNotHome) m_TxtOn = transform.Find("BtnActiveSurvey/TxtOn").GetComponent<Text>();
+            if (isNotHome) m_TxtOff = transform.Find("BtnActiveSurvey/TxtOff").GetComponent<Text>();
 
-            m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id));
+            m_BtnComplete.onClick.AddListener(() => OnClickCompleteSurvey(id, userIdCreated));
             m_BtnBackToHome.onClick.AddListener(() => SNSurveyListControl.Api.ClickBackToHome());
-            m_BtnDeleteSurvey.onClick.AddListener(DeleteSurvey);
-            m_BtnPostSurvey.onClick.AddListener(() => PostSurvey(status));
-            m_BtnActiveSurvey.onClick.AddListener(ActiveSurvey);
+            if (isNotHome) m_BtnDeleteSurvey.onClick.AddListener(DeleteSurvey);
+            if (isNotHome) m_BtnPostSurvey.onClick.AddListener(() => PostSurvey(status));
+            if (isNotHome) m_BtnActiveSurvey.onClick.AddListener(() => ActiveSurvey());
 
             m_InitViewList = new();
             m_QuestionContainer = m_SurveyQuestionRadioView.transform.parent;
 
             m_IsInit = true;
-            m_TxtStat = m_TxtSurveyStatus.text;
+            if (isNotHome) m_TxtStat = m_TxtSurveyStatus.text;
         }
 
         foreach (var item in from Transform item in m_QuestionContainer
@@ -105,7 +115,9 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         }
 
         m_TxtSurveyTitle.text = title;
-        m_TxtSurveyStatus.text = GetStatus(status);
+
+        Debug.Log("status " + status);
+        if (isNotHome) GetStatus(status);
         m_TxtSurveyTitle.gameObject.SetActive(true);
 
         StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), renderPage: RenderDetailPage));
@@ -113,11 +125,8 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
 
     private void ActiveSurvey()
     {
-        m_TxtOn.gameObject.SetActive(!m_TxtOn.gameObject.activeSelf);
-        m_TxtOff.gameObject.SetActive(m_TxtOn.gameObject.activeSelf);
-
         // Handle call active survey
-        SNControl.Api.ShowFAMPopup(m_TxtWarning, $"{m_TxtYouWant} {(m_TxtOn.gameObject.activeSelf ? m_TxtOn.text : m_TxtOff.text)}" , m_TxtConfirmDelete, m_TxtNo, onConfirm: () =>
+        SNControl.Api.ShowFAMPopup(m_TxtWarning, $"{m_TxtYouWant} {(m_Status != "Active" ? m_TxtOn.text : m_TxtOff.text)}" , m_TxtYes, m_TxtNo, onConfirm: () =>
         {
             StartCoroutine(SNApiControl.Api.PatchData(string.Format(SNConstant.SURVEY_PATCH, m_Id), callback: () =>
             {
@@ -151,6 +160,8 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                     expiredDate = DateTime.Now.AddDays(14)
                 };
 
+                Debug.Log("INNN " + status);
+
                 SNControl.Api.ShowFAMPopup(m_TxtPostSurveyNow, $"{m_TxtYouWant} {m_TxtPostSurvey}", m_TxtConfirmPost, m_TxtNo, onConfirm: () =>
                 {
                     StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.SURVEY_POST, m_Id), data, callback: () =>
@@ -159,12 +170,15 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                     }));
                 });
                 break;
+            case "Active":
+                GetStatus("Active");
+                break;
             default:
                 break;
         }
     }
 
-    private string GetStatus(string status)
+    private void GetStatus(string status)
     {
         m_Status = status;
 
@@ -198,11 +212,21 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                 break;
         }
 
-        return m_TxtStat + $"\n<b>{txtStatus}</b>";
+        m_BtnDeleteSurvey.gameObject.SetActive(status == "Draft");
+        m_TxtOn.gameObject.SetActive(status == "InActive");
+        m_TxtOff.gameObject.SetActive(status == "Active");
+
+        m_TxtSurveyStatus.text = m_TxtStat + $"\n<b>{txtStatus}</b>";
     }
 
     private void DeleteSurvey()
     {
+        if (m_Status == "Active")
+        {
+            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtYouCannotDeleteAnySurveyThanDraft, m_TxtBack, "NotShow");
+            return;
+        }
+
         SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtDoYouSureDeleteSurvey, m_TxtConfirmDelete, m_TxtNo, onConfirm: () =>
         {
             StartCoroutine(SNApiControl.Api.DelItem(string.Format(SNConstant.SURVEY_DELETE, m_Id), callback: () =>
@@ -235,12 +259,19 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         return answers;
     }
 
-    private void OnClickCompleteSurvey(int id)
+    private void OnClickCompleteSurvey(int id, int userIdCreated)
     {
         if (!ValidateAnswers())
         {
             // POPUP WARNING SOMETHING WRONG
             Debug.Log("SURVEY NOT FINISH");
+            SNControl.Api.ShowFAMPopup(m_TxtFail, m_TxtNotYetFinishSurvey, "Ok", "NotShow");
+            return;
+        }
+
+        if(userIdCreated == PlayerPrefs.GetInt(SNConstant.USER_ID))
+        {
+            SNControl.Api.ShowFAMPopup(m_TxtFail, m_TxtYouCannotDoYourSurvey, "Ok", "NotShow");
             return;
         }
 

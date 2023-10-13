@@ -8560,6 +8560,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212a9852469170144b5de829028434d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtWarning: 
+  m_TxtDoYouSureDeleteSurvey: 
+  m_TxtConfirmDelete: 
+  m_TxtNo: 
+  m_TxtActive: 
+  m_TxtInActive: 
+  m_TxtDraft: 
+  m_TxtExpired: 
+  m_TxtPackPurchased: 
+  m_TxtYouWant: 
+  m_TxtPurchasePackBeforePost: 
+  m_TxtPostSurvey: 
+  m_TxtPostSurveyNow: 
+  m_TxtPurchasePack: 
+  m_TxtConfirmPost: 
+  m_TxtFail: "G\u1EEDi kh\u1EA3o s\xE1t th\u1EA5t b\u1EA1i"
+  m_TxtNotYetFinishSurvey: "B\u1EA1n ch\u01B0a ho\xE0n th\xE0nh kh\u1EA3o s\xE1t!"
+  m_TxtYouCannotDoYourSurvey: "B\u1EA1n kh\xF4ng th\u1EC3 t\u1EF1 l\xE0m kh\u1EA3o
+    s\xE1t c\u1EE7a m\xECnh!"
 --- !u!1 &2016748057
 GameObject:
   m_ObjectHideFlags: 0

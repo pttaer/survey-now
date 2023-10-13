@@ -235,7 +235,7 @@ public class SNApiControl
         SNControl.Api.HideLoading();
     }
 
-    public IEnumerator PostData<T>(string uri, T formData, Action callback = null, bool loadCurrentSceneAgain = false, string sceneName = "", bool isEventsSceneLoad = false)
+    public IEnumerator PostData<T>(string uri, T formData, Action callback = null)
     {
         SNControl.Api.ShowLoading();
 
@@ -274,6 +274,23 @@ public class SNApiControl
             Debug.LogError("Error sending data: " + request.error);
         }
         SNControl.Api.HideLoading();
+    }
+
+    public IEnumerator PurchasePack<T>(string uri, T formData, Action callback = null)
+    {
+        SNControl.Api.ShowLoading();
+
+        string jsonData = JsonConvert.SerializeObject(formData, Formatting.Indented);
+        byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(uri, SNConstant.METHOD_POST);
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.uploadHandler = new UploadHandlerRaw(jsonBytes);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        callback?.Invoke();
+
+        yield return request.SendWebRequest();
     }
 
     public IEnumerator DelItem(string uri, Action callback = null)
@@ -348,6 +365,7 @@ public class SNApiControl
             SNModel.Api.CurrentUser = JsonConvert.DeserializeObject<SNUserDTO>(response);
 
             PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
+            PlayerPrefs.SetInt(SNConstant.USER_ID, userData.id);
             PlayerPrefs.SetString(SNConstant.USER_EMAIL_CACHE, userData.email);
             PlayerPrefs.SetString(SNConstant.USER_FULLNAME_CACHE, userData.fullName);
 

@@ -4866,6 +4866,9 @@ MonoBehaviour:
   m_TxtYouCannotBuyThePack: "B\u1EA1n kh\xF4ng th\u1EC3 mua g\xF3i, h\xE3y t\u1EA1o
     kh\u1EA3o s\xE1t"
   m_TxtBack: "Quay l\u1EA1i"
+  m_TxtSuccess: "Mua th\xE0nh c\xF4ng"
+  m_TxtYouWillBeRedirectToMySurvey: "B\u1EA1n s\u1EBD \u0111\u01B0\u1EE3c \u0111\u01B0a
+    t\u1EDBi trang kh\u1EA3o s\xE1t c\u1EE7a m\xECnh"
 --- !u!1 &1984272723
 GameObject:
   m_ObjectHideFlags: 0
