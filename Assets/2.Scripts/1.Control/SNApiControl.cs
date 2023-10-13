@@ -249,8 +249,6 @@ public class SNApiControl
 
         yield return request.SendWebRequest();
 
-        Debug.Log("request result= " + request.result);
-
         if (request.uploadHandler != null)
         {
             byte[] uploadedData = request.uploadHandler.data;
@@ -452,7 +450,10 @@ public class SNApiControl
 
     public IEnumerator MomoReturn(SNMomoRedirect momoData, string param, Action callback = null)
     {
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.POINTS_PURCHASE_RETURN + param + "userId=" + SNModel.Api.CurrentUser.Id, SNConstant.METHOD_GET.ToUpper());
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.POINTS_PURCHASE_RETURN + param + "&userId=" + SNModel.Api.CurrentUser.Id, SNConstant.METHOD_GET.ToUpper());
+
+        request.downloadHandler = new DownloadHandlerBuffer();
+        Debug.Log("call : " + request.url);
 
         yield return request.SendWebRequest();
 

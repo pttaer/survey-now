@@ -63,6 +63,8 @@ public class SNControl
         SNApiControl.Api = new();
         SNSurveyLikertQuestionControl.Api = new();
 
+        SNDeeplinkControl.Api.Init();
+
         // Default value
         SNModel.Api.ScenesLoaded.Clear();
         UnloadThenLoadScene(SNConstant.SCENE_LOGIN);
