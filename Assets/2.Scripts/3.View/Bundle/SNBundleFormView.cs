@@ -45,7 +45,10 @@ public class SNBundleFormView : MonoBehaviour
     {
         if(surveyId == -1)
         {
-            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtYouCannotBuyThePack, m_TxtBack, "NotShow");
+            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtYouCannotBuyThePack, m_TxtBack, "NotShow", onConfirm: () =>
+            {
+                SNMainControl.Api.OpenMySurvey();
+            });
         }
 
         // OPEN NOTICE PNL IF TOO BROKE, ELSE PROCEED
