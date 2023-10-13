@@ -25,7 +25,7 @@ public class SNSurveyListControl
     {
         OnClickBackToHomeEvent?.Invoke();
     }
-    
+
     public void OpenScenePacks(int id)
     {
         OnOpenScenePacks?.Invoke(id);
