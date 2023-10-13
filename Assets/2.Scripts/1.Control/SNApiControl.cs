@@ -448,7 +448,7 @@ public class SNApiControl
         }
     }
 
-    public IEnumerator MomoReturn(SNMomoRedirect momoData, string param, Action callback = null)
+    public IEnumerator MomoReturn(SNMomoRedirect momoData, string param, Action<SNMomoReturn> callback = null)
     {
         UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.POINTS_PURCHASE_RETURN + param + "&userId=" + SNModel.Api.CurrentUser.Id, SNConstant.METHOD_GET.ToUpper());
 
@@ -472,7 +472,9 @@ public class SNApiControl
             string response = request.downloadHandler.text;
             Debug.Log($"Response from {SNConstant.POINTS_PURCHASE_RETURN}: " + response);
 
-            callback?.Invoke();
+            SNMomoReturn data = JsonConvert.DeserializeObject<SNMomoReturn>(response);
+
+            callback?.Invoke(data);
         }
         else
         {
