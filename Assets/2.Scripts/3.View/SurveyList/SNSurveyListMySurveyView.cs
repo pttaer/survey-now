@@ -1,16 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SNSurveyListMySurveyView : MonoBehaviour
 {
     private List<SNSurveyRecordView> m_SurveyRecordList;
-    private SNSurveyRecordView m_NewsAndEventsPrefab;
+    private SNSurveyRecordView m_SurveyRecordPrefab;
 
-    public void Init()
+    public void InitHome()
     {
         StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_ALL, null, RenderPage));
         m_SurveyRecordList = new();
-        m_NewsAndEventsPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
+        m_SurveyRecordPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
+    }
+
+    public void InitMySurvey()
+    {
+        StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_GET_MY_SURVEY, RenderPage));
+        m_SurveyRecordList = new();
+        m_SurveyRecordPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
     }
 
     private void RenderPage<T>(T[] datas)
@@ -29,7 +37,15 @@ public class SNSurveyListMySurveyView : MonoBehaviour
             }
             if (!isAlreadyOk)
             {
-                GameObject go = Instantiate(m_NewsAndEventsPrefab.gameObject, transform.Find("Viewport/Content"));
+                if (data is SNSurveyResponseDTO newsData)
+                {
+                    if (SceneManager.GetSceneByName(SNConstant.SCENE_HOME).isLoaded && newsData.Status != "Active")
+                    {
+                        continue;
+                    }
+                }
+
+                GameObject go = Instantiate(m_SurveyRecordPrefab.gameObject, transform.Find("Viewport/Content"));
                 RenderItem(data, go.GetComponent<SNSurveyRecordView>());
             }
         }

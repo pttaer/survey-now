@@ -64,6 +64,7 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             SNControl.Api.HideLoading();
+
             string response = request.downloadHandler.text;
 
             if (JsonConvert.DeserializeObject(response).GetType() == typeof(JArray))
@@ -124,20 +125,17 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
 
             T data = JsonConvert.DeserializeObject<T>(response);
-
             RenderPage?.Invoke(data);
         }
         else
         {
-            SNControl.Api.HideLoading();
             // Show popup error
-
             Debug.LogError("test error: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator SetRequestMemberAccess(string url, int memberId, int requestAccess)
@@ -208,10 +206,13 @@ public class SNApiControl
         {
             Debug.LogError("Error sending data: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
-    public IEnumerator DelItem(string uri)
+    public IEnumerator DelItem(string uri, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
+
         UnityWebRequest request = SNApiControl.WebRequestWithAuthorizationHeader(uri, SNConstant.METHOD_DELETE);
 
         request.downloadHandler = new DownloadHandlerBuffer();
@@ -223,11 +224,14 @@ public class SNApiControl
         if (request.result == UnityWebRequest.Result.Success)
         {
             Debug.Log("Handled request access successfully: " + response);
+            callback?.Invoke();
         }
         else
         {
             Debug.Log("error: " + request.error);
+            callback?.Invoke();
         }
+        SNControl.Api.HideLoading();
     }
 
     public void Logout()
@@ -237,6 +241,7 @@ public class SNApiControl
 
     public IEnumerator Login(string email, string password, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
         UnityWebRequest request = new UnityWebRequest(SNConstant.LOGIN, SNConstant.METHOD_POST.ToUpper());
 
         JObject data = new JObject()
@@ -276,6 +281,8 @@ public class SNApiControl
             SNModel.Api.CurrentUser = JsonConvert.DeserializeObject<SNUserDTO>(response);
 
             PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
+            PlayerPrefs.SetString(SNConstant.USER_EMAIL_CACHE, userData.email);
+            PlayerPrefs.SetString(SNConstant.USER_FULLNAME_CACHE, userData.fullName);
 
             Debug.Log("Set token: " + PlayerPrefs.GetString(SNConstant.BEARER_TOKEN_CACHE));
 
@@ -287,11 +294,14 @@ public class SNApiControl
         else
         {
             Debug.LogError("test error: " + request.error);
+            SNControl.Api.FailLogin();
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator Register(SNUserDTO data, Action callback = null)
     {
+        SNControl.Api.ShowLoading();
         UnityWebRequest request = new UnityWebRequest(SNConstant.REGISTER, SNConstant.METHOD_POST.ToUpper());
 
         string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -323,6 +333,7 @@ public class SNApiControl
         {
             Debug.LogError("test error: " + request.error);
         }
+        SNControl.Api.HideLoading();
     }
 
     public IEnumerator PurchasePoints(int amount, Action<string> callback = null)

@@ -6,6 +6,8 @@ public class SNSurveyListControl
 
     public Action OnOpenSurveyHistoryEvent;
     public Action OnOpenMySurveyEvent;
+    public Action OnClickBackToHomeEvent;
+    public Action<int, bool> OnNotFinishSurveyPopupWarningEvent;
     public Action<SNSurveyResponseDTO> OnOpenSurveyDetailEvent;
 
     public void OpenSurveyHistory()
@@ -16,6 +18,16 @@ public class SNSurveyListControl
     public void OpenMySurvey()
     {
         OnOpenMySurveyEvent?.Invoke();
+    }
+
+    public void ClickBackToHome()
+    {
+        OnClickBackToHomeEvent?.Invoke();
+    }
+
+    public void NotFinishSurveyPopupWarning(int questionId, bool isQuestionFinish)
+    {
+        OnNotFinishSurveyPopupWarningEvent?.Invoke(questionId, isQuestionFinish);
     }
 
     public void OpenSurveyDetail(SNSurveyResponseDTO data)
