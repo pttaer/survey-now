@@ -14,7 +14,7 @@ public class SNControl
     public Action CheckingSchoolIdEvent;
     public Action<bool, string> OnLoadFailShowSorry;
     public Action<bool> OnCheckSchoolSetMain;
-    public Action OnFailLogin;
+    public Action<bool> OnFailLogin;
 
     private Action<string, string, string, string, Action, Action, Action> m_showSNPopupEvent; //notify show popup message
 
@@ -110,9 +110,9 @@ public class SNControl
         OnCheckSchoolSetMain?.Invoke(isShow);
     }
 
-    public void FailLogin()
+    public void FailLogin(bool isWrongPasswordEmail)
     {
-        OnFailLogin?.Invoke();
+        OnFailLogin?.Invoke(isWrongPasswordEmail);
     }
 
     public void ShowFAMPopup(string title, string content, string btnConfirmText, string btnElseText, Action onConfirm = null, Action onElse = null, Action onExit = null)

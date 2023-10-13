@@ -87,7 +87,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         m_TxtSurveyStatus.text = GetStatus(status);
         m_TxtSurveyTitle.gameObject.SetActive(true);
 
-        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), RenderDetailPage));
+        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), renderPage: RenderDetailPage));
     }
 
     private string GetStatus(string status)

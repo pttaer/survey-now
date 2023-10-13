@@ -28,7 +28,7 @@ public class SNApiControl
         return request;
     }
 
-    public IEnumerator GetListData<T>(string url, Dictionary<string, string> param = null, Action<T[]> RenderPage = null, bool isNotShowSorry = false)
+    public IEnumerator GetListData<T>(string url, Dictionary<string, string> param = null, Action<T[]> renderPage = null, bool isNotShowSorry = false)
     {
         SNControl.Api.ShowLoading();
 
@@ -71,13 +71,13 @@ public class SNApiControl
             {
                 T[] dataArray = JsonConvert.DeserializeObject<T[]>(response);
 
-                RenderPage?.Invoke(dataArray);
+                renderPage?.Invoke(dataArray);
             }
             else
             {
                 SNListDTO<T> data = JsonConvert.DeserializeObject<SNListDTO<T>>(response);
 
-                RenderPage?.Invoke(data.results);
+                renderPage?.Invoke(data.results);
             }
         }
         else
@@ -89,7 +89,7 @@ public class SNApiControl
         }
     }
 
-    public IEnumerator GetData<T>(string url, Dictionary<string, string> param = null, Action<T> RenderPage = null)
+    public IEnumerator GetData<T>(string url, Dictionary<string, string> param = null, Action<T> renderPage = null)
     {
         SNControl.Api.ShowLoading();
 
@@ -128,7 +128,7 @@ public class SNApiControl
             string response = request.downloadHandler.text;
 
             T data = JsonConvert.DeserializeObject<T>(response);
-            RenderPage?.Invoke(data);
+            renderPage?.Invoke(data);
         }
         else
         {
@@ -294,7 +294,14 @@ public class SNApiControl
         else
         {
             Debug.LogError("test error: " + request.error);
-            SNControl.Api.FailLogin();
+            if(request.responseCode == 404 || request.responseCode == 500)
+            {
+                SNControl.Api.FailLogin(false);
+            }
+            else
+            {
+                SNControl.Api.FailLogin(true);
+            }
         }
         SNControl.Api.HideLoading();
     }
