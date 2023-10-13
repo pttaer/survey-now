@@ -4785,7 +4785,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 96}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1016052777
 MonoBehaviour:
@@ -10352,7 +10352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1991629476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10462,7 +10462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TxtWarning: "Ch\xFA \xFD"
   m_TxtDoYouSureDeleteSurvey: "B\u1EA1n c\xF3 mu\u1ED1n x\xF3a kh\u1EA3o s\xE1t n\xE0y?"
-  m_TxtConfirm: "X\xF3a"
+  m_TxtConfirmDelete: 
   m_TxtNo: "Quay l\u1EA1i"
   m_TxtActive: "\u0110ang ho\u1EA1t \u0111\u1ED9ng"
   m_TxtInActive: "B\u1ECB v\xF4 hi\u1EC7u h\xF3a"
@@ -10474,6 +10474,8 @@ MonoBehaviour:
     s\xE1t?"
   m_TxtPostSurvey: "\u0111\u0103ng kh\u1EA3o s\xE1t?"
   m_TxtPostSurveyNow: "\u0110\u0103ng kh\u1EA3o s\xE1t"
+  m_TxtPurchasePack: "Mua g\xF3i"
+  m_TxtConfirmPost: "\u0110\u0103ng"
 --- !u!1 &2016748057
 GameObject:
   m_ObjectHideFlags: 0
