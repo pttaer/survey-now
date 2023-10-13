@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SNSurveyListView : MonoBehaviour
 {
@@ -101,10 +102,21 @@ public class SNSurveyListView : MonoBehaviour
     private void OpenSurveyDetail(SNSurveyResponseDTO data)
     {
         // Show pnl detail
-        m_PreviousPnl = m_PnlMySurveyView.gameObject.activeSelf ? m_PnlMySurveyView.gameObject : m_PnlSurveyHistoryView.gameObject;
-        SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
-        ShowTitle(false);
-        m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status);
+        if (m_PnlMySurveyView.gameObject.activeSelf || SceneManager.GetSceneByName(SNConstant.SCENE_HOME).isLoaded)
+        {
+            m_PreviousPnl = m_PnlMySurveyView.gameObject.activeSelf ? m_PnlMySurveyView.gameObject : m_PnlSurveyHistoryView.gameObject;
+            SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
+            ShowTitle(false);
+            m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status);
+        }
+
+        if (m_PnlSurveyHistoryView.gameObject.activeSelf)
+        {
+            m_PreviousPnl = m_PnlMySurveyView.gameObject.activeSelf ? m_PnlMySurveyView.gameObject : m_PnlSurveyHistoryView.gameObject;
+            SNControl.Api.OpenPanel(m_PnlSurveyDetailView.gameObject, m_ListPnl);
+            ShowHistoryTitle(false);
+            m_PnlSurveyDetailView.Init(data.Id, data.Title, data.Status, isHistoryPnl: true);
+        }
     }
 
     private void ShowTitle(bool isSceneTitleOn)
@@ -115,6 +127,14 @@ public class SNSurveyListView : MonoBehaviour
         m_TxtSurveyStatus.gameObject.SetActive(!isSceneTitleOn);
 
         // m_BtnSearch.gameObject.SetActive(isSceneTitleOn);
+        m_BtnBack.gameObject.SetActive(!isSceneTitleOn);
+    }
+
+    private void ShowHistoryTitle(bool isSceneTitleOn)
+    {
+        m_TxtSceneTitle.gameObject.SetActive(isSceneTitleOn);
+        m_TxtSceneTitle2.gameObject.SetActive(isSceneTitleOn);
+        m_TxtSurveyTitle.gameObject.SetActive(!isSceneTitleOn);
         m_BtnBack.gameObject.SetActive(!isSceneTitleOn);
     }
 

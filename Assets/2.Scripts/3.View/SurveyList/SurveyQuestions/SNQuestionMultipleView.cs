@@ -93,4 +93,12 @@ public class SNQuestionMultipleView : SNInitView
         }
         return false;
     }
+
+    public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
+    {
+        foreach (var answerOption in answer.answerOptions)
+        {
+            m_ItemViewList[answerOption.rowOrder - 1].SetTglOn();
+        }
+    }
 }

@@ -98,4 +98,9 @@ public class SNLikertQuestionItemView : MonoBehaviour
         }
         return false;
     }
+
+    public void SetAnswer(SNSurveyAnswerDTO.AnswerOptionDTO answerOption)
+    {
+        m_ItemViewList[(int)answerOption.columnOrder - 1].SetTglOn();
+    }
 }

@@ -45,4 +45,9 @@ public class SNQuestionToggleItemView : MonoBehaviour
     {
         return m_ItemOrder;
     }
+
+    public void SetTglOn()
+    {
+        m_Tgl.SetIsOnWithoutNotify(true);
+    }
 }

@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using System;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using static SNSurveyAnswerDTO;
+using Unity.VisualScripting;
 
 public class SNSurveyListSurveyDetailView : MonoBehaviour
 {
@@ -65,7 +67,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
 
     private string m_Status;
 
-    public void Init(int id, string title, string status, int userIdCreated = -1)
+    public void Init(int id, string title, string status, int userIdCreated = -1, bool isHistoryPnl = false)
     {
         bool isNotHome = !SceneManager.GetSceneByName(SNConstant.SCENE_HOME).isLoaded;
 
@@ -120,17 +122,65 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         if (isNotHome) GetStatus(status);
         m_TxtSurveyTitle.gameObject.SetActive(true);
 
-        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), renderPage: RenderDetailPage));
+        StartCoroutine(SNApiControl.Api.GetData<SNSurveyQuestionDetailDTO>(string.Format(SNConstant.SURVEY_GET_DETAIL, id), renderPage: (data) =>
+        {
+            RenderDetailPage(data, () =>
+            {
+                // Check if history pnl to show the answers
+                if (isHistoryPnl)
+                {
+                    m_BtnActiveSurvey.gameObject.SetActive(false);
+                    StartCoroutine(SNApiControl.Api.GetData<SurveyAnswerDTO>(string.Format(SNConstant.SURVEY_HISTORY_DETAIL, id), renderPage: (data) =>
+                    {
+                        string json = JsonConvert.SerializeObject(data);
+                        Debug.Log(json);
+
+                        List<AnswerResponseDTO> answerList = new List<AnswerResponseDTO>();
+
+                        if (data != null && data.sections != null)
+                        {
+                            foreach (SectionDto section in data.sections)
+                            {
+                                if (section.questions != null)
+                                {
+                                    foreach (QuestionDto question in section.questions)
+                                    {
+                                        if (question.answers != null)
+                                        {
+                                            answerList.AddRange(question.answers);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        SetAnswerQuestion(answerList);
+                    }));
+                }
+            });
+        }));
+    }
+
+    private void SetAnswerQuestion(List<AnswerResponseDTO> data)
+    {
+        if (data != null)
+        {
+            for (int i = 0; i < m_InitViewList.Count; i++)
+            {
+                Debug.Log("SET ANSWER");
+                m_InitViewList[i].SetAnswer(data[i]);
+            }
+        }
     }
 
     private void ActiveSurvey()
     {
         // Handle call active survey
-        SNControl.Api.ShowFAMPopup(m_TxtWarning, $"{m_TxtYouWant} {(m_Status != "Active" ? m_TxtOn.text : m_TxtOff.text)}" , m_TxtYes, m_TxtNo, onConfirm: () =>
+        SNControl.Api.ShowFAMPopup(m_TxtWarning, $"{m_TxtYouWant} {(m_Status != "Active" ? m_TxtOn.text : m_TxtOff.text)}", m_TxtYes, m_TxtNo, onConfirm: () =>
         {
             StartCoroutine(SNApiControl.Api.PatchData(string.Format(SNConstant.SURVEY_PATCH, m_Id), callback: () =>
             {
-                if(m_Status == "Active")
+                if (m_Status == "Active")
                 {
                     GetStatus("InActive");
                 }
@@ -249,9 +299,9 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         return true;
     }
 
-    private List<AnswerDTO> GetAllAnswers()
+    private List<SNDoSurveyDTO.AnswerDTO> GetAllAnswers()
     {
-        List<AnswerDTO> answers = new();
+        List<SNDoSurveyDTO.AnswerDTO> answers = new();
         foreach (var view in m_InitViewList)
         {
             answers.Add(view.GetAnswer());
@@ -269,7 +319,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
             return;
         }
 
-        if(userIdCreated == PlayerPrefs.GetInt(SNConstant.USER_ID))
+        if (userIdCreated == PlayerPrefs.GetInt(SNConstant.USER_ID))
         {
             SNControl.Api.ShowFAMPopup(m_TxtFail, m_TxtYouCannotDoYourSurvey, "Ok", "NotShow");
             return;
@@ -292,7 +342,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         }));
     }
 
-    private void RenderDetailPage(SNSurveyQuestionDetailDTO data)
+    private void RenderDetailPage(SNSurveyQuestionDetailDTO data, Action callbackHistory = null)
     {
         List<SNSectionQuestionRowOptionDTO> options = new List<SNSectionQuestionRowOptionDTO>();
         List<SNSectionQuestionDTO> questions = new List<SNSectionQuestionDTO>();
@@ -306,6 +356,8 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                         SpawnQuestion(question, options, questions);
                     });
             });
+
+        callbackHistory?.Invoke();
     }
 
     private void SpawnQuestion(SNSectionQuestionDTO question, List<SNSectionQuestionRowOptionDTO> options, List<SNSectionQuestionDTO> questions)
