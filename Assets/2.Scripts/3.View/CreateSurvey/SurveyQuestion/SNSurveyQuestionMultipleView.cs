@@ -28,8 +28,11 @@ public class SNSurveyQuestionMultipleView : SNSurveyQuestionBaseView
     private void AddOption()
     {
         GameObject go = Instantiate(m_ItemOptionPref, transform);
-        m_IpfQuestionsList.Add(go.transform.Find("IpfOption").GetComponent<InputField>());
+        InputField ipf = go.transform.Find("IpfOption").GetComponent<InputField>();
+        ipf.text = "";
+        m_IpfQuestionsList.Add(ipf);
         go.transform.SetSiblingIndex(m_ItemOptionPref.transform.GetSiblingIndex() + 1);
+        m_ItemOptionPref = go; // For placing next option correctly
     }
 
     private void Validate()

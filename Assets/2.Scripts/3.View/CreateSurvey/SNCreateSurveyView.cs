@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,9 @@ public class SNCreateSurveyView : MonoBehaviour
     private List<SNSurveyQuestionBaseView> m_ItemViewList;
     private List<SNSectionQuestionRequestDTO> m_SectionQuestionDTO;
     private List<SNSectionRequestDTO> m_SectionDTO;
+
+    [SerializeField] string m_TxtSuccess;
+    [SerializeField] string m_SuccessAddSurveyPleaseCheck;
 
     void Start()
     {
@@ -171,7 +175,11 @@ public class SNCreateSurveyView : MonoBehaviour
                 Sections = m_SectionDTO
             };
 
-            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_CREATE, postData));
+            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_CREATE, postData, callback: () => {
+                SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_SURVEY_LIST);
+                DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenMySurvey());
+                DOVirtual.DelayedCall(0.4f, () => SNControl.Api.ShowFAMPopup(m_TxtSuccess, m_SuccessAddSurveyPleaseCheck, "Ok", "NotShow"));
+            }));
 
             m_SectionDTO.Clear();
             m_SectionQuestionDTO.Clear();
