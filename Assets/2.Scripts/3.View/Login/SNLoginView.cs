@@ -13,6 +13,10 @@ public class SNLoginView : MonoBehaviour
     private Button m_BtnSendOTP;
     private Button m_BtnLogin;
     private Button m_BtnGoToLogin;
+    private Button m_BtnShowPass;
+
+    private Image m_ImgIconShow;
+    private Image m_ImgIconHide;
 
     private GameObject m_PnlLogin;
     private GameObject m_PnlForgotPassword;
@@ -73,6 +77,11 @@ public class SNLoginView : MonoBehaviour
         m_BtnSendOTP = body.Find("Content/PnlForgotPassword/BtnSendOTP").GetComponent<Button>();
         m_BtnLogin = body.Find("Content/PnlLogin/BtnLogin").GetComponent<Button>();
         m_BtnGoToLogin = body.Find("Content/PnlForgotPassword/BtnSendOTP/BtnLogin").GetComponent<Button>();
+
+        m_BtnShowPass = body.Find("Content/PnlLogin/IpfPassword/BtnHideShowPass").GetComponent<Button>();
+
+        m_ImgIconShow = body.Find("Content/PnlLogin/IpfPassword/BtnHideShowPass/Show").GetComponent<Image>();
+        m_ImgIconHide = body.Find("Content/PnlLogin/IpfPassword/BtnHideShowPass/Hide").GetComponent<Image>();
 
         m_IpfEmail_Login = body.Find("Content/PnlLogin/IpfEmail").GetComponent<InputField>();
         m_IpfPassword_Login = body.Find("Content/PnlLogin/IpfPassword").GetComponent<InputField>();
@@ -159,9 +168,22 @@ public class SNLoginView : MonoBehaviour
         m_BtnPreviousRegister4.onClick.AddListener(() => SetPnlOn(m_PnlRegister3));
         m_BtnPreviousRegister5.onClick.AddListener(() => SetPnlOn(m_PnlRegister4));
 
+        m_BtnShowPass.onClick.AddListener(ShowPass);
+
         SNControl.Api.OnFailLogin += FailLogin;
 
         DefaultValue();
+    }
+
+    private void ShowPass()
+    {
+        bool hiding = m_ImgIconShow.gameObject.activeSelf;
+
+        m_IpfPassword_Login.contentType = hiding ? InputField.ContentType.Standard : InputField.ContentType.Password;
+        m_IpfPassword_Login.ForceLabelUpdate();
+
+        m_ImgIconShow.gameObject.SetActive(!hiding);
+        m_ImgIconHide.gameObject.SetActive(hiding);
     }
 
     private void ValidateRegister()
