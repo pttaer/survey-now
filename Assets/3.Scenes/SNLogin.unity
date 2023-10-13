@@ -5672,7 +5672,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Password
+  m_Text: "M\u1EADt kh\u1EA9u"
 --- !u!222 &647585048
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7290,8 +7290,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 522.1492, y: -352.09943}
-  m_SizeDelta: {x: 267.2652, y: 64.640884}
+  m_AnchoredPosition: {x: 474.9375, y: -353.4375}
+  m_SizeDelta: {x: 271.875, y: 65.625}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &850758668
 MonoBehaviour:
@@ -10153,6 +10153,85 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1145605213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1145605214}
+  - component: {fileID: 1145605216}
+  - component: {fileID: 1145605215}
+  m_Layer: 0
+  m_Name: TxtNoneInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1145605214
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145605213}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1853094077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 474.9375, y: -353.4375}
+  m_SizeDelta: {x: 271.875, y: 65.625}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &1145605215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145605213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 74d9a0f24e9eece4193ec6eaad04caeb, type: 3}
+    m_FontSize: 24
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "B\u1EA1n ch\u01B0a nh\u1EADp email ho\u1EB7c m\u1EADt kh\u1EA9u!"
+--- !u!222 &1145605216
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145605213}
+  m_CullTransparentMesh: 0
 --- !u!1 &1148988631
 GameObject:
   m_ObjectHideFlags: 0
@@ -10231,6 +10310,86 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148988631}
+  m_CullTransparentMesh: 0
+--- !u!1 &1183322075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1183322076}
+  - component: {fileID: 1183322078}
+  - component: {fileID: 1183322077}
+  m_Layer: 0
+  m_Name: TxtFailLogin2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1183322076
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183322075}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1853094077}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 504.1042, y: -353.4375}
+  m_SizeDelta: {x: 330.20834, y: 65.625}
+  m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &1183322077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183322075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.25943398, b: 0.25943398, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 74d9a0f24e9eece4193ec6eaad04caeb, type: 3}
+    m_FontSize: 24
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "\u0110\u0103ng nh\u1EADp kh\xF4ng th\xE0nh c\xF4ng,\nvui l\xF2ng th\u1EED
+    l\u1EA1i."
+--- !u!222 &1183322078
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183322075}
   m_CullTransparentMesh: 0
 --- !u!1 &1193238813
 GameObject:
@@ -15018,7 +15177,9 @@ RectTransform:
   - {fileID: 1334128643}
   - {fileID: 807108415}
   - {fileID: 1021896220}
+  - {fileID: 1145605214}
   - {fileID: 850758667}
+  - {fileID: 1183322076}
   - {fileID: 1014106317}
   m_Father: {fileID: 1406917977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17091,9 +17252,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TxtWarning: "Ch\xFA \xFD!"
   m_TxtConfirmPasswordNotCorrect: "M\u1EADt kh\u1EA9u kh\xF4ng tr\xF9ng kh\u1EDBp"
-  m_TxtConfirm: "Quay l\u1EA1i"
+  m_TxtBack: "Quay l\u1EA1i"
   m_TxtNotAllInfoFilledTryAgain: "B\u1EA1n ch\u01B0a \u0111i\u1EC1n \u0111\u1EE7
     th\xF4ng tin!"
+  m_TxtSuccessRegister: "\u0110\u0103ng k\xFD th\xE0nh c\xF4ng!"
+  m_TxtConfirm: Ok!
+  m_TxtYouCanLoginNow: "B\u1EA1n c\xF3 th\u1EC3 \u0111\u0103ng nh\u1EADp"
 --- !u!224 &596995880924935419
 RectTransform:
   m_ObjectHideFlags: 0

@@ -49,6 +49,8 @@ public class SNLoginView : MonoBehaviour
     private InputField m_IpfPasswordConfirm_Register;
 
     private Text m_TxtFailLogin;
+    private Text m_TxtFailLogin2;
+    private Text m_TxtNoneInput;
 
     private ToggleGroup m_TglGrGender;
 
@@ -57,8 +59,12 @@ public class SNLoginView : MonoBehaviour
 
     [SerializeField] string m_TxtWarning;
     [SerializeField] string m_TxtConfirmPasswordNotCorrect;
-    [SerializeField] string m_TxtConfirm;
+    [SerializeField] string m_TxtBack;
     [SerializeField] string m_TxtNotAllInfoFilledTryAgain;
+
+    [SerializeField] string m_TxtSuccessRegister;
+    [SerializeField] string m_TxtConfirm;
+    [SerializeField] string m_TxtYouCanLoginNow;
 
     private void Start()
     {
@@ -115,6 +121,8 @@ public class SNLoginView : MonoBehaviour
         m_BtnPreviousRegister5 = body.Find("Content/PnlRegister5/BtnGroup/BtnPrevious").GetComponent<Button>();
 
         m_TxtFailLogin = m_PnlLogin.transform.Find("TxtFailLogin").GetComponent<Text>();
+        m_TxtFailLogin2 = m_PnlLogin.transform.Find("TxtFailLogin2").GetComponent<Text>();
+        m_TxtNoneInput = m_PnlLogin.transform.Find("TxtNoneInput").GetComponent<Text>();
 
         m_PnlRegisterList = new List<GameObject>
         {
@@ -138,9 +146,13 @@ public class SNLoginView : MonoBehaviour
         });
         m_BtnHaveAccount.onClick.AddListener(() =>
         {
-            Register();
             SetPnlOn(m_PnlLogin);
             SetBtnAccountExist(true);
+            m_IpfFirstname.text = string.Empty;
+            m_IpfLastname.text = string.Empty;
+            m_IpfEmail_Register.text = string.Empty;
+            m_IpfPassword_Register.text = string.Empty;
+            m_IpfPasswordConfirm_Register.text = string.Empty;
         });
 
         m_BtnForgotPassword.onClick.AddListener(() => SetPnlOn(m_PnlForgotPassword));
@@ -200,12 +212,12 @@ public class SNLoginView : MonoBehaviour
             }
             else
             {
-                SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtConfirmPasswordNotCorrect, m_TxtConfirm, "NotShow");
+                SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtConfirmPasswordNotCorrect, m_TxtBack, "NotShow");
             }
         }
         else
         {
-            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtNotAllInfoFilledTryAgain, m_TxtConfirm, "NotShow", onConfirm: () =>
+            SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtNotAllInfoFilledTryAgain, m_TxtBack, "NotShow", onConfirm: () =>
             {
                 if (string.IsNullOrEmpty(m_IpfFirstname.text)
                     && string.IsNullOrEmpty(m_IpfLastname.text)
@@ -226,7 +238,12 @@ public class SNLoginView : MonoBehaviour
             Password = m_IpfPassword_Register.text,
         };
 
-        StartCoroutine(SNApiControl.Api.Register(newUser));
+        StartCoroutine(SNApiControl.Api.Register(newUser, callback: () =>
+        {
+            SetPnlOn(m_PnlLogin);
+            SetBtnAccountExist(true);
+            SNControl.Api.ShowFAMPopup(m_TxtSuccessRegister, m_TxtYouCanLoginNow, m_TxtConfirm, "NotShow");
+        }));
     }
 
     private void OnDestroy()
@@ -241,11 +258,17 @@ public class SNLoginView : MonoBehaviour
 
     private void Login()
     {
-        if (!string.IsNullOrEmpty(m_IpfEmail_Login.text) && !string.IsNullOrEmpty(m_IpfPassword_Login.text))
+        if (string.IsNullOrEmpty(m_IpfEmail_Login.text) || string.IsNullOrEmpty(m_IpfPassword_Login.text))
+        {
+            SetGO(m_TxtNoneInput.gameObject, true);
+        }
+        else
         {
             StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
             {
                 SetGO(m_TxtFailLogin.gameObject, false);
+                SetGO(m_TxtFailLogin2.gameObject, false);
+                SetGO(m_TxtNoneInput.gameObject, false);
                 LoadSceneMain();
                 SNControl.Api.HideLoading();
             }));
@@ -271,6 +294,8 @@ public class SNLoginView : MonoBehaviour
         SetGO(m_PnlForgotPassword, false);
         SetBtnAccountExist(true);
         SetGO(m_TxtFailLogin.gameObject, false);
+        SetGO(m_TxtFailLogin2.gameObject, false);
+        SetGO(m_TxtNoneInput.gameObject, false);
 
 #if !UNITY_EDITOR
         SetGO(m_BtnSkip.gameObject, false);
@@ -282,9 +307,9 @@ public class SNLoginView : MonoBehaviour
         }
     }
 
-    private void FailLogin()
+    private void FailLogin(bool isWrongPasswordEmail)
     {
-        SetGO(m_TxtFailLogin.gameObject, true);
+        SetGO(isWrongPasswordEmail ? m_TxtFailLogin.gameObject : m_TxtFailLogin2.gameObject, true);
     }
 
     #region UTILS
