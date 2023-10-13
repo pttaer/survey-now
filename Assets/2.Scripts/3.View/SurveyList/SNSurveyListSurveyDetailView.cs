@@ -129,6 +129,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
                 // Check if history pnl to show the answers
                 if (isHistoryPnl)
                 {
+                    m_BtnActiveSurvey.gameObject.SetActive(false);
                     StartCoroutine(SNApiControl.Api.GetData<SurveyAnswerDTO>(string.Format(SNConstant.SURVEY_HISTORY_DETAIL, id), renderPage: (data) =>
                     {
                         string json = JsonConvert.SerializeObject(data);
