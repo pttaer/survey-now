@@ -14775,6 +14775,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78a4ec570d7bd64b90a2faf9eec28a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtSuccess: "Thanh to\xE1n th\xE0nh c\xF4ng"
+  m_TxtMomoSuccessRedirectToPoints: "B\u1EA1n \u0111\xE3 thanh to\xE1n momo th\xE0nh
+    c\xF4ng, b\u1EA1n s\u1EBD \u0111\u01B0\u1EE3c \u0111\u01B0a t\u1EDBi trang \u0111i\u1EC3m
+    \u0111\u1EC3 c\xF3 th\u1EC3 ki\u1EC3m tra s\u1ED1 \u0111i\u1EC3m \u0111ang c\xF3!"
 --- !u!1 &793719664
 GameObject:
   m_ObjectHideFlags: 0

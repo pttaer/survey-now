@@ -42,6 +42,9 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private Text m_PointsToCurrency;
     private InputField m_PointsAmountToPurchase;
 
+    [SerializeField] string m_TxtSuccess;
+    [SerializeField] string m_TxtMomoSuccessRedirectToPoints;
+
     public void Init()
     {
         m_BtnPnlPointInfo = transform.Find("Viewport/Content/PnlPointInfo/TopBar").GetComponent<Button>();
@@ -199,7 +202,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private void OnUpdatePointsDisplay(string points)
     {
         m_PointsConfirm.text = points;
-        m_PointsToCurrency.text = ((int.Parse(points) * 10)).ToString() + " VND";
+        m_PointsToCurrency.text = ((int.Parse(points) * 1000)).ToString() + " VND";
     }
 
     private void PurchasePoints()
@@ -216,6 +219,10 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         StartCoroutine(SNApiControl.Api.MomoReturn(momoData, momoParam, (data) =>
         {
             UpdateCurrentPoints(data.pointAmount);
+            SNControl.Api.ShowFAMPopup(m_TxtSuccess, m_TxtMomoSuccessRedirectToPoints, "Ok", "NotShow", () =>
+            {
+                SNMainControl.Api.OpenPoints();
+            }, onExit: () => SNMainControl.Api.OpenPoints());
         }));
     }
 

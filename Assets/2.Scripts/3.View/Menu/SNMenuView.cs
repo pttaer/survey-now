@@ -63,6 +63,7 @@ public class SNMenuView : MonoBehaviour
         SNMenuControl.Api.onOpenBuyPoints += LoadPoints;
         SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent += LoadMySurvey;
         SNMainControl.Api.OnOpenMySurveyEvent += LoadMySurvey;
+        SNMainControl.Api.OnOpenPointsEvent += LoadPoints;
 
         // Default value
         gameObject.SetActive(false);
@@ -75,6 +76,7 @@ public class SNMenuView : MonoBehaviour
         SNMenuControl.Api.onOpenBuyPoints -= LoadPoints;
         SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent -= LoadMySurvey;
         SNMainControl.Api.OnOpenMySurveyEvent -= LoadMySurvey;
+        SNMainControl.Api.OnOpenPointsEvent -= LoadPoints;
     }
 
     private void LoadHome()
