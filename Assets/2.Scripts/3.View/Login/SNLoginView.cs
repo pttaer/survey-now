@@ -298,7 +298,7 @@ public class SNLoginView : MonoBehaviour
         SetGO(m_TxtNoneInput.gameObject, false);
 
 #if !UNITY_EDITOR
-        SetGO(m_BtnSkip.gameObject, false);
+        //SetGO(m_BtnSkip.gameObject, false);
 #endif
 
         foreach (var pnl in m_PnlRegisterList)
