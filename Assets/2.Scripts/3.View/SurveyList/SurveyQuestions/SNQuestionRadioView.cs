@@ -92,6 +92,6 @@ public class SNQuestionRadioView : SNInitView
 
     public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
     {
-        m_ItemViewList[answer.answerOptions.FirstOrDefault().rowOrder - 1].SetTglOn();
+        m_ItemViewList[(int)answer.answerOptions.FirstOrDefault().rowOrder - 1].SetTglOn();
     }
 }

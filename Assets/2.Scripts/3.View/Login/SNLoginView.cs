@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SNLoginView : MonoBehaviour
 {
-    private Button m_BtnSkip;
+    //private Button m_BtnSkip;
     private Button m_BtnNoAccount;
     private Button m_BtnHaveAccount;
 
@@ -75,7 +75,7 @@ public class SNLoginView : MonoBehaviour
     {
         Transform body = transform.Find("Body");
 
-        m_BtnSkip = transform.parent.transform.Find("BtnSkip").GetComponent<Button>();
+        //m_BtnSkip = transform.parent.transform.Find("BtnSkip").GetComponent<Button>();
         m_BtnNoAccount = body.Find("BtnNoAccount").GetComponent<Button>();
         m_BtnHaveAccount = body.Find("BtnHaveAccount").GetComponent<Button>();
 
@@ -133,10 +133,10 @@ public class SNLoginView : MonoBehaviour
             m_PnlRegister5,
         };
 
-        m_BtnSkip.onClick.AddListener(() =>
+        /*m_BtnSkip.onClick.AddListener(() =>
         {
             LoadSceneMain();
-        });
+        });*/
 
         // Register OnClick
         m_BtnNoAccount.onClick.AddListener(() =>

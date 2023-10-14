@@ -74,6 +74,6 @@ public class SNQuestionRatingView : SNInitView
 
     public override void SetAnswer(SNSurveyAnswerDTO.AnswerResponseDTO answer)
     {
-        m_TglViewList[answer.rateNumber ?? 0 + 1].SetIsOnWithoutNotify(true);
+        m_TglViewList[(int)answer.rateNumber - 1].SetIsOnWithoutNotify(true);
     }
 }

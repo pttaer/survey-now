@@ -98,7 +98,7 @@ public class SNQuestionMultipleView : SNInitView
     {
         foreach (var answerOption in answer.answerOptions)
         {
-            m_ItemViewList[answerOption.rowOrder - 1].SetTglOn();
+            m_ItemViewList[(int)answerOption.rowOrder - 1].SetTglOn();
         }
     }
 }

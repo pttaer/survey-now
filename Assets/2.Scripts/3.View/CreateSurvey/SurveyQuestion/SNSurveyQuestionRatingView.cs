@@ -31,7 +31,7 @@ public class SNSurveyQuestionRatingView : SNSurveyQuestionBaseView
             Type = "Rating",
             IsRequired = GetRequire(),
             Title = m_IpfQuestion.text,
-            LimitNumber = string.IsNullOrEmpty(m_IpfLimitNumber.text) ? 0 : int.Parse(m_IpfLimitNumber.text),
+            LimitNumber = string.IsNullOrEmpty(m_IpfLimitNumber.text) ? 5 : int.Parse(m_IpfLimitNumber.text),
             RowOptions = new List<SNRowOptionRequestDTO>(),
             ColumnOptions = new List<SNColumnOptionRequestDTO>()
         };
