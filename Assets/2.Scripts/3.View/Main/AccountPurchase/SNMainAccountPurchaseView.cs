@@ -38,6 +38,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private List<GameObject> m_ListPnlHistory;
 
     private Text m_PointsBalance;
+    private Text m_PointsToMoneyBalance;
     private Text m_PointsConfirm;
     private Text m_PointsToCurrency;
     private InputField m_PointsAmountToPurchase;
@@ -78,6 +79,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_PrefRecord = transform.Find("Viewport/SpawnItems/Record").gameObject;
 
         m_PointsBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_1").GetComponent<Text>();
+        m_PointsToMoneyBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_1").GetComponent<Text>();
         m_PointsConfirm = m_BodyPurchasePoint.transform.Find("Body_1/RightSide/TxtLabel").GetComponent<Text>();
         m_PointsToCurrency = m_BodyPurchasePoint.transform.Find("Body_1/RightSide/TxtLabel_2").GetComponent<Text>();
         m_PointsAmountToPurchase = m_BodyPurchasePoint.transform.Find("Body/RightSide/IpfPointAmount").GetComponent<InputField>();
@@ -133,6 +135,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private void DefaultValue()
     {
         m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString();
+        m_PointsToMoneyBalance.text = (SNModel.Api.CurrentUser.Point * 1000).ToString() + " VND";
     }
 
     private void OnDestroy()
@@ -231,7 +234,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         int.TryParse(m_PointsBalance.text, out int result);
 
         m_PointsBalance.text = (result + pointAmount).ToString();
+        m_PointsToMoneyBalance.text = (result + pointAmount * 1000).ToString() + " VND";
     }
-
-
 }
