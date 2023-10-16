@@ -31,7 +31,7 @@ public class SNBundleNoticeView : MonoBehaviour
 
     private void OnSubmit()
     {
-        SNMenuControl.Api.OnOpenBuyPoints();
+        SNMenuControl.Api.OnOpenPoints();
         DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenAccountPurchase());
     }
 }

@@ -60,10 +60,11 @@ public class SNMenuView : MonoBehaviour
         }
 
         SNMainControl.Api.OnClickMenuEvent += OpenMenu;
-        SNMenuControl.Api.onOpenBuyPoints += LoadPoints;
+        SNMenuControl.Api.onOpenPoints += LoadPoints;
         SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent += LoadMySurvey;
         SNMainControl.Api.OnOpenMySurveyEvent += LoadMySurvey;
         SNMainControl.Api.OnOpenPointsEvent += LoadPoints;
+        SNMainControl.Api.OnOpenPayment += LoadPayment;
 
         // Default value
         gameObject.SetActive(false);
@@ -73,10 +74,11 @@ public class SNMenuView : MonoBehaviour
     private void OnDestroy()
     {
         SNMainControl.Api.OnClickMenuEvent -= OpenMenu;
-        SNMenuControl.Api.onOpenBuyPoints -= LoadPoints;
+        SNMenuControl.Api.onOpenPoints -= LoadPoints;
         SNMainControl.Api.OnDeleteSurveyBackToMySurveyEvent -= LoadMySurvey;
         SNMainControl.Api.OnOpenMySurveyEvent -= LoadMySurvey;
         SNMainControl.Api.OnOpenPointsEvent -= LoadPoints;
+        SNMainControl.Api.OnOpenPayment -= LoadPayment;
     }
 
     private void LoadHome()
@@ -119,6 +121,12 @@ public class SNMenuView : MonoBehaviour
         DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenAccountPurchase());
     }
 
+    private void LoadPayment()
+    {
+        LoadScene(SNConstant.SCENE_PAYMENT);
+        DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenAccountPurchase());
+    }
+
     private void Logout()
     {
         foreach (var view in m_MenuIconViewList)
@@ -133,9 +141,12 @@ public class SNMenuView : MonoBehaviour
         CloseMenu();
         SNControl.Api.UnloadThenLoadScene(sceneName);
 
-        foreach (var view in m_MenuIconViewList)
+        if (btn != null)
         {
-            view.SetButtonColor(btn.name);
+            foreach (var view in m_MenuIconViewList)
+            {
+                view.SetButtonColor(btn.name);
+            }
         }
 
         callback?.Invoke();

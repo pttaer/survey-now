@@ -192,9 +192,13 @@ public class SNConstant
 
     public static Color MAIN_LIGHT_COLOR_GREEN { get => m_MainLightColor; }
 
-    private static Color m_MainColor = new Color(0f, 0.69f, 0.31f);
+    private static Color m_MainColor = new(0f, 0.69f, 0.31f);
 
-    private static Color m_MainLightColor = new Color(115f / 255f, 209f / 255f, 61f / 255f, 86f / 255f);
+    private static Color m_MainLightColor = new(115f / 255f, 209f / 255f, 61f / 255f, 86f / 255f);
+
+    private static Color32 m_RedTextColor = new(202, 33, 43, 255);
+
+    private static Color32 m_GreenTextColor = new(34, 130, 34, 255);
 
     // api constant
     public enum REQUEST_STATUS

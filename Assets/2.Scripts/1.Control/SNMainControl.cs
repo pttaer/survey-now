@@ -12,6 +12,7 @@ public class SNMainControl : MonoBehaviour
     public Action OnOpenAccountPurchaseEvent;
     public Action OnOpenMySurveyEvent;
     public Action OnOpenPointsEvent;
+    public Action OnOpenPayment;
     public Action<SNHistoryRecordType, string, string> OnCallHistoryRecorDetailEvent;
 
     public void OpenMenuPnl()
@@ -47,6 +48,11 @@ public class SNMainControl : MonoBehaviour
     public void OpenPoints()
     {
         OnOpenPointsEvent?.Invoke();
+    }
+
+    public void OpenPayment()
+    {
+        OnOpenPayment?.Invoke();
     }
 
     public void CallHistoryRecordDetail(SNHistoryRecordType type, string date, string points)
