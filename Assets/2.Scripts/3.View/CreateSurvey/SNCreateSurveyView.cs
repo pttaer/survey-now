@@ -261,7 +261,6 @@ public class SNCreateSurveyView : MonoBehaviour
 
     private void OnClickOpenMenu()
     {
-        print("v");
         SNMainControl.Api.OpenMenuPnl();
     }
 }

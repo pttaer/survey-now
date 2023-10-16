@@ -5,10 +5,10 @@ public class SNMenuControl : MonoBehaviour
 {
     public static SNMenuControl Api;
 
-    public Action onOpenBuyPoints;
+    public Action onOpenPoints;
 
-    public void OnOpenBuyPoints()
+    public void OnOpenPoints()
     {
-        onOpenBuyPoints?.Invoke();
+        onOpenPoints?.Invoke();
     }
 }

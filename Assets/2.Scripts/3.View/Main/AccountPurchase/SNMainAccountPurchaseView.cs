@@ -12,8 +12,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private Button m_BtnPnlPurchaseHistory;
     private Button m_BtnPnlExchangeHistory;
 
-    private Button m_BtnPurchase;
-
     private GameObject m_BodyPointProfile;
     private GameObject m_BodyPurchasePoint;
     private GameObject m_BodyPointExchange;
@@ -39,12 +37,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private Text m_PointsBalance;
     private Text m_PointsToMoneyBalance;
-    private Text m_PointsConfirm;
-    private Text m_PointsToCurrency;
-    private InputField m_PointsAmountToPurchase;
-
-    [SerializeField] string m_TxtSuccess;
-    [SerializeField] string m_TxtMomoSuccessRedirectToPoints;
 
     public void Init()
     {
@@ -60,8 +52,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BodyPurchasePoint = transform.Find("Viewport/Content/PnlPurchasePoint/Body").gameObject;
         m_BodyPointExchange = transform.Find("Viewport/Content/PnlPointExchange/Body").gameObject;
         m_BodyPointHistory = transform.Find("Viewport/Content/PnlPointHistory/Body").gameObject;
-
-        m_BtnPurchase = m_BodyPurchasePoint.transform.Find("BtnGroup/BtnPurchase").GetComponent<Button>();
 
         m_BodyPurchaseHistory = transform.Find("Viewport/Content/PnlPurchaseHistory/Body").gameObject;
         m_BodyExchangeHistory = transform.Find("Viewport/Content/PnlExchangeHistory/Body").gameObject;
@@ -79,10 +69,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_PrefRecord = transform.Find("Viewport/SpawnItems/Record").gameObject;
 
         m_PointsBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_1").GetComponent<Text>();
-        m_PointsToMoneyBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_1").GetComponent<Text>();
-        m_PointsConfirm = m_BodyPurchasePoint.transform.Find("Body_1/RightSide/TxtLabel").GetComponent<Text>();
-        m_PointsToCurrency = m_BodyPurchasePoint.transform.Find("Body_1/RightSide/TxtLabel_2").GetComponent<Text>();
-        m_PointsAmountToPurchase = m_BodyPurchasePoint.transform.Find("Body/RightSide/IpfPointAmount").GetComponent<InputField>();
+        m_PointsToMoneyBalance = m_BodyPointProfile.transform.Find("RightSide/TxtLabel_2").GetComponent<Text>();
 
         // 3 bodies of main panels and 4 sub panels
         m_ListPnl = new()
@@ -120,12 +107,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BtnPnlPurchaseHistory.onClick.AddListener(OpenPnlPurchaseHistory);
         m_BtnPnlExchangeHistory.onClick.AddListener(OpenPnlExchangeHistory);
 
-        m_PointsAmountToPurchase.onValueChanged.AddListener(OnUpdatePointsDisplay);
-
-        m_BtnPurchase.onClick.AddListener(PurchasePoints);
-
         SNMainControl.Api.OnCallHistoryRecorDetailEvent += OpenHistoryRecord;
-        SNDeeplinkControl.Api.onReturnFromMomo += ProcessMomoReturnData;
 
         m_PnlPointHistory.GetComponent<SNPointHistory>().Init();
 
@@ -134,14 +116,13 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private void DefaultValue()
     {
-        m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString();
-        m_PointsToMoneyBalance.text = (SNModel.Api.CurrentUser.Point * 1000).ToString() + " VND";
+        m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString() + "VND";
+        m_PointsToMoneyBalance.text = SNModel.Api.CurrentUser.Point.ToString() + "000 VND";
     }
 
     private void OnDestroy()
     {
         SNMainControl.Api.OnCallHistoryRecorDetailEvent -= OpenHistoryRecord;
-        SNDeeplinkControl.Api.onReturnFromMomo -= ProcessMomoReturnData;
     }
 
     private void OpenHistoryRecord(SNHistoryRecordType type, string date, string points)
@@ -173,7 +154,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private void OpenPurchasePointDetail()
     {
-        ShowPnlNotHistory(m_BodyPurchasePoint);
+        //ShowPnlNotHistory(m_BodyPurchasePoint);
+        SNMainControl.Api.OpenPayment();
     }
 
     private void OpenPointExchangeDetail()
@@ -202,38 +184,11 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         SNControl.Api.OpenPanel(pnl, m_ListPnl, true);
     }
 
-    private void OnUpdatePointsDisplay(string points)
-    {
-        m_PointsConfirm.text = points;
-        m_PointsToCurrency.text = ((int.Parse(points) * 1000)).ToString() + " VND";
-    }
-
-    private void PurchasePoints()
-    {
-        StartCoroutine(SNApiControl.Api.PurchasePoints(int.Parse(m_PointsAmountToPurchase.text), (momoUrl) =>
-        {
-            Debug.Log(momoUrl);
-            Application.OpenURL(momoUrl);
-        }));
-    }
-
-    private void ProcessMomoReturnData(SNMomoRedirect momoData, string momoParam)
-    {
-        StartCoroutine(SNApiControl.Api.MomoReturn(momoData, momoParam, (data) =>
-        {
-            UpdateCurrentPoints(data.pointAmount);
-            SNControl.Api.ShowFAMPopup(m_TxtSuccess, m_TxtMomoSuccessRedirectToPoints, "Ok", "NotShow", () =>
-            {
-                SNMainControl.Api.OpenPoints();
-            }, onExit: () => SNMainControl.Api.OpenPoints());
-        }));
-    }
-
     private void UpdateCurrentPoints(int pointAmount)
     {
         int.TryParse(m_PointsBalance.text, out int result);
 
-        m_PointsBalance.text = (result + pointAmount).ToString();
-        m_PointsToMoneyBalance.text = (result + pointAmount * 1000).ToString() + " VND";
+        m_PointsBalance.text = (result + pointAmount).ToString() + "VND";
+        m_PointsToMoneyBalance.text = m_PointsBalance.text + "000 VND";
     }
 }
