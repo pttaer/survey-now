@@ -14775,10 +14775,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d78a4ec570d7bd64b90a2faf9eec28a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TxtSuccess: "Thanh to\xE1n th\xE0nh c\xF4ng"
-  m_TxtMomoSuccessRedirectToPoints: "B\u1EA1n \u0111\xE3 thanh to\xE1n momo th\xE0nh
-    c\xF4ng, b\u1EA1n s\u1EBD \u0111\u01B0\u1EE3c \u0111\u01B0a t\u1EDBi trang \u0111i\u1EC3m
-    \u0111\u1EC3 c\xF3 th\u1EC3 ki\u1EC3m tra s\u1ED1 \u0111i\u1EC3m \u0111ang c\xF3!"
 --- !u!1 &793719664
 GameObject:
   m_ObjectHideFlags: 0
@@ -18453,8 +18449,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 315, y: -214.66667}
-  m_SizeDelta: {x: 261.9792, y: 109.333336}
+  m_AnchoredPosition: {x: 315, y: -214.14584}
+  m_SizeDelta: {x: 247.91667, y: 108.29167}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1035427688
 MonoBehaviour:
@@ -23400,8 +23396,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 351, y: -246.66667}
-  m_SizeDelta: {x: 630, y: 269.33334}
+  m_AnchoredPosition: {x: 351, y: -246.14584}
+  m_SizeDelta: {x: 630, y: 268.2917}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1303690617
 MonoBehaviour:
@@ -28859,8 +28855,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 130.9896, y: -28.666668}
-  m_SizeDelta: {x: 261.9792, y: 33.333336}
+  m_AnchoredPosition: {x: 123.958336, y: -28.145834}
+  m_SizeDelta: {x: 247.91667, y: 32.291668}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623100651
 MonoBehaviour:
@@ -28895,7 +28891,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: No history available
+  m_Text: "Ch\u01B0a c\xF3 giao d\u1ECBch!"
 --- !u!222 &1623100652
 CanvasRenderer:
   m_ObjectHideFlags: 0
