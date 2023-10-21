@@ -321,7 +321,7 @@ public class SNApiControl
 
     }
 
-    public IEnumerator Login(string email, string password, Action callback = null)
+    public IEnumerator Login(string email, string password, bool isRememberMe = false, Action callback = null)
     {
         SNControl.Api.ShowLoading();
         UnityWebRequest request = new UnityWebRequest(SNConstant.LOGIN, SNConstant.METHOD_POST.ToUpper());
@@ -364,6 +364,16 @@ public class SNApiControl
 
             PlayerPrefs.SetString(SNConstant.BEARER_TOKEN_CACHE, SNModel.Api.CurrentUser.Token);
             PlayerPrefs.SetInt(SNConstant.USER_ID, userData.id);
+
+            if (isRememberMe)
+            {
+                SetCacheAccount(password, userData);
+            }
+            else
+            {
+                ClearCacheLoginRemember();
+            }
+
             PlayerPrefs.SetString(SNConstant.USER_EMAIL_CACHE, userData.email);
             PlayerPrefs.SetString(SNConstant.USER_FULLNAME_CACHE, userData.fullName);
 
@@ -387,6 +397,18 @@ public class SNApiControl
             }
         }
         SNControl.Api.HideLoading();
+    }
+
+    private static void SetCacheAccount(string password, SNUserResponseDTO userData)
+    {
+        PlayerPrefs.SetString(SNConstant.EMAIL_CACHE, userData.email);
+        PlayerPrefs.SetString(SNConstant.PASSWORD_CACHE, password);
+    }
+
+    public void ClearCacheLoginRemember()
+    {
+        PlayerPrefs.DeleteKey(SNConstant.EMAIL_CACHE);
+        PlayerPrefs.DeleteKey(SNConstant.PASSWORD_CACHE);
     }
 
     public IEnumerator Register(SNUserDTO data, Action callback = null)
