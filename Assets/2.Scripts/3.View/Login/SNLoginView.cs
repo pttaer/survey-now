@@ -48,6 +48,8 @@ public class SNLoginView : MonoBehaviour
     private InputField m_IpfPassword_Register;
     private InputField m_IpfPasswordConfirm_Register;
 
+    private Toggle m_TglRemmember;
+
     private Text m_TxtFailLogin;
     private Text m_TxtFailLogin2;
     private Text m_TxtNoneInput;
@@ -108,6 +110,8 @@ public class SNLoginView : MonoBehaviour
 
         m_IpfPassword_Register = m_PnlRegister3.transform.Find("IpfPassword").GetComponent<InputField>();
         m_IpfPasswordConfirm_Register = m_PnlRegister3.transform.Find("IpfReEnterPassword").GetComponent<InputField>();
+
+        m_TglRemmember = body.Find("Content/PnlLogin/TglRememberMe").GetComponent<Toggle>();
 
         m_BtnNextRegister1 = body.Find("Content/PnlRegister1/BtnGroup/BtnNext").GetComponent<Button>();
         m_BtnNextRegister2 = body.Find("Content/PnlRegister2/BtnGroup/BtnNext").GetComponent<Button>();
@@ -256,6 +260,16 @@ public class SNLoginView : MonoBehaviour
         SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_HOME);
     }
 
+    private void HasCacheThenInputAllLogin()
+    {
+        if (PlayerPrefs.HasKey(SNConstant.EMAIL_CACHE) && PlayerPrefs.HasKey(SNConstant.PASSWORD_CACHE))
+        {
+            m_IpfEmail_Login.text = GetCacheEmail();
+            m_IpfPassword_Login.text = GetCachePassword();
+            m_TglRemmember.isOn = true;
+        }
+    }
+
     private void Login()
     {
         if (string.IsNullOrEmpty(m_IpfEmail_Login.text) || string.IsNullOrEmpty(m_IpfPassword_Login.text))
@@ -264,7 +278,7 @@ public class SNLoginView : MonoBehaviour
         }
         else
         {
-            StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, () =>
+            StartCoroutine(SNApiControl.Api.Login(m_IpfEmail_Login.text, m_IpfPassword_Login.text, m_TglRemmember.isOn, () =>
             {
                 SetGO(m_TxtFailLogin.gameObject, false);
                 SetGO(m_TxtFailLogin2.gameObject, false);
@@ -280,7 +294,7 @@ public class SNLoginView : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            StartCoroutine(SNApiControl.Api.Login("user@gmail.com", "12345678", () =>
+            StartCoroutine(SNApiControl.Api.Login("user@gmail.com", "12345678", m_TglRemmember.isOn, () =>
             {
                 LoadSceneMain();
             }));
@@ -296,6 +310,8 @@ public class SNLoginView : MonoBehaviour
         SetGO(m_TxtFailLogin.gameObject, false);
         SetGO(m_TxtFailLogin2.gameObject, false);
         SetGO(m_TxtNoneInput.gameObject, false);
+
+        HasCacheThenInputAllLogin();
 
 #if !UNITY_EDITOR
         //SetGO(m_BtnSkip.gameObject, false);
@@ -342,5 +358,24 @@ public class SNLoginView : MonoBehaviour
         }
     }
 
+    public void SetCacheEmail(string cacheEmail)
+    {
+        PlayerPrefs.SetString(SNConstant.EMAIL_CACHE, cacheEmail);
+    }
+
+    public string GetCacheEmail()
+    {
+        return PlayerPrefs.GetString(SNConstant.EMAIL_CACHE);
+    }
+
+    public void SetCachePassword(string cachePassword)
+    {
+        PlayerPrefs.SetString(SNConstant.PASSWORD_CACHE, cachePassword);
+    }
+
+    public string GetCachePassword()
+    {
+        return PlayerPrefs.GetString(SNConstant.PASSWORD_CACHE);
+    }
     #endregion
 }
