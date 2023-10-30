@@ -125,6 +125,8 @@ public class SNConstant
     public const string SURVEY_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/history";
     public const string SURVEY_HISTORY_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys/{0}/answer";
 
+    public const string REDEEM_MONEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/redeem/momo";
+
     #endregion API_URI
 
     // Methods

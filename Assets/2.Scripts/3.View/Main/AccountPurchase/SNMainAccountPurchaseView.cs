@@ -110,7 +110,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         SNMainControl.Api.OnCallHistoryRecorDetailEvent += OpenHistoryRecord;
 
         m_PnlPointHistory.GetComponent<SNPointHistory>().Init();
-
+        m_PnlPointExchange.GetComponent<SNPointRedeem>().Init();
+        
         DefaultValue();
     }
 
