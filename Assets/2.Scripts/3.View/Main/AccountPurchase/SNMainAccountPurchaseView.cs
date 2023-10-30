@@ -8,7 +8,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private Button m_BtnPnlPurchasePoint;
     private Button m_BtnPnlPointExchange;
     private Button m_BtnPnlPointHistory;
-    private Button m_BtnExchange;
 
     private Button m_BtnPnlPurchaseHistory;
     private Button m_BtnPnlExchangeHistory;
@@ -45,7 +44,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         m_BtnPnlPurchasePoint = transform.Find("Viewport/Content/PnlPurchasePoint/TopBar").GetComponent<Button>();
         m_BtnPnlPointExchange = transform.Find("Viewport/Content/PnlPointExchange/TopBar").GetComponent<Button>();
         m_BtnPnlPointHistory = transform.Find("Viewport/Content/PnlPointHistory/TopBar").GetComponent<Button>();
-        m_BtnExchange = transform.Find("Viewport/Content/PnlPointExchange/BtnGroup/BtnExchange").GetComponent<Button>();
 
         m_BtnPnlPurchaseHistory = transform.Find("Viewport/Content/PnlPurchaseHistory/TopBar").GetComponent<Button>();
         m_BtnPnlExchangeHistory = transform.Find("Viewport/Content/PnlExchangeHistory/TopBar").GetComponent<Button>();
@@ -104,7 +102,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
         m_BtnPnlPointInfo.onClick.AddListener(OpenPointInfoDetail);
         m_BtnPnlPurchasePoint.onClick.AddListener(OpenPurchasePointDetail);
-        m_BtnExchange.onClick.AddListener(SendExchagnePointRequest);
         m_BtnPnlPointExchange.onClick.AddListener(OpenPointExchangeDetail);
         m_BtnPnlPointHistory.onClick.AddListener(OpenPointHistoryDetail);
         m_BtnPnlPurchaseHistory.onClick.AddListener(OpenPnlPurchaseHistory);
@@ -113,7 +110,8 @@ public class SNMainAccountPurchaseView : MonoBehaviour
         SNMainControl.Api.OnCallHistoryRecorDetailEvent += OpenHistoryRecord;
 
         m_PnlPointHistory.GetComponent<SNPointHistory>().Init();
-
+        m_PnlPointExchange.GetComponent<SNPointRedeem>().Init();
+        
         DefaultValue();
     }
 
@@ -159,12 +157,6 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     {
         //ShowPnlNotHistory(m_BodyPurchasePoint);
         SNMainControl.Api.OpenPayment();
-    }
-    
-    private void SendExchagnePointRequest()
-    {
-        SNRedeemRequestDTO data = new SNRedeemRequestDTO();
-        SNApiControl.Api.PostData(SNConstant.REDEEM_MONEY, data);
     }
 
     private void OpenPointExchangeDetail()

@@ -12,6 +12,7 @@ public class SNUserDTO
     public string IsDelete { get; set; }
     public string LangKey { get; set; }
     public string Currency { get; set; }
+    public string PhoneNumber { get; set; }
 
     public enum GenderEnum
     {
