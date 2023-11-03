@@ -62,6 +62,7 @@ public class SNControl
         SNCreateSurveyControl.Api = new();
         SNApiControl.Api = new();
         SNSurveyLikertQuestionControl.Api = new();
+        SNProfileControl.Api = new SNProfileControl();
 
         SNDeeplinkControl.Api.Init();
 

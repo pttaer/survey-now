@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class SNMainControl : MonoBehaviour
+public class SNMainControl
 {
     public static SNMainControl Api;
 

@@ -102,6 +102,10 @@ public class SNConstant
     public const string LOGIN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/login";
     public const string REGISTER = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/register";
 
+    public const string USER_UPDATE_INFO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/users/{0}";
+
+    public const string OCCUPATION = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/occupation";
+
     public const string PACKS_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/all";
     public const string PACKS_CALCULATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/calculate";
     public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";

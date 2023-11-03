@@ -46,9 +46,6 @@ public class SNMainView : MonoBehaviour
         SNMainControl.Api.OnOpenAccountlEvent += OpenAccount;
         SNMainControl.Api.OnOpenAccountPurchaseEvent += OpenAccountPurchase;
 
-        m_MainProfileView.Init();
-        m_MainAccountView.Init();
-        m_MainAccountPurchaseView.Init();
     }
 
     private void OnDestroy()
@@ -60,16 +57,19 @@ public class SNMainView : MonoBehaviour
 
     private void OpenProfile()
     {
+        m_MainProfileView.Init();
         ShowPnl(m_MainProfileView.gameObject);
     }
 
     private void OpenAccount()
     {
+        m_MainAccountView.Init();
         ShowPnl(m_MainAccountView.gameObject);
     }
 
     private void OpenAccountPurchase()
     {
+        m_MainAccountPurchaseView.Init();
         ShowPnl(m_MainAccountPurchaseView.gameObject);
     }
 

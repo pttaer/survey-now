@@ -126,6 +126,7 @@ public class SNApiControl
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            SNControl.Api.HideLoading();
             string response = request.downloadHandler.text;
 
             T data = JsonConvert.DeserializeObject<T>(response);

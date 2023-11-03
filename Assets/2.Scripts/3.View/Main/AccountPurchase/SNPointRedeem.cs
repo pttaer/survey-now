@@ -15,8 +15,8 @@ public class SNPointRedeem : MonoBehaviour
     private Text m_PointsToCurrency;
     private InputField m_PointsAmountToPurchase;
 
-    [SerializeField] string m_TxtSuccess;
-    [SerializeField] string m_TxtMomoSuccessRedirectToPoints;
+    [SerializeField] string m_TxtPopupTitle;
+    [SerializeField] string m_TxtPopupContent;
 
     public void Init()
     {
@@ -48,18 +48,28 @@ public class SNPointRedeem : MonoBehaviour
 
     private void SendExchagnePointRequest()
     {
-        SNRedeemRequestDTO data = new()
+        if (string.IsNullOrEmpty(SNModel.Api.CurrentUser?.PhoneNumber))
         {
-            UserId = (int)SNModel.Api.CurrentUser.Id,
-            PaymentMethod = "Momo",
-            PointAmount = int.Parse(m_PointsAmountToPurchase.text),
-            MomoAccount = SNModel.Api.CurrentUser?.PhoneNumber,
-        };
-
-
-        StartCoroutine(SNApiControl.Api.PostData(SNConstant.REDEEM_MONEY, data, () =>
+            SNControl.Api.ShowFAMPopup(title: m_TxtPopupTitle, content: m_TxtPopupContent, btnConfirmText: "OK", btnElseText: "CANCEL",onConfirm: () =>
+            {
+                SNMainControl.Api.OpenProfile();
+            });
+        }
+        else
         {
+            SNRedeemRequestDTO data = new()
+            {
+                UserId = (int)SNModel.Api.CurrentUser.Id,
+                PaymentMethod = "Momo",
+                PointAmount = int.Parse(m_PointsAmountToPurchase.text),
+                MomoAccount = SNModel.Api.CurrentUser?.PhoneNumber,
+            };
 
-        }));
+
+            StartCoroutine(SNApiControl.Api.PostData(SNConstant.REDEEM_MONEY, data, () =>
+            {
+
+            }));
+        }
     }
 }
