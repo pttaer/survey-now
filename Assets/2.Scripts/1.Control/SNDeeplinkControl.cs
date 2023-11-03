@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SNDeeplinkControl : MonoBehaviour
+public class SNDeeplinkControl
 {
     public static SNDeeplinkControl Api { get; set; }
     public string deeplinkURL;
