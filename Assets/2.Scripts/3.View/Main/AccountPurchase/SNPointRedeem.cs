@@ -31,7 +31,7 @@ public class SNPointRedeem : MonoBehaviour
         m_PointsAmountToPurchase.onValueChanged.AddListener(OnUpdatePointsDisplay);
 
         //m_BtnCancel.onClick.AddListener(BackToPoints);
-        m_BtnRedeem.onClick.AddListener(SendExchagnePointRequest);
+        //m_BtnRedeem.onClick.AddListener(SendExchagnePointRequest);
 
         DefaultValue();
     }
@@ -46,30 +46,5 @@ public class SNPointRedeem : MonoBehaviour
         m_PointsToCurrency.text = ((int.Parse(points) * 1000)).ToString() + " VND";
     }
 
-    private void SendExchagnePointRequest()
-    {
-        if (string.IsNullOrEmpty(SNModel.Api.CurrentUser?.PhoneNumber))
-        {
-            SNControl.Api.ShowFAMPopup(title: m_TxtPopupTitle, content: m_TxtPopupContent, btnConfirmText: "OK", btnElseText: "CANCEL",onConfirm: () =>
-            {
-                SNMainControl.Api.OpenProfile();
-            });
-        }
-        else
-        {
-            SNRedeemRequestDTO data = new()
-            {
-                UserId = (int)SNModel.Api.CurrentUser.Id,
-                PaymentMethod = "Momo",
-                PointAmount = int.Parse(m_PointsAmountToPurchase.text),
-                MomoAccount = SNModel.Api.CurrentUser?.PhoneNumber,
-            };
-
-
-            StartCoroutine(SNApiControl.Api.PostData(SNConstant.REDEEM_MONEY, data, () =>
-            {
-
-            }));
-        }
-    }
+    
 }

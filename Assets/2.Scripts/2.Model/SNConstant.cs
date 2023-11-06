@@ -112,6 +112,7 @@ public class SNConstant
     public const string PACKS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/purchase";
 
     public const string POINTS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo";
+    public const string POINTS_PURCHASE_REQUEST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/request";
     public const string POINTS_PURCHASE_RETURN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo/return";
     public const string POINTS_PURCHASE_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/history";
 
@@ -129,7 +130,7 @@ public class SNConstant
     public const string SURVEY_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/history";
     public const string SURVEY_HISTORY_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys/{0}/answer";
 
-    public const string REDEEM_MONEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/redeem/momo";
+    public const string REDEEM_MONEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/redeem/request";
 
     #endregion API_URI
 
