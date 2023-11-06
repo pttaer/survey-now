@@ -13,6 +13,7 @@ public class SNMainControl
     public Action OnOpenMySurveyEvent;
     public Action OnOpenPointsEvent;
     public Action OnOpenPayment;
+    public Action<bool> OnSetPointAction;
     public Action<SNHistoryRecordType, string, string> OnCallHistoryRecorDetailEvent;
 
     public void OpenMenuPnl()
@@ -53,6 +54,11 @@ public class SNMainControl
     public void OpenPayment()
     {
         OnOpenPayment?.Invoke();
+    }
+    
+    public void SetPointAction(bool isPurchase)
+    {
+        OnSetPointAction?.Invoke(isPurchase);
     }
 
     public void CallHistoryRecordDetail(SNHistoryRecordType type, string date, string points)

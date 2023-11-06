@@ -449,9 +449,11 @@ public class SNApiControl
         SNControl.Api.HideLoading();
     }
 
-    public IEnumerator PurchasePoints(int amount, Action<string> callback = null)
+    public IEnumerator PurchasePoints(bool IsMomo, int amount, Action<string> callback = null)
     {
-        UnityWebRequest request = WebRequestWithAuthorizationHeader(SNConstant.POINTS_PURCHASE, SNConstant.METHOD_POST.ToUpper());
+        string url = IsMomo ? SNConstant.POINTS_PURCHASE : SNConstant.POINTS_PURCHASE_REQUEST;
+
+        UnityWebRequest request = WebRequestWithAuthorizationHeader(url, SNConstant.METHOD_POST.ToUpper());
 
         SNPaymentDTO payment = new SNPaymentDTO(amount);
 

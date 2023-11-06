@@ -157,11 +157,14 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     {
         //ShowPnlNotHistory(m_BodyPurchasePoint);
         SNMainControl.Api.OpenPayment();
+        SNMainControl.Api.SetPointAction(true);
     }
 
     private void OpenPointExchangeDetail()
     {
-        ShowPnlNotHistory(m_BodyPointExchange);
+        //ShowPnlNotHistory(m_BodyPointExchange);
+        SNMainControl.Api.OpenPayment();
+        SNMainControl.Api.SetPointAction(false);
     }
 
     private void OpenPnlPurchaseHistory()
