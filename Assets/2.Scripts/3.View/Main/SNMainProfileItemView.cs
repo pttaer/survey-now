@@ -38,16 +38,20 @@ public class SNMainProfileItemView : MonoBehaviour
 
     public void InitPnlCareer()
     {
-        m_TxtField = transform.Find("PnlInfo/Body/RightSide/TxtLabel").GetComponent<Text>();
-        m_TxtIncome = transform.Find("PnlInfo/Body/RightSide/TxtLabel_2").GetComponent<Text>();
-        m_TxtPlaceOfWork = transform.Find("PnlInfo/Body/RightSide/TxtLabel_3").GetComponent<Text>();
+        var rightSide = transform.Find("PnlInfo/Body/RightSide");
+
+        m_TxtField = rightSide.Find("TxtLabel").GetComponent<Text>();
+        m_TxtIncome = rightSide.Find("TxtLabel_2").GetComponent<Text>();
+        m_TxtPlaceOfWork = rightSide.Find("TxtLabel_3").GetComponent<Text>();
     }
 
     public void InitPnlContact()
     {
-        m_TxtAddress = transform.Find("PnlInfo/Body/RightSide/TxtLabel_1").GetComponent<Text>();
-        m_TxtPhoneNumber = transform.Find("PnlInfo/Body/RightSide/TxtLabel_2").GetComponent<Text>();
-        m_TxtEmail = transform.Find("PnlInfo/Body/RightSide/TxtLabel_3").GetComponent<Text>();
+        var rightSide = transform.Find("PnlInfo/Body/RightSide");
+
+        m_TxtAddress = rightSide.Find("TxtLabel_1").GetComponent<Text>();
+        m_TxtPhoneNumber = rightSide.Find("TxtLabel_2").GetComponent<Text>();
+        m_TxtEmail = rightSide.Find("TxtLabel_3").GetComponent<Text>();
 
         m_TxtAddress.text = !string.IsNullOrEmpty(SNModel.Api.CurrentUser.Address) ? SNModel.Api.CurrentUser.Address : "--";
         m_TxtPhoneNumber.text = !string.IsNullOrEmpty(SNModel.Api.CurrentUser.PhoneNumber) ? SNModel.Api.CurrentUser.PhoneNumber : "--";
@@ -56,9 +60,11 @@ public class SNMainProfileItemView : MonoBehaviour
 
     public void InitPnlProfile()
     {
-        m_TxtFullname = transform.Find("PnlInfo/Body/RightSide/TxtLabel_1").GetComponent<Text>();
-        m_TxtGender = transform.Find("PnlInfo/Body/RightSide/TxtLabel_2").GetComponent<Text>();
-        m_TxtDob = transform.Find("PnlInfo/Body/RightSide/TxtLabel_3").GetComponent<Text>();
+        var rightSide = transform.Find("PnlInfo/Body/RightSide");
+
+        m_TxtFullname = rightSide.Find("TxtLabel_1").GetComponent<Text>();
+        m_TxtGender = rightSide.Find("TxtLabel_2").GetComponent<Text>();
+        m_TxtDob = rightSide.Find("TxtLabel_3").GetComponent<Text>();
 
         m_TxtFullname.text = !string.IsNullOrEmpty(SNModel.Api.CurrentUser.FullName) ? SNModel.Api.CurrentUser.FullName : "--";
         m_TxtGender.text = !string.IsNullOrEmpty(SNModel.Api.CurrentUser.Gender) ? SNModel.Api.CurrentUser.Gender : "--";

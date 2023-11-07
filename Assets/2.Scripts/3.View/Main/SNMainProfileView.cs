@@ -25,15 +25,17 @@ public class SNMainProfileView : MonoBehaviour
 
     public void Init()
     {
-        m_BtnPnlProfile = transform.Find("Viewport/Content/PnlProfile/TopBar").GetComponent<Button>();
-        m_BtnPnlContact = transform.Find("Viewport/Content/PnlContact/TopBar").GetComponent<Button>();
-        m_BtnPnlCareer = transform.Find("Viewport/Content/PnlCareer/TopBar").GetComponent<Button>();
-        m_BtnPnlHobbies = transform.Find("Viewport/Content/PnlHobbies/TopBar").GetComponent<Button>();
+        Transform content = transform.Find("Viewport/Content");
 
-        m_BodyProfile = transform.Find("Viewport/Content/PnlProfile/PnlInfo").gameObject;
-        m_BodyContact = transform.Find("Viewport/Content/PnlContact/PnlInfo").gameObject;
-        m_BodyCareer = transform.Find("Viewport/Content/PnlCareer/PnlInfo").gameObject;
-        m_BodyHobbies = transform.Find("Viewport/Content/PnlHobbies/PnlInfo").gameObject;
+        m_BtnPnlProfile = content.Find("PnlProfile/TopBar").GetComponent<Button>();
+        m_BtnPnlContact = content.Find("PnlContact/TopBar").GetComponent<Button>();
+        m_BtnPnlCareer = content.Find("PnlCareer/TopBar").GetComponent<Button>();
+        m_BtnPnlHobbies = content.Find("PnlHobbies/TopBar").GetComponent<Button>();
+
+        m_BodyProfile = content.Find("PnlProfile/PnlInfo").gameObject;
+        m_BodyContact = content.Find("PnlContact/PnlInfo").gameObject;
+        m_BodyCareer = content.Find("PnlCareer/PnlInfo").gameObject;
+        m_BodyHobbies = content.Find("PnlHobbies/PnlInfo").gameObject;
 
         m_ListPnl = new()
         {

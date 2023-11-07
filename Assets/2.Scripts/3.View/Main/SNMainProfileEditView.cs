@@ -24,21 +24,24 @@ public class SNMainProfileEditView : SNMainProfileItemView
     protected InputField m_IpfPlaceOfWork;
 
     private string m_CurrentGenderForm;
+    private const string PNL_PROFILE_EDIT = "PnlProfileEdit";
+    private const string PNL_CONTACT_EDIT = "PnlContactEdit";
+    private const string PNL_CAREER_EDIT = "PnlCareerEdit";
 
     public new void Init()
     {
         m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
         m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
 
-        if (transform.name == "PnlProfileEdit")
+        if (transform.name == PNL_PROFILE_EDIT)
         {
             InitPnlProfileEdit();
         }
-        else if (transform.name == "PnlContactEdit")
+        else if (transform.name == PNL_CONTACT_EDIT)
         {
             InitPnlContactEdit();
         }
-        else if (transform.name == "PnlCareerEdit")
+        else if (transform.name == PNL_CAREER_EDIT)
         {
             InitPnlCareerEdit();
         }
@@ -53,29 +56,30 @@ public class SNMainProfileEditView : SNMainProfileItemView
     {
         SNProfileControl.Api.OnCloseEditPnlEvent -= ClosePnlWithName;
     }
-
-
-    private void InitPnlCareerEdit()
+    private void InitPnlProfileEdit()
     {
-        m_IpfField = transform.Find("Body/RightSide/DropdownDistrict_1").GetComponent<InputField>();
-        m_IpfIncome = transform.Find("Body/RightSide/DropdownDistrict_2").GetComponent<InputField>();
-        m_IpfPlaceOfWork = transform.Find("Body/RightSide/IpfInfo_2").GetComponent<InputField>();
+        Transform rightSide = transform.Find("Body/RightSide");
+        m_IpfFullname = rightSide.Find("IpfInfo").GetComponent<InputField>();
+        m_DrDwGender = rightSide.Find("DropDown/Dropdown").GetComponent<Dropdown>();
+        m_IpfDob = rightSide.Find("DatePicker").GetComponent<InputField>();
+
+        m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
     }
 
     private void InitPnlContactEdit()
     {
-        m_IpfAddress = transform.Find("Body/RightSide/IpfInfo").GetComponent<InputField>();
-        m_IpfPhoneNumber = transform.Find("Body/RightSide/IpfInfo_1").GetComponent<InputField>();
-        m_IpfEmail = transform.Find("Body/RightSide/IpfInfo_2").GetComponent<InputField>();
+        Transform rightSide = transform.Find("Body/RightSide");
+        m_IpfAddress = rightSide.Find("IpfInfo").GetComponent<InputField>();
+        m_IpfPhoneNumber = rightSide.Find("IpfInfo_1").GetComponent<InputField>();
+        m_IpfEmail = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
     }
 
-    private void InitPnlProfileEdit()
+    private void InitPnlCareerEdit()
     {
-        m_IpfFullname = transform.Find("Body/RightSide/IpfInfo").GetComponent<InputField>();
-        m_DrDwGender = transform.Find("Body/RightSide/DropDown/Dropdown").GetComponent<Dropdown>();
-        m_IpfDob = transform.Find("Body/RightSide/DatePicker").GetComponent<InputField>();
-
-        m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
+        Transform rightSide = transform.Find("Body/RightSide");
+        m_IpfField = rightSide.Find("DropdownDistrict_1").GetComponent<InputField>();
+        m_IpfIncome = rightSide.Find("DropdownDistrict_2").GetComponent<InputField>();
+        m_IpfPlaceOfWork = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
     }
 
     private void SetCurrentGenderForm(int value)
@@ -99,7 +103,7 @@ public class SNMainProfileEditView : SNMainProfileItemView
 
     private void SubmitForm()
     {
-        if (transform.name == "PnlProfileEdit" || transform.name == "PnlContactEdit")
+        if (transform.name == PNL_PROFILE_EDIT || transform.name == PNL_CONTACT_EDIT)
         {
             SNUserDTO updateInfo = new ()
             {
@@ -116,7 +120,7 @@ public class SNMainProfileEditView : SNMainProfileItemView
 
             }));
         }
-        else if (transform.name == "PnlCareerEdit")
+        else if (transform.name == PNL_CAREER_EDIT)
         {
             
         }
