@@ -72,7 +72,7 @@ public class SNMainProfileEditView : SNMainProfileItemView
     private void InitPnlProfileEdit()
     {
         m_IpfFullname = transform.Find("Body/RightSide/IpfInfo").GetComponent<InputField>();
-        m_DrDwGender = transform.Find("Body/RightSide/DropDown").GetComponent<Dropdown>();
+        m_DrDwGender = transform.Find("Body/RightSide/DropDown/Dropdown").GetComponent<Dropdown>();
         m_IpfDob = transform.Find("Body/RightSide/DatePicker").GetComponent<InputField>();
 
         m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
