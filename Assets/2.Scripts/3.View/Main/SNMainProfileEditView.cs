@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SNMainProfileEditView : SNMainProfileItemView
+public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
 {
     private Button m_BtnCancel;
     private Button m_BtnSubmit;
@@ -12,7 +14,7 @@ public class SNMainProfileEditView : SNMainProfileItemView
     // PROFILE VALUES
     protected InputField m_IpfFullname;
     protected Dropdown m_DrDwGender;
-    protected InputField m_IpfDob;
+    protected Text m_TxtDob;
     // CONTACT VALUES
     protected InputField m_IpfAddress;
     protected InputField m_IpfPhoneNumber;
@@ -30,9 +32,6 @@ public class SNMainProfileEditView : SNMainProfileItemView
 
     public new void Init()
     {
-        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
-        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
-
         if (transform.name == PNL_PROFILE_EDIT)
         {
             InitPnlProfileEdit();
@@ -59,9 +58,11 @@ public class SNMainProfileEditView : SNMainProfileItemView
     private void InitPnlProfileEdit()
     {
         Transform rightSide = transform.Find("Body/RightSide");
+        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
+        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
         m_IpfFullname = rightSide.Find("IpfInfo").GetComponent<InputField>();
         m_DrDwGender = rightSide.Find("DropDown/Dropdown").GetComponent<Dropdown>();
-        m_IpfDob = rightSide.Find("DatePicker").GetComponent<InputField>();
+        m_TxtDob = rightSide.Find("DatePicker/Text").GetComponent<Text>();
 
         m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
     }
@@ -69,6 +70,8 @@ public class SNMainProfileEditView : SNMainProfileItemView
     private void InitPnlContactEdit()
     {
         Transform rightSide = transform.Find("Body/RightSide");
+        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
+        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
         m_IpfAddress = rightSide.Find("IpfInfo").GetComponent<InputField>();
         m_IpfPhoneNumber = rightSide.Find("IpfInfo_1").GetComponent<InputField>();
         m_IpfEmail = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
@@ -77,8 +80,10 @@ public class SNMainProfileEditView : SNMainProfileItemView
     private void InitPnlCareerEdit()
     {
         Transform rightSide = transform.Find("Body/RightSide");
-        m_IpfField = rightSide.Find("DropdownDistrict_1").GetComponent<InputField>();
-        m_IpfIncome = rightSide.Find("DropdownDistrict_2").GetComponent<InputField>();
+        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
+        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
+        m_IpfField = rightSide.Find("DropdownDistrict_1/TxtLabel_1").GetComponent<InputField>();
+        m_IpfIncome = rightSide.Find("DropdownDistrict_2/TxtLabel").GetComponent<InputField>();
         m_IpfPlaceOfWork = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
     }
 
@@ -95,34 +100,69 @@ public class SNMainProfileEditView : SNMainProfileItemView
 
     private void ClosePnlWithName(string pnlName)
     {
-        if (transform.name == (pnlName + "Edit"))
+        if (this != null)
         {
-            transform.gameObject.SetActive(false);
+            if (transform.name == (pnlName + "Edit"))
+            {
+                transform.gameObject.SetActive(false);
+            }
         }
     }
 
     private void SubmitForm()
     {
-        if (transform.name == PNL_PROFILE_EDIT || transform.name == PNL_CONTACT_EDIT)
+        switch (transform.name)
         {
-            SNUserDTO updateInfo = new ()
-            {
-                FullName = m_IpfFullname.text,
-                Gender = m_CurrentGenderForm,
-                DateOfBirth = m_IpfDob.text,
-                Address = m_IpfAddress.text,
-                PhoneNumber = m_IpfPhoneNumber.text,
-                Email = m_IpfEmail.text
-            };
+            case PNL_PROFILE_EDIT:
+                {
+                    DateTime dob = DateTime.Parse(m_TxtDob.text.Replace("/", "-"));
+                    Debug.Log("formData dob " + dob + " " + m_TxtDob.text.Replace("/", "-"));
+                    Debug.Log("formData m_IpfFullname " + m_IpfFullname.text);
+                    Debug.Log("formData m_CurrentGenderForm " + m_CurrentGenderForm);
 
-            StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), updateInfo, () =>
-            {
+                    SNUserRequestDTO updateInfo = new SNUserRequestDTO()
+                    {
+                        FullName = m_IpfFullname.text,
+                        Gender = m_CurrentGenderForm,
+                        DateOfBirth = dob
+                    };
 
-            }));
-        }
-        else if (transform.name == PNL_CAREER_EDIT)
-        {
-            
+                    Debug.Log("formData " + updateInfo.ToString());
+
+                    if (updateInfo == null) return;
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), updateInfo, () =>
+                    {
+
+                    }));
+                    break;
+                }
+            case PNL_CONTACT_EDIT:
+                {
+                    AddressRequest address = new()
+                    {
+                        Detail = m_IpfAddress.text,
+                    };
+
+                    SNUserRequestDTO updateInfo = new SNUserRequestDTO()
+                    {
+                        Email = m_IpfEmail.text,
+                        Address = address,
+                    };
+
+                    Debug.Log("formData " + updateInfo);
+
+                    if (updateInfo == null) return;
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), updateInfo, () =>
+                    {
+
+                    }));
+                    break;
+                }
+
+            case PNL_CAREER_EDIT:
+                break;
         }
     }
 }
