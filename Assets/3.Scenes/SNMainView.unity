@@ -16276,6 +16276,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbfb9d062c21cb94d950c2e3d711a02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtWarning: 
+  m_TxtBack: 
+  m_TxtWarningIncorrectEmail: 
 --- !u!1 &865926021
 GameObject:
   m_ObjectHideFlags: 0
@@ -19170,6 +19173,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbfb9d062c21cb94d950c2e3d711a02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtWarning: 
+  m_TxtBack: 
+  m_TxtWarningIncorrectEmail: 
 --- !u!1 &1026253952
 GameObject:
   m_ObjectHideFlags: 0
@@ -20033,6 +20039,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbfb9d062c21cb94d950c2e3d711a02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtWarning: "C\u1EA3nh b\xE1o"
+  m_TxtBack: "Quay l\u1EA1i"
+  m_TxtWarningIncorrectEmail: "B\u1EA1n ch\u01B0a nh\u1EADp \u0111\xFAng cho email,
+    vui l\xF2ng nh\u1EADp l\u1EA1i."
 --- !u!1 &1062452512
 GameObject:
   m_ObjectHideFlags: 0
@@ -23093,6 +23103,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbfb9d062c21cb94d950c2e3d711a02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TxtWarning: 
+  m_TxtBack: 
+  m_TxtWarningIncorrectEmail: 
 --- !u!1 &1210391374
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,8 +1,13 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,10 +31,13 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
     protected InputField m_IpfPlaceOfWork;
 
     private string m_CurrentGenderForm;
+    [SerializeField] string m_TxtWarning;
+    [SerializeField] string m_TxtBack;
+    [SerializeField] string m_TxtWarningIncorrectEmail;
+
     private const string PNL_PROFILE_EDIT = "PnlProfileEdit";
     private const string PNL_CONTACT_EDIT = "PnlContactEdit";
     private const string PNL_CAREER_EDIT = "PnlCareerEdit";
-
     public new void Init()
     {
         if (transform.name == PNL_PROFILE_EDIT)
@@ -115,15 +123,15 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         {
             case PNL_PROFILE_EDIT:
                 {
-                    DateTime dob = DateTime.Parse(m_TxtDob.text.Replace("/", "-"));
-                    Debug.Log("formData dob " + dob + " " + m_TxtDob.text.Replace("/", "-"));
+                    DateTime dob = DateTime.ParseExact(m_TxtDob.text, "d/M/yyyy", CultureInfo.InvariantCulture);
+                    Debug.Log("formData dob " + m_TxtDob.text);
                     Debug.Log("formData m_IpfFullname " + m_IpfFullname.text);
-                    Debug.Log("formData m_CurrentGenderForm " + m_CurrentGenderForm);
+                    Debug.Log("formData m_CurrentGenderForm " + m_DrDwGender.value);
 
                     SNUserRequestDTO updateInfo = new SNUserRequestDTO()
                     {
                         FullName = m_IpfFullname.text,
-                        Gender = m_CurrentGenderForm,
+                        Gender = m_DrDwGender.value == 0 ? "Male" : "Female",
                         DateOfBirth = dob
                     };
 
@@ -139,6 +147,12 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
                 }
             case PNL_CONTACT_EDIT:
                 {
+                    if (!IsValidEmail(m_IpfEmail.text))
+                    {
+                        SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtWarningIncorrectEmail, m_TxtBack, "NotShow");
+                        return;
+                    }
+
                     AddressRequest address = new()
                     {
                         Detail = m_IpfAddress.text,
@@ -152,9 +166,25 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
 
                     Debug.Log("formData " + updateInfo);
 
+                    string json = JsonConvert.SerializeObject(updateInfo);
+                    JObject jObject = JObject.Parse(json);
+
+                    List<string> propertiesToRemove = jObject.Properties()
+                    .Where(p => p.Value.Type == JTokenType.Null)
+                    .Select(p => p.Name)
+                    .ToList();
+
+                    // Remove the properties
+                    foreach (string propertyName in propertiesToRemove)
+                    {
+                        jObject.Remove(propertyName);
+                    }
+
+                    Debug.Log("jObjectData " + jObject.ToString());
+
                     if (updateInfo == null) return;
 
-                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), updateInfo, () =>
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
                     {
 
                     }));
@@ -162,7 +192,50 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
                 }
 
             case PNL_CAREER_EDIT:
-                break;
+                {
+
+                    OccupationRequest rq = new OccupationRequest()
+                    {
+                        Income = double.Parse(m_IpfIncome.text),
+                        PlaceOfWork = m_IpfPlaceOfWork.text
+                    };
+
+                    SNUserRequestDTO updateInfo = new SNUserRequestDTO()
+                    {
+                        Occupation = rq
+                    };
+
+                    string json = JsonConvert.SerializeObject(updateInfo);
+                    JObject jObject = JObject.Parse(json);
+
+                    List<string> propertiesToRemove = jObject.Properties()
+                    .Where(p => p.Value.Type == JTokenType.Null)
+                    .Select(p => p.Name)
+                    .ToList();
+
+                    // Remove the properties
+                    foreach (string propertyName in propertiesToRemove)
+                    {
+                        jObject.Remove(propertyName);
+                    }
+
+                    Debug.Log("jObjectData " + jObject.ToString());
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
+                    {
+
+                    }));
+                    break;
+                }
         }
+    }
+
+    public bool IsValidEmail(string email)
+    {
+        // Regular expression pattern for email validation
+        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+        // Check if the email matches the pattern
+        return Regex.IsMatch(email, pattern);
     }
 }
