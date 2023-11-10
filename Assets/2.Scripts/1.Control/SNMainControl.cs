@@ -15,6 +15,7 @@ public class SNMainControl
     public Action OnOpenPayment;
     public Action<bool> OnSetPointAction;
     public Action<SNHistoryRecordType, string, string> OnCallHistoryRecorDetailEvent;
+    public Action OnReloadProfileEvent;
 
     public void OpenMenuPnl()
     {
@@ -55,7 +56,7 @@ public class SNMainControl
     {
         OnOpenPayment?.Invoke();
     }
-    
+
     public void SetPointAction(bool isPurchase)
     {
         OnSetPointAction?.Invoke(isPurchase);
@@ -64,5 +65,11 @@ public class SNMainControl
     public void CallHistoryRecordDetail(SNHistoryRecordType type, string date, string points)
     {
         OnCallHistoryRecorDetailEvent?.Invoke(type, date, points);
+    }
+
+    public void ReloadProfile()
+    {
+        Debug.Log("RAN HERE");
+        OnReloadProfileEvent?.Invoke();
     }
 }

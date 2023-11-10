@@ -19,6 +19,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
     // PROFILE VALUES
     protected InputField m_IpfFullname;
     protected Dropdown m_DrDwGender;
+    private Text m_Text;
     protected Text m_TxtDob;
     // CONTACT VALUES
     protected InputField m_IpfAddress;
@@ -57,6 +58,8 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         m_BtnSubmit.onClick.AddListener(SubmitForm);
 
         SNProfileControl.Api.OnCloseEditPnlEvent += ClosePnlWithName;
+
+        m_DrDwGender.SetValueWithoutNotify(SNModel.Api.CurrentUser.Gender == "Male" ? 0 : 1);
     }
 
     private void OnDestroy()
@@ -70,6 +73,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
         m_IpfFullname = rightSide.Find("IpfInfo").GetComponent<InputField>();
         m_DrDwGender = rightSide.Find("DropDown/Dropdown").GetComponent<Dropdown>();
+        m_Text = rightSide.Find("DropDown/Dropdown/Text").GetComponent<Text>();
         m_TxtDob = rightSide.Find("DatePicker/Text").GetComponent<Text>();
 
         m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
@@ -98,6 +102,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
     private void SetCurrentGenderForm(int value)
     {
         m_CurrentGenderForm = m_DrDwGender.options[value].text;
+        m_Text.text = m_CurrentGenderForm;
     }
 
 
@@ -113,6 +118,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
             if (transform.name == (pnlName + "Edit"))
             {
                 transform.gameObject.SetActive(false);
+                m_Text.text = "";
             }
         }
     }
@@ -123,25 +129,70 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         {
             case PNL_PROFILE_EDIT:
                 {
-                    DateTime dob = DateTime.ParseExact(m_TxtDob.text, "d/M/yyyy", CultureInfo.InvariantCulture);
-                    Debug.Log("formData dob " + m_TxtDob.text);
-                    Debug.Log("formData m_IpfFullname " + m_IpfFullname.text);
-                    Debug.Log("formData m_CurrentGenderForm " + m_DrDwGender.value);
+                    SNUserRequestDTO updateInfo = null;
 
-                    SNUserRequestDTO updateInfo = new SNUserRequestDTO()
+                    bool isNameEmpty = string.IsNullOrEmpty(m_IpfFullname.text);
+                    bool isDobEmpty = string.IsNullOrEmpty(m_TxtDob.text);
+                    bool isGenderEmpty = m_Text.text == "";
+
+                    if (!isNameEmpty && !isDobEmpty && !isGenderEmpty)
                     {
-                        FullName = m_IpfFullname.text,
-                        Gender = m_DrDwGender.value == 0 ? "Male" : "Female",
-                        DateOfBirth = dob
-                    };
+                        DateTime dob = DateTime.ParseExact(m_TxtDob.text, "d/M/yyyy", CultureInfo.InvariantCulture);
 
-                    Debug.Log("formData " + updateInfo.ToString());
-
-                    if (updateInfo == null) return;
-
-                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), updateInfo, () =>
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            FullName = m_IpfFullname.text,
+                            Gender = m_DrDwGender.value == 0 ? "Male" : "Female",
+                            DateOfBirth = dob
+                        };
+                    }
+                    else if (!isNameEmpty && isDobEmpty && isGenderEmpty)
                     {
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            FullName = m_IpfFullname.text,
+                        };
+                    }
+                    else if (isNameEmpty && !isDobEmpty && isGenderEmpty)
+                    {
+                        DateTime dob = DateTime.ParseExact(m_TxtDob.text, "d/M/yyyy", CultureInfo.InvariantCulture);
 
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            DateOfBirth = dob
+                        };
+                    }
+                    else if (isNameEmpty && isDobEmpty && !isGenderEmpty)
+                    {
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            Gender = m_DrDwGender.value == 0 ? "Male" : "Female",
+                        };
+                    }
+
+                    string json = JsonConvert.SerializeObject(updateInfo);
+                    JObject jObject = JObject.Parse(json);
+
+                    List<string> propertiesToRemove = jObject.Properties()
+                    .Where(p => p.Value.Type == JTokenType.Null)
+                    .Select(p => p.Name)
+                    .ToList();
+
+                    // Remove the properties
+                    foreach (string propertyName in propertiesToRemove)
+                    {
+                        jObject.Remove(propertyName);
+                    }
+
+                    if (jObject == null) return;
+
+                    jObject.Remove("RelationshipStatus");
+
+                    Debug.Log("jObjectData " + jObject.ToString());
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
+                    {
+                        SNMainControl.Api.ReloadProfile();
                     }));
                     break;
                 }
@@ -180,13 +231,15 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
                         jObject.Remove(propertyName);
                     }
 
-                    Debug.Log("jObjectData " + jObject.ToString());
+                    if (jObject == null) return;
 
-                    if (updateInfo == null) return;
+                    jObject.Remove("RelationshipStatus");
+
+                    Debug.Log("jObjectData " + jObject.ToString());
 
                     StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
                     {
-
+                        SNMainControl.Api.ReloadProfile();
                     }));
                     break;
                 }
@@ -197,7 +250,8 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
                     OccupationRequest rq = new OccupationRequest()
                     {
                         Income = double.Parse(m_IpfIncome.text),
-                        PlaceOfWork = m_IpfPlaceOfWork.text
+                        PlaceOfWork = m_IpfPlaceOfWork.text,
+                        Currency = "VND"
                     };
 
                     SNUserRequestDTO updateInfo = new SNUserRequestDTO()
@@ -219,11 +273,15 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
                         jObject.Remove(propertyName);
                     }
 
+                    if (jObject == null) return;
+
+                    jObject.Remove("RelationshipStatus");
+
                     Debug.Log("jObjectData " + jObject.ToString());
 
                     StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
                     {
-
+                        SNMainControl.Api.ReloadProfile();
                     }));
                     break;
                 }

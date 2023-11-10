@@ -59,6 +59,13 @@ public class SNMainProfileView : MonoBehaviour
         m_BtnPnlHobbies.onClick.AddListener(OpenHobbiesDetail);
 
         RefGObjects();
+
+        SNMainControl.Api.OnReloadProfileEvent += ReloadProfile;
+    }
+
+    private void OnDestroy()
+    {
+        SNMainControl.Api.OnReloadProfileEvent -= ReloadProfile;
     }
 
     private void RefGObjects()
@@ -74,6 +81,16 @@ public class SNMainProfileView : MonoBehaviour
             m_ListPnlEdit[i].Init();
 
             btnEdit.onClick.AddListener(delegate { OpenEditPnl(m_ListPnlEdit[index]); });
+        }
+    }
+
+    private void ReloadProfile()
+    {
+        Debug.Log("GOOO1 " + m_ListPnl.Count);
+        for (int i = 0; i < m_ListPnl.Count; i++)
+        {
+            m_ListPnl[i].transform.parent.GetComponent<SNMainProfileItemView>().Init(i == 0);
+            Debug.Log("GOOO");
         }
     }
 
