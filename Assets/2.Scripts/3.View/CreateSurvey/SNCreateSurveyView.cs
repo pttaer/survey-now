@@ -175,7 +175,7 @@ public class SNCreateSurveyView : MonoBehaviour
                 Sections = m_SectionDTO
             };
 
-            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_CREATE, postData, callback: () => {
+            StartCoroutine(SNApiControl.Api.PostData(SNConstant.SURVEY_CREATE, postData, callback: (response) => {
                 SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_SURVEY_LIST);
                 DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenMySurvey());
                 DOVirtual.DelayedCall(0.4f, () => SNControl.Api.ShowFAMPopup(m_TxtSuccess, m_SuccessAddSurveyPleaseCheck, "Ok", "NotShow"));

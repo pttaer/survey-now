@@ -89,7 +89,7 @@ public class SNMenuView : MonoBehaviour
     private void LoadProfile()
     {
         LoadScene(SNConstant.SCENE_MAIN, m_BtnProfile);
-        DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenProfile());
+        DOVirtual.DelayedCall(0.5f, () => SNMainControl.Api.OpenProfile());
     }
 
     private void LoadCreate()
@@ -100,31 +100,31 @@ public class SNMenuView : MonoBehaviour
     private void LoadMySurvey()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST, m_BtnMySurvey);
-        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenMySurvey());
+        DOVirtual.DelayedCall(0.5f, () => SNSurveyListControl.Api.OpenMySurvey());
     }
 
     private void LoadHistory()
     {
         LoadScene(SNConstant.SCENE_SURVEY_LIST, m_BtnHistory);
-        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenSurveyHistory());
+        DOVirtual.DelayedCall(0.5f, () => SNSurveyListControl.Api.OpenSurveyHistory());
     }
 
     private void LoadBilling()
     {
         LoadScene(SNConstant.SCENE_BUNDLE, m_BtnBilling);
-        DOVirtual.DelayedCall(0.2f, () => SNSurveyListControl.Api.OpenScenePacks(-1));
+        DOVirtual.DelayedCall(0.5f, () => SNSurveyListControl.Api.OpenScenePacks(-1));
     }
 
     private void LoadPoints()
     {
         LoadScene(SNConstant.SCENE_MAIN, m_BtnPoints);
-        DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenAccountPurchase());
+        DOVirtual.DelayedCall(0.5f, () => SNMainControl.Api.OpenAccountPurchase());
     }
 
     private void LoadPayment()
     {
         LoadScene(SNConstant.SCENE_PAYMENT);
-        DOVirtual.DelayedCall(0.2f, () => SNMainControl.Api.OpenAccountPurchase());
+        DOVirtual.DelayedCall(0.5f, () => SNMainControl.Api.OpenAccountPurchase());
     }
 
     private void Logout()

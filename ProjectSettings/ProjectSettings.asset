@@ -138,9 +138,6 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 9222217317889872779, guid: cb146d3a255492b4e855bcae76554ca0, type: 2}
-  - {fileID: 11400000, guid: b6168cdab212a8b488221fbea2f2220c, type: 2}
-  - {fileID: 11400000, guid: c79aa114d404a4844b0b8c8700884848, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -149,7 +146,7 @@ PlayerSettings:
   vrSettings:
     enable360StereoCapture: 0
   isWsaHolographicRemotingEnabled: 0
-  enableFrameTimingStats: 0
+  enableFrameTimingStats: 1
   enableOpenGLProfilerGPURecorders: 1
   useHDRDisplay: 0
   hdrBitDepth: 0

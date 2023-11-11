@@ -5,6 +5,8 @@ public class SNMainControl
 {
     public static SNMainControl Api;
 
+    public bool IsPurchase;
+
     public Action OnClickMenuEvent;
     public Action OnDeleteSurveyBackToMySurveyEvent;
     public Action OnOpenProfileEvent;
@@ -58,7 +60,7 @@ public class SNMainControl
     
     public void SetPointAction(bool isPurchase)
     {
-        OnSetPointAction?.Invoke(isPurchase);
+        IsPurchase = isPurchase;
     }
 
     public void CallHistoryRecordDetail(SNHistoryRecordType type, string date, string points)

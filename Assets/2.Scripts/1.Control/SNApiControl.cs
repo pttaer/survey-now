@@ -236,7 +236,7 @@ public class SNApiControl
         SNControl.Api.HideLoading();
     }
 
-    public IEnumerator PostData<T>(string uri, T formData, Action callback = null)
+    public IEnumerator PostData<T>(string uri, T formData, Action<JObject> callback = null)
     {
         SNControl.Api.ShowLoading();
 
@@ -261,16 +261,21 @@ public class SNApiControl
             Debug.Log("Error: uploadHandler is null");
         }
 
+        string response = request.downloadHandler.text;
+
         if (request.result == UnityWebRequest.Result.Success)
         {
             SNControl.Api.HideLoading();
 
             Debug.LogError("SENT OK: ");
-            callback?.Invoke();
+            JObject data = JsonConvert.DeserializeObject<JObject>(response);
+            callback?.Invoke(data);
         }
         else
         {
             Debug.LogError("Error sending data: " + request.error);
+            JObject data = JsonConvert.DeserializeObject<JObject>(response);
+            callback?.Invoke(data);
         }
         SNControl.Api.HideLoading();
     }
@@ -449,13 +454,15 @@ public class SNApiControl
         SNControl.Api.HideLoading();
     }
 
-    public IEnumerator PurchasePoints(bool IsMomo, int amount, Action<string> callback = null)
+    public IEnumerator PurchasePoints(int amount, string paymentMethod = null, Action<SNPointsPurchaseDTO> callback = null)
     {
-        string url = IsMomo ? SNConstant.POINTS_PURCHASE : SNConstant.POINTS_PURCHASE_REQUEST;
+        string url = SNConstant.POINTS_PURCHASE_REQUEST;
 
         UnityWebRequest request = WebRequestWithAuthorizationHeader(url, SNConstant.METHOD_POST.ToUpper());
 
-        SNPaymentDTO payment = new SNPaymentDTO(amount);
+        SNPaymentDTO payment;
+
+        payment = new SNPaymentDTO(amount, paymentMethod);
 
         string jsonData = JsonConvert.SerializeObject(payment, Formatting.Indented);
         byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonData);
@@ -483,7 +490,7 @@ public class SNApiControl
 
             SNPointsPurchaseDTO data = JsonConvert.DeserializeObject<SNPointsPurchaseDTO>(response);
 
-            callback?.Invoke(data.deeplink);
+            callback?.Invoke(data);
         }
         else
         {

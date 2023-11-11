@@ -7,7 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/3.Scenes/SNLoadFirst.unity
-    guid: bef14d87fcae28548941d94378688080
+    guid: dedcfcd22f274fc49ab6d6c34f7742bd
   - enabled: 1
     path: Assets/3.Scenes/SNBundle.unity
     guid: 1b86e42f92115384ea288347d5d79040
@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.Scenes/SNPayment.unity
     guid: e0489047e557e154aad13fda7869ce6d
+  - enabled: 0
+    path: Assets/3.Scenes/web browser.unity
+    guid: 9e70af2ff7df33540884e75baa214c2e
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: c79aa114d404a4844b0b8c8700884848, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: cb146d3a255492b4e855bcae76554ca0, type: 2}

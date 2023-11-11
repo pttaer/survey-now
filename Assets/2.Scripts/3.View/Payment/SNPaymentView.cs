@@ -1,3 +1,5 @@
+﻿using DG.Tweening;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,17 +12,19 @@ public class SNPaymentView : MonoBehaviour
     private Button m_BtnPurchase;
 
     private Button m_BtnSelectMomo;
-    private Button m_BtnSelectManual;
+    private Button m_BtnSelectVnPay;
 
     private Text m_PointsToCurrency;
     private InputField m_PointsAmountToPurchase;
+    private InputField m_PhoneNumber;
 
     [SerializeField] string m_TxtSuccess;
     [SerializeField] string m_TxtMomoSuccessRedirectToPoints;
 
     private bool m_IsPaymentMethodSelected;
-    private bool m_IsMomoPayment;
     private bool m_IsPurchase;
+
+    private string m_PaymentMethod;
 
     public void Start()
     {
@@ -29,33 +33,35 @@ public class SNPaymentView : MonoBehaviour
         m_BtnPurchase = transform.Find("Body/BtnGroup/BtnPurchase").GetComponent<Button>();
 
         m_BtnSelectMomo = transform.Find("Body/BtnGroupPurchase/BtnMomo").GetComponent<Button>();
-        m_BtnSelectManual = transform.Find("Body/BtnGroupPurchase/BtnManual").GetComponent<Button>();
+        m_BtnSelectVnPay = transform.Find("Body/BtnGroupPurchase/BtnVnPay").GetComponent<Button>();
 
         m_PointsToCurrency = transform.Find("Body/Body_1/RightSide/TxtLabel_2").GetComponent<Text>();
         m_PointsAmountToPurchase = transform.Find("Body/Body/RightSide/IpfPointAmount").GetComponent<InputField>();
+        m_PhoneNumber = transform.Find("Body/Body/RightSide/IpfPointAmount_1").GetComponent<InputField>();
 
         m_PointsAmountToPurchase.onValueChanged.AddListener(OnUpdatePointsDisplay);
 
         m_BtnMenu.onClick.AddListener(OnClickOpenMenu);
         m_BtnCancel.onClick.AddListener(BackToPoints);
         m_BtnPurchase.onClick.AddListener(PurchasePoints);
-        m_BtnSelectMomo.onClick.AddListener(delegate { OnSetPaymentMethod(m_BtnSelectMomo, m_BtnSelectManual); });
-        m_BtnSelectManual.onClick.AddListener(delegate { OnSetPaymentMethod(m_BtnSelectManual, m_BtnSelectMomo); });
+        m_BtnSelectMomo.onClick.AddListener(delegate { OnSetPaymentMethod(m_BtnSelectMomo, m_BtnSelectVnPay); });
+        m_BtnSelectVnPay.onClick.AddListener(delegate { OnSetPaymentMethod(m_BtnSelectVnPay, m_BtnSelectMomo); });
 
         SNDeeplinkControl.Api.onReturnFromMomo += ProcessMomoReturnData;
-        SNMainControl.Api.OnSetPointAction += SetPointAction;
 
         DefaultValues();
     }
 
-    private void SetPointAction(bool isPurchase)
+    private void OnDestroy()
     {
-        m_IsPurchase = isPurchase;
+        SNDeeplinkControl.Api.onReturnFromMomo -= ProcessMomoReturnData;
     }
 
     private void DefaultValues()
     {
         m_BtnPurchase.gameObject.SetActive(m_IsPaymentMethodSelected);
+
+        m_IsPurchase = SNMainControl.Api.IsPurchase;
     }
 
     private void OnSetPaymentMethod(Button btnSelect, Button btnOther)
@@ -73,16 +79,12 @@ public class SNPaymentView : MonoBehaviour
             borderSelected.SetActive(borderSelected.activeSelf);
         }
 
-        m_IsMomoPayment = btnSelect.name == "BtnMomo";
+        m_PaymentMethod = btnSelect.name.Replace("Btn", "");
 
         m_IsPaymentMethodSelected = borderSelected.activeSelf;
         m_BtnPurchase.gameObject.SetActive(m_IsPaymentMethodSelected);
     }
 
-    private void OnDestroy()
-    {
-        SNDeeplinkControl.Api.onReturnFromMomo -= ProcessMomoReturnData;
-    }
     private void OnClickOpenMenu()
     {
         SNMainControl.Api.OpenMenuPnl();
@@ -101,10 +103,12 @@ public class SNPaymentView : MonoBehaviour
     {
         if (m_IsPurchase)
         {
-            StartCoroutine(SNApiControl.Api.PurchasePoints(m_IsMomoPayment, int.Parse(m_PointsAmountToPurchase.text), (momoUrl) =>
+            StartCoroutine(SNApiControl.Api.PurchasePoints(int.Parse(m_PointsAmountToPurchase.text), m_PaymentMethod, (data) =>
             {
-                Debug.Log(momoUrl);
-                Application.OpenURL(momoUrl);
+                SNControl.Api.ShowFAMPopup(title: data.message, content: "Vui lòng chuyển vào tài khoản: " + data.destinationAccount + "\n" + data.description, btnConfirmText: "OK", btnElseText: "CANCEL", onConfirm: () =>
+                {
+                    DOVirtual.DelayedCall(0.5f, () => SNMainControl.Api.OpenAccountPurchase());
+                });
             }));
         }
         else
@@ -127,27 +131,20 @@ public class SNPaymentView : MonoBehaviour
 
     private void SendExchagnePointRequest()
     {
-        if (string.IsNullOrEmpty(SNModel.Api.CurrentUser?.PhoneNumber))
+        SNRedeemRequestDTO data = new()
         {
-            SNControl.Api.ShowFAMPopup(title: "No number.", content: "Please update phone number and try again.", btnConfirmText: "OK", btnElseText: "CANCEL", onConfirm: () =>
+            UserId = (int)SNModel.Api.CurrentUser.Id,
+            PaymentMethod = m_PaymentMethod,
+            PointAmount = int.Parse(m_PointsAmountToPurchase.text),
+            MomoAccount = m_PhoneNumber.text,
+        };
+
+        StartCoroutine(SNApiControl.Api.PostData(SNConstant.REDEEM_MONEY, data, (response) =>
+        {
+            SNControl.Api.ShowFAMPopup(title: "Đã gửi yêu cầu thành công", content: (string)response["message"], btnConfirmText: "OK", btnElseText: "CANCEL", onConfirm: () =>
             {
-                SNMainControl.Api.OpenProfile();
+                DOVirtual.DelayedCall(0.5f, () => SNMainControl.Api.OpenAccountPurchase());
             });
-        }
-        else
-        {
-            SNRedeemRequestDTO data = new()
-            {
-                UserId = (int)SNModel.Api.CurrentUser.Id,
-                PaymentMethod = "Momo",
-                PointAmount = int.Parse(m_PointsAmountToPurchase.text),
-                MomoAccount = SNModel.Api.CurrentUser?.PhoneNumber,
-            };
-
-            StartCoroutine(SNApiControl.Api.PostData(SNConstant.REDEEM_MONEY, data, () =>
-            {
-
-            }));
-        }
+        }));
     }
 }
