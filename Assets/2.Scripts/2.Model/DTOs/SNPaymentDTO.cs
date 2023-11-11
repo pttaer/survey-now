@@ -16,4 +16,10 @@ public class SNPaymentDTO
         this.userId = (int)SNModel.Api.CurrentUser.Id;
         this.platform = "Mobile";
     }
+
+    public SNPaymentDTO(int pointAmount, string paymentMethod)
+    {
+        this.pointAmount = pointAmount;
+        this.paymentMethod = paymentMethod;
+    }
 }

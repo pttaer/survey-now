@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -117,7 +117,7 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
     private void DefaultValue()
     {
-        m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString() + "VND";
+        m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString();
         m_PointsToMoneyBalance.text = SNModel.Api.CurrentUser.Point.ToString() + "000 VND";
     }
 
@@ -156,15 +156,15 @@ public class SNMainAccountPurchaseView : MonoBehaviour
     private void OpenPurchasePointDetail()
     {
         //ShowPnlNotHistory(m_BodyPurchasePoint);
-        SNMainControl.Api.OpenPayment();
         SNMainControl.Api.SetPointAction(true);
+        SNMainControl.Api.OpenPayment();
     }
 
     private void OpenPointExchangeDetail()
     {
         //ShowPnlNotHistory(m_BodyPointExchange);
-        SNMainControl.Api.OpenPayment();
         SNMainControl.Api.SetPointAction(false);
+        SNMainControl.Api.OpenPayment();
     }
 
     private void OpenPnlPurchaseHistory()

@@ -335,7 +335,7 @@ public class SNSurveyListSurveyDetailView : MonoBehaviour
         print("Data post: " + postData);
 
         // Show success finish survey after done
-        StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data, callback: () =>
+        StartCoroutine(SNApiControl.Api.PostData<SurveyDTO>(SNConstant.SURVEY_DO, data, callback: (response) =>
         {
             m_QuestionContainer.gameObject.SetActive(false);
             m_PnlCompleteSurvey.SetActive(true);

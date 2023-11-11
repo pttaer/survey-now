@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class SNPointsPurchaseDTO
 {
-    public string payUrl { get; set; }
-    public string qrCodeUrl { get; set; }
-    public string deeplink { get; set; }
+    public string status { get; set; }
+    public string message { get; set; }
+    public int pointAmount { get; set; }
+    public int moneyAmount { get; set; }
+    public string currency { get; set; }
+    public string paymentMethod { get; set; }
+    public string destinationAccount { get; set; }
+    public string description { get; set; }
+    public int transactionId { get; set; }
 }
