@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -97,6 +99,11 @@ public class SNMainProfileView : MonoBehaviour
     private void OpenEditPnl(SNMainProfileEditView pnlEdit)
     {
         pnlEdit.transform.gameObject.SetActive(true);
+
+        if (pnlEdit.transform.name == "PnlCareerEdit")
+        {
+            m_ListPnlEdit[2].StartGetDropdownFields();
+        }
     }
 
     private void OpenHobbiesDetail()

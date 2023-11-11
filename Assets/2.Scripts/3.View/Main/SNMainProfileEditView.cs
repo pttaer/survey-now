@@ -9,6 +9,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
@@ -27,7 +28,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
     protected InputField m_IpfEmail;
 
     // OCCUPATION VALUES
-    protected InputField m_IpfField;
+    protected Dropdown m_DdField;
     protected InputField m_IpfIncome;
     protected InputField m_IpfPlaceOfWork;
 
@@ -58,8 +59,6 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         m_BtnSubmit.onClick.AddListener(SubmitForm);
 
         SNProfileControl.Api.OnCloseEditPnlEvent += ClosePnlWithName;
-
-        m_DrDwGender.SetValueWithoutNotify(SNModel.Api.CurrentUser.Gender == "Male" ? 0 : 1);
     }
 
     private void OnDestroy()
@@ -77,6 +76,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         m_TxtDob = rightSide.Find("DatePicker/Text").GetComponent<Text>();
 
         m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
+        m_DrDwGender.SetValueWithoutNotify(SNModel.Api.CurrentUser.Gender == "Male" ? 0 : 1);
     }
 
     private void InitPnlContactEdit()
@@ -94,9 +94,33 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
         Transform rightSide = transform.Find("Body/RightSide");
         m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
         m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
-        m_IpfField = rightSide.Find("DropdownDistrict_1/TxtLabel_1").GetComponent<InputField>();
+        m_DdField = rightSide.Find("DropdownDistrict_1").GetComponent<Dropdown>();
         m_IpfIncome = rightSide.Find("DropdownDistrict_2/TxtLabel").GetComponent<InputField>();
         m_IpfPlaceOfWork = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
+    }
+
+    public void StartGetDropdownFields()
+    {
+        StartCoroutine(SNApiControl.Api.GetListData<SNFields>(SNConstant.USER_GET_FIELDS, null, RenderList));
+    }
+
+    private void RenderList(SNFields[] obj)
+    {
+        // Clear existing options in the dropdown
+        m_DdField.ClearOptions();
+
+        // Create a list to hold the options for the dropdown
+        List<Dropdown.OptionData> dropdownOptions = new List<Dropdown.OptionData>();
+
+        // Iterate over the list of dtos and add them as options to the dropdown
+        foreach (SNFields dto in obj)
+        {
+            Dropdown.OptionData option = new Dropdown.OptionData(dto.name);
+            dropdownOptions.Add(option);
+        }
+
+        // Add the options list to the dropdown
+        m_DdField.AddOptions(dropdownOptions);
     }
 
     private void SetCurrentGenderForm(int value)
@@ -118,7 +142,7 @@ public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
             if (transform.name == (pnlName + "Edit"))
             {
                 transform.gameObject.SetActive(false);
-                m_Text.text = "";
+                if (m_Text) m_Text.text = "";
             }
         }
     }
