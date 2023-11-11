@@ -29,14 +29,16 @@ public class SNSurveyListView : MonoBehaviour
 
     public void Init()
     {
-        m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
-        m_BtnBack = transform.Find("TopBar/BtnBack").GetComponent<Button>();
-        //m_BtnSearch = transform.Find("TopBar/BtnSearch").GetComponent<Button>();
+        var topBar = transform.Find("TopBar");
 
-        m_TxtSceneTitle = transform.Find("TopBar/TxtTitleSurveyHistory").GetComponent<Text>();
-        m_TxtSceneTitle2 = transform.Find("TopBar/TxtTitleMySurvey").GetComponent<Text>();
-        m_TxtSurveyTitle = transform.Find("TopBar/TxtSurveyTitle").GetComponent<Text>();
-        m_TxtSurveyStatus = transform.Find("TopBar/TxtSurveyStatus").GetComponent<Text>();
+        m_BtnMenu = topBar.Find("BtnMenu").GetComponent<Button>();
+        m_BtnBack = topBar.Find("BtnBack").GetComponent<Button>();
+        //m_BtnSearch = topBarTransform.Find("BtnSearch").GetComponent<Button>();
+
+        m_TxtSceneTitle = topBar.Find("TxtTitleSurveyHistory").GetComponent<Text>();
+        m_TxtSceneTitle2 = topBar.Find("TxtTitleMySurvey").GetComponent<Text>();
+        m_TxtSurveyTitle = topBar.Find("TxtSurveyTitle").GetComponent<Text>();
+        m_TxtSurveyStatus = topBar.Find("TxtSurveyStatus").GetComponent<Text>();
 
         m_PnlSurveyHistoryView = transform.Find("SurveyHistory").GetComponent<SNSurveyListHistoryView>();
         m_PnlMySurveyView = transform.Find("MySurvey").GetComponent<SNSurveyListMySurveyView>();

@@ -26,10 +26,12 @@ public class SNHomeView : MonoBehaviour
 
     public void Init()
     {
-        m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
-        m_BtnBack = transform.Find("TopBar/BtnBack").GetComponent<Button>();
-        m_Title = transform.Find("TopBar/TxtTitleHome").GetComponent<Text>();
-        m_TxtSurveyTitle = transform.Find("TopBar/TxtSurveyTitle").GetComponent<Text>();
+        Transform topBar = transform.Find("TopBar");
+        m_BtnMenu = topBar.Find("BtnMenu").GetComponent<Button>();
+        m_BtnBack = topBar.Find("BtnBack").GetComponent<Button>();
+        m_Title = topBar.Find("TxtTitleHome").GetComponent<Text>();
+        m_TxtSurveyTitle = topBar.Find("TxtSurveyTitle").GetComponent<Text>();
+
         //m_BtnSearch = transform.Find("TopBar/BtnSearch").GetComponent<Button>();
 
         m_PnlMySurveyView = transform.Find("MySurvey").GetComponent<SNSurveyListMySurveyView>();

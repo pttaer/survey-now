@@ -57,17 +57,22 @@ public class SNCreateSurveyView : MonoBehaviour
 
     public void Init()
     {
-        m_BtnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
-        m_BtnAdd = transform.Find("SurveyAdd/BtnAdd").GetComponent<Button>();
-        m_BtnExit = transform.Find("Popup/QuestionType/BtnExit").GetComponent<Button>();
-        m_BtnNext = transform.Find("SurveyAdd/BtnNext").GetComponent<Button>();
-        m_BtnBackToPnlName = transform.Find("TopBar/BtnBack").GetComponent<Button>();
+        Transform topBar = transform.Find("TopBar");
+        Transform surveyAdd = transform.Find("SurveyAdd");
+        Transform popup = transform.Find("Popup");
+        Transform spawnItems = transform.Find("SpawnItems");
 
-        m_Content = transform.Find("SurveyAdd/Viewport/Content");
-        m_CreateQuestionTypePnlView = transform.Find("Popup/QuestionType").GetComponent<SNCreateQuestionTypePnlView>();
+        m_BtnMenu = topBar.Find("BtnMenu").GetComponent<Button>();
+        m_BtnBackToPnlName = topBar.Find("BtnBack").GetComponent<Button>();
+        m_TxtTitleSurveyName = topBar.Find("TxtTitleSurveyName").GetComponent<Text>();
+        m_TxtTitleSurveyAdd = topBar.Find("TxtTitleSurveyAdd").GetComponent<Text>();
 
-        m_TxtTitleSurveyName = transform.Find("TopBar/TxtTitleSurveyName").GetComponent<Text>();
-        m_TxtTitleSurveyAdd = transform.Find("TopBar/TxtTitleSurveyAdd").GetComponent<Text>();
+        m_BtnAdd = surveyAdd.Find("BtnAdd").GetComponent<Button>();
+        m_BtnExit = popup.Find("QuestionType/BtnExit").GetComponent<Button>();
+        m_BtnNext = surveyAdd.Find("BtnNext").GetComponent<Button>();
+
+        m_Content = surveyAdd.Find("Viewport/Content");
+        m_CreateQuestionTypePnlView = popup.Find("QuestionType").GetComponent<SNCreateQuestionTypePnlView>();
 
         m_TxtWarning = transform.Find("TxtWarning").GetComponent<Text>();
         m_TxtWarningDescription = transform.Find("TxtWarningDescription").GetComponent<Text>();
@@ -75,19 +80,19 @@ public class SNCreateSurveyView : MonoBehaviour
         m_TxtAreYouSure = transform.Find("TxtAreYouSure").GetComponent<Text>();
         m_TxtNo = transform.Find("TxtNo").GetComponent<Text>();
 
-        m_Popup = transform.Find("Popup").gameObject;
-        m_PnlSurveyName = transform.Find("SurveyAdd/Viewport/Content/PnlSurveyName").gameObject;
-        m_PopupSurveyVolunteer = transform.Find("Popup/SurveyVolunteer").gameObject;
-        m_PnlQuestionType = transform.Find("Popup/QuestionType").gameObject;
+        m_Popup = popup.gameObject;
+        m_PnlSurveyName = m_Content.Find("PnlSurveyName").gameObject;
+        m_PopupSurveyVolunteer = popup.Find("SurveyVolunteer").gameObject;
+        m_PnlQuestionType = popup.Find("QuestionType").gameObject;
 
-        m_IpfSurveyName = transform.Find("SurveyAdd/Viewport/Content/PnlSurveyName/IpfSurveyName").GetComponent<InputField>();
-        m_IpfSurveyDescription = transform.Find("SurveyAdd/Viewport/Content/PnlSurveyName/IpfSurveyDescription").GetComponent<InputField>();
+        m_IpfSurveyName = m_PnlSurveyName.transform.Find("IpfSurveyName").GetComponent<InputField>();
+        m_IpfSurveyDescription = m_PnlSurveyName.transform.Find("IpfSurveyDescription").GetComponent<InputField>();
 
-        m_RatingQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionRating").gameObject;
-        m_CustomQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionCustom").gameObject;
-        m_RadioQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionRadio").gameObject;
-        m_LikertQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionLikert").gameObject;
-        m_MultipleQuestionSurveyItem = transform.Find("SpawnItems/SurveyQuestionMultiple").gameObject;
+        m_RatingQuestionSurveyItem = spawnItems.Find("SurveyQuestionRating").gameObject;
+        m_CustomQuestionSurveyItem = spawnItems.Find("SurveyQuestionCustom").gameObject;
+        m_RadioQuestionSurveyItem = spawnItems.Find("SurveyQuestionRadio").gameObject;
+        m_LikertQuestionSurveyItem = spawnItems.Find("SurveyQuestionLikert").gameObject;
+        m_MultipleQuestionSurveyItem = spawnItems.Find("SurveyQuestionMultiple").gameObject;
 
         m_ItemViewList = new();
         m_SectionQuestionDTO = new();

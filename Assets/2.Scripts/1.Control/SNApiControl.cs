@@ -199,7 +199,12 @@ public class SNApiControl
     {
         SNControl.Api.ShowLoading();
 
+        Debug.Log("formData " + formData);
+
         string jsonData = JsonConvert.SerializeObject(formData, Formatting.Indented);
+
+        Debug.Log("jsonData " + jsonData);
+
         byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
         UnityWebRequest request = WebRequestWithAuthorizationHeader(uri, SNConstant.METHOD_PUT);

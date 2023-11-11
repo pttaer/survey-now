@@ -1,10 +1,18 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public class SNMainProfileEditView : SNMainProfileItemView
+public class SNMainProfileEditView : /*SNMainProfileItemView*/ MonoBehaviour
 {
     private Button m_BtnCancel;
     private Button m_BtnSubmit;
@@ -12,33 +20,37 @@ public class SNMainProfileEditView : SNMainProfileItemView
     // PROFILE VALUES
     protected InputField m_IpfFullname;
     protected Dropdown m_DrDwGender;
-    protected InputField m_IpfDob;
+    private Text m_Text;
+    protected Text m_TxtDob;
     // CONTACT VALUES
     protected InputField m_IpfAddress;
     protected InputField m_IpfPhoneNumber;
     protected InputField m_IpfEmail;
 
     // OCCUPATION VALUES
-    protected InputField m_IpfField;
+    protected Dropdown m_DdField;
     protected InputField m_IpfIncome;
     protected InputField m_IpfPlaceOfWork;
 
     private string m_CurrentGenderForm;
+    [SerializeField] string m_TxtWarning;
+    [SerializeField] string m_TxtBack;
+    [SerializeField] string m_TxtWarningIncorrectEmail;
 
+    private const string PNL_PROFILE_EDIT = "PnlProfileEdit";
+    private const string PNL_CONTACT_EDIT = "PnlContactEdit";
+    private const string PNL_CAREER_EDIT = "PnlCareerEdit";
     public new void Init()
     {
-        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
-        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
-
-        if (transform.name == "PnlProfileEdit")
+        if (transform.name == PNL_PROFILE_EDIT)
         {
             InitPnlProfileEdit();
         }
-        else if (transform.name == "PnlContactEdit")
+        else if (transform.name == PNL_CONTACT_EDIT)
         {
             InitPnlContactEdit();
         }
-        else if (transform.name == "PnlCareerEdit")
+        else if (transform.name == PNL_CAREER_EDIT)
         {
             InitPnlCareerEdit();
         }
@@ -53,34 +65,68 @@ public class SNMainProfileEditView : SNMainProfileItemView
     {
         SNProfileControl.Api.OnCloseEditPnlEvent -= ClosePnlWithName;
     }
-
-
-    private void InitPnlCareerEdit()
+    private void InitPnlProfileEdit()
     {
-        m_IpfField = transform.Find("Body/RightSide/DropdownDistrict_1").GetComponent<InputField>();
-        m_IpfIncome = transform.Find("Body/RightSide/DropdownDistrict_2").GetComponent<InputField>();
-        m_IpfPlaceOfWork = transform.Find("Body/RightSide/IpfInfo_2").GetComponent<InputField>();
+        Transform rightSide = transform.Find("Body/RightSide");
+        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
+        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
+        m_IpfFullname = rightSide.Find("IpfInfo").GetComponent<InputField>();
+        m_DrDwGender = rightSide.Find("DropDown/Dropdown").GetComponent<Dropdown>();
+        m_Text = rightSide.Find("DropDown/Dropdown/Text").GetComponent<Text>();
+        m_TxtDob = rightSide.Find("DatePicker/Text").GetComponent<Text>();
+
+        m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
+        m_DrDwGender.SetValueWithoutNotify(SNModel.Api.CurrentUser.Gender == "Male" ? 0 : 1);
     }
 
     private void InitPnlContactEdit()
     {
-        m_IpfAddress = transform.Find("Body/RightSide/IpfInfo").GetComponent<InputField>();
-        m_IpfPhoneNumber = transform.Find("Body/RightSide/IpfInfo_1").GetComponent<InputField>();
-        m_IpfEmail = transform.Find("Body/RightSide/IpfInfo_2").GetComponent<InputField>();
+        Transform rightSide = transform.Find("Body/RightSide");
+        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
+        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
+        m_IpfAddress = rightSide.Find("IpfInfo").GetComponent<InputField>();
+        m_IpfPhoneNumber = rightSide.Find("IpfInfo_1").GetComponent<InputField>();
+        m_IpfEmail = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
     }
 
-    private void InitPnlProfileEdit()
+    private void InitPnlCareerEdit()
     {
-        m_IpfFullname = transform.Find("Body/RightSide/IpfInfo").GetComponent<InputField>();
-        m_DrDwGender = transform.Find("Body/RightSide/DropDown/Dropdown").GetComponent<Dropdown>();
-        m_IpfDob = transform.Find("Body/RightSide/DatePicker").GetComponent<InputField>();
+        Transform rightSide = transform.Find("Body/RightSide");
+        m_BtnCancel = transform.Find("TopBar/BtnCancel").GetComponent<Button>();
+        m_BtnSubmit = transform.Find("TopBar/BtnApprove").GetComponent<Button>();
+        m_DdField = rightSide.Find("DropdownDistrict_1").GetComponent<Dropdown>();
+        m_IpfIncome = rightSide.Find("DropdownDistrict_2/TxtLabel").GetComponent<InputField>();
+        m_IpfPlaceOfWork = rightSide.Find("IpfInfo_2").GetComponent<InputField>();
+    }
 
-        m_DrDwGender.onValueChanged.AddListener(SetCurrentGenderForm);
+    public void StartGetDropdownFields()
+    {
+        StartCoroutine(SNApiControl.Api.GetListData<SNFields>(SNConstant.USER_GET_FIELDS, null, RenderList));
+    }
+
+    private void RenderList(SNFields[] obj)
+    {
+        // Clear existing options in the dropdown
+        m_DdField.ClearOptions();
+
+        // Create a list to hold the options for the dropdown
+        List<Dropdown.OptionData> dropdownOptions = new List<Dropdown.OptionData>();
+
+        // Iterate over the list of dtos and add them as options to the dropdown
+        foreach (SNFields dto in obj)
+        {
+            Dropdown.OptionData option = new Dropdown.OptionData(dto.name);
+            dropdownOptions.Add(option);
+        }
+
+        // Add the options list to the dropdown
+        m_DdField.AddOptions(dropdownOptions);
     }
 
     private void SetCurrentGenderForm(int value)
     {
         m_CurrentGenderForm = m_DrDwGender.options[value].text;
+        m_Text.text = m_CurrentGenderForm;
     }
 
 
@@ -91,34 +137,187 @@ public class SNMainProfileEditView : SNMainProfileItemView
 
     private void ClosePnlWithName(string pnlName)
     {
-        if (transform.name == (pnlName + "Edit"))
+        if (this != null)
         {
-            transform.gameObject.SetActive(false);
+            if (transform.name == (pnlName + "Edit"))
+            {
+                transform.gameObject.SetActive(false);
+                if (m_Text) m_Text.text = "";
+            }
         }
     }
 
     private void SubmitForm()
     {
-        if (transform.name == "PnlProfileEdit" || transform.name == "PnlContactEdit")
+        switch (transform.name)
         {
-            SNUserDTO updateInfo = new ()
-            {
-                FullName = m_IpfFullname.text,
-                Gender = m_CurrentGenderForm,
-                DateOfBirth = m_IpfDob.text,
-                Address = m_IpfAddress.text,
-                PhoneNumber = m_IpfPhoneNumber.text,
-                Email = m_IpfEmail.text
-            };
+            case PNL_PROFILE_EDIT:
+                {
+                    SNUserRequestDTO updateInfo = null;
 
-            StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), updateInfo, () =>
-            {
+                    bool isNameEmpty = string.IsNullOrEmpty(m_IpfFullname.text);
+                    bool isDobEmpty = string.IsNullOrEmpty(m_TxtDob.text);
+                    bool isGenderEmpty = m_Text.text == "";
 
-            }));
+                    if (!isNameEmpty && !isDobEmpty && !isGenderEmpty)
+                    {
+                        DateTime dob = DateTime.ParseExact(m_TxtDob.text, "d/M/yyyy", CultureInfo.InvariantCulture);
+
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            FullName = m_IpfFullname.text,
+                            Gender = m_DrDwGender.value == 0 ? "Male" : "Female",
+                            DateOfBirth = dob
+                        };
+                    }
+                    else if (!isNameEmpty && isDobEmpty && isGenderEmpty)
+                    {
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            FullName = m_IpfFullname.text,
+                        };
+                    }
+                    else if (isNameEmpty && !isDobEmpty && isGenderEmpty)
+                    {
+                        DateTime dob = DateTime.ParseExact(m_TxtDob.text, "d/M/yyyy", CultureInfo.InvariantCulture);
+
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            DateOfBirth = dob
+                        };
+                    }
+                    else if (isNameEmpty && isDobEmpty && !isGenderEmpty)
+                    {
+                        updateInfo = new SNUserRequestDTO()
+                        {
+                            Gender = m_DrDwGender.value == 0 ? "Male" : "Female",
+                        };
+                    }
+
+                    string json = JsonConvert.SerializeObject(updateInfo);
+                    JObject jObject = JObject.Parse(json);
+
+                    List<string> propertiesToRemove = jObject.Properties()
+                    .Where(p => p.Value.Type == JTokenType.Null)
+                    .Select(p => p.Name)
+                    .ToList();
+
+                    // Remove the properties
+                    foreach (string propertyName in propertiesToRemove)
+                    {
+                        jObject.Remove(propertyName);
+                    }
+
+                    if (jObject == null) return;
+
+                    jObject.Remove("RelationshipStatus");
+
+                    Debug.Log("jObjectData " + jObject.ToString());
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
+                    {
+                        SNMainControl.Api.ReloadProfile();
+                    }));
+                    break;
+                }
+            case PNL_CONTACT_EDIT:
+                {
+                    if (!IsValidEmail(m_IpfEmail.text))
+                    {
+                        SNControl.Api.ShowFAMPopup(m_TxtWarning, m_TxtWarningIncorrectEmail, m_TxtBack, "NotShow");
+                        return;
+                    }
+
+                    AddressRequest address = new()
+                    {
+                        Detail = m_IpfAddress.text,
+                    };
+
+                    SNUserRequestDTO updateInfo = new SNUserRequestDTO()
+                    {
+                        Email = m_IpfEmail.text,
+                        Address = address,
+                    };
+
+                    Debug.Log("formData " + updateInfo);
+
+                    string json = JsonConvert.SerializeObject(updateInfo);
+                    JObject jObject = JObject.Parse(json);
+
+                    List<string> propertiesToRemove = jObject.Properties()
+                    .Where(p => p.Value.Type == JTokenType.Null)
+                    .Select(p => p.Name)
+                    .ToList();
+
+                    // Remove the properties
+                    foreach (string propertyName in propertiesToRemove)
+                    {
+                        jObject.Remove(propertyName);
+                    }
+
+                    if (jObject == null) return;
+
+                    jObject.Remove("RelationshipStatus");
+
+                    Debug.Log("jObjectData " + jObject.ToString());
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
+                    {
+                        SNMainControl.Api.ReloadProfile();
+                    }));
+                    break;
+                }
+
+            case PNL_CAREER_EDIT:
+                {
+
+                    OccupationRequest rq = new OccupationRequest()
+                    {
+                        Income = double.Parse(m_IpfIncome.text),
+                        PlaceOfWork = m_IpfPlaceOfWork.text,
+                        Currency = "VND"
+                    };
+
+                    SNUserRequestDTO updateInfo = new SNUserRequestDTO()
+                    {
+                        Occupation = rq
+                    };
+
+                    string json = JsonConvert.SerializeObject(updateInfo);
+                    JObject jObject = JObject.Parse(json);
+
+                    List<string> propertiesToRemove = jObject.Properties()
+                    .Where(p => p.Value.Type == JTokenType.Null)
+                    .Select(p => p.Name)
+                    .ToList();
+
+                    // Remove the properties
+                    foreach (string propertyName in propertiesToRemove)
+                    {
+                        jObject.Remove(propertyName);
+                    }
+
+                    if (jObject == null) return;
+
+                    jObject.Remove("RelationshipStatus");
+
+                    Debug.Log("jObjectData " + jObject.ToString());
+
+                    StartCoroutine(SNApiControl.Api.EditData(string.Format(SNConstant.USER_UPDATE_INFO, SNModel.Api.CurrentUser.Id), jObject, () =>
+                    {
+                        SNMainControl.Api.ReloadProfile();
+                    }));
+                    break;
+                }
         }
-        else if (transform.name == "PnlCareerEdit")
-        {
-            
-        }
+    }
+
+    public bool IsValidEmail(string email)
+    {
+        // Regular expression pattern for email validation
+        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+
+        // Check if the email matches the pattern
+        return Regex.IsMatch(email, pattern);
     }
 }

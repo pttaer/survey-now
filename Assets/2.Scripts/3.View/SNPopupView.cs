@@ -20,14 +20,18 @@ public class SNPopupView : MonoBehaviour
 
     public void Init(string title, string content, string btnConfirmText, string btnElseText, Action onConfirm = null, Action onElse = null, Action onExit = null)
     {
-        m_BtnConfirm = transform.Find("Container/ButtonGroup/BtnConfirm").GetComponent<Button>();
-        m_BtnElse = transform.Find("Container/ButtonGroup/BtnElse").GetComponent<Button>();
-        m_BtnExit = transform.Find("Container/BtnExit").GetComponent<Button>();
-        m_TxtTitle = transform.Find("Container/TxtTitle").GetComponent<Text>();
-        m_TxtContent = transform.Find("Container/PopupContent/TxtContent").GetComponent<Text>();
-        m_TxtBtnConfirm = transform.Find("Container/ButtonGroup/BtnConfirm/TxtLabel").GetComponent<Text>();
-        m_TxtBtnElse = transform.Find("Container/ButtonGroup/BtnElse/TxtLabel").GetComponent<Text>();
-        m_IpfContent = transform.Find("Container/PopupContent/IpfContent").GetComponent<InputField>();
+        var container = transform.Find("Container");
+        var buttonGroup = container.Find("ButtonGroup");
+        var popupContent = container.Find("PopupContent");
+
+        m_BtnConfirm = buttonGroup.Find("BtnConfirm").GetComponent<Button>();
+        m_BtnElse = buttonGroup.Find("BtnElse").GetComponent<Button>();
+        m_BtnExit = container.Find("BtnExit").GetComponent<Button>();
+        m_TxtTitle = container.Find("TxtTitle").GetComponent<Text>();
+        m_TxtContent = popupContent.Find("TxtContent").GetComponent<Text>();
+        m_TxtBtnConfirm = buttonGroup.Find("BtnConfirm/TxtLabel").GetComponent<Text>();
+        m_TxtBtnElse = buttonGroup.Find("BtnElse/TxtLabel").GetComponent<Text>();
+        m_IpfContent = popupContent.Find("IpfContent").GetComponent<InputField>();
 
         m_BtnConfirm.onClick.AddListener(() => ConfirmTurnPopupOff());
         m_BtnElse.onClick.AddListener(OnElseClick);
@@ -52,14 +56,18 @@ public class SNPopupView : MonoBehaviour
 
     public void Init(string title, string content, string btnConfirmText, string btnElseText, Action<string> onConfirm = null, Action onElse = null, Action onExit = null, bool isShowInputField = false)
     {
-        m_BtnConfirm = transform.Find("Container/ButtonGroup/BtnConfirm").GetComponent<Button>();
-        m_BtnElse = transform.Find("Container/ButtonGroup/BtnElse").GetComponent<Button>();
-        m_BtnExit = transform.Find("Container/BtnExit").GetComponent<Button>();
-        m_TxtTitle = transform.Find("Container/TxtTitle").GetComponent<Text>();
-        m_TxtContent = transform.Find("Container/PopupContent/TxtContent").GetComponent<Text>();
-        m_TxtBtnConfirm = transform.Find("Container/ButtonGroup/BtnConfirm/TxtLabel").GetComponent<Text>();
-        m_TxtBtnElse = transform.Find("Container/ButtonGroup/BtnElse/TxtLabel").GetComponent<Text>();
-        m_IpfContent = transform.Find("Container/PopupContent/IpfContent").GetComponent<InputField>();
+        var container = transform.Find("Container");
+        var buttonGroup = container.Find("ButtonGroup");
+        var popupContent = container.Find("PopupContent");
+
+        m_BtnConfirm = buttonGroup.Find("BtnConfirm").GetComponent<Button>();
+        m_BtnElse = buttonGroup.Find("BtnElse").GetComponent<Button>();
+        m_BtnExit = container.Find("BtnExit").GetComponent<Button>();
+        m_TxtTitle = container.Find("TxtTitle").GetComponent<Text>();
+        m_TxtContent = popupContent.Find("TxtContent").GetComponent<Text>();
+        m_TxtBtnConfirm = buttonGroup.Find("BtnConfirm/TxtLabel").GetComponent<Text>();
+        m_TxtBtnElse = buttonGroup.Find("BtnElse/TxtLabel").GetComponent<Text>();
+        m_IpfContent = popupContent.Find("IpfContent").GetComponent<InputField>();
 
         m_BtnConfirm.onClick.AddListener(() => ConfirmTurnPopupOff(m_IpfContent.text));
         m_BtnElse.onClick.AddListener(OnElseClick);

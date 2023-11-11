@@ -13,11 +13,15 @@ public class SNSurveyRecordView : MonoBehaviour
 
     public void Init(SNSurveyResponseDTO data)
     {
+        var topBar = transform.Find("TopBar");
+        var body = transform.Find("Body/LeftSide");
+
         m_BtnDetail = GetComponent<Button>();
-        m_TxtTitle = transform.Find("TopBar/TxtTitle").GetComponent<Text>();
-        m_TxtPoints = transform.Find("TopBar/TxtPoints").GetComponent<Text>();
-        m_TxtDate = transform.Find("Body/LeftSide/TxtDate").GetComponent<Text>();
-        m_TxtQuestionAmount = transform.Find("Body/LeftSide/TxtQuestionAmount").GetComponent<Text>();
+
+        m_TxtTitle = topBar.Find("TxtTitle").GetComponent<Text>();
+        m_TxtPoints = topBar.Find("TxtPoints").GetComponent<Text>();
+        m_TxtDate = body.Find("TxtDate").GetComponent<Text>();
+        m_TxtQuestionAmount = body.Find("TxtQuestionAmount").GetComponent<Text>();
 
         m_BtnDetail.onClick.AddListener(OpenDetail);
 
