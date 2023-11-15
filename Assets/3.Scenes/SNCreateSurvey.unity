@@ -1526,7 +1526,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "C\xE2u tr\u1EA3 l\u1EDDi 1"
+  m_Text: "C\xE2u tr\u1EA3 l\u1EDDi"
 --- !u!222 &107153330
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6456,7 +6456,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "C\xE2u tr\u1EA3 l\u1EDDi 1"
+  m_Text: "C\xE2u tr\u1EA3 l\u1EDDi"
 --- !u!222 &536053476
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20625,7 +20625,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "C\xE2u tr\u1EA3 l\u1EDDi 1"
+  m_Text: "C\xE2u tr\u1EA3 l\u1EDDi"
 --- !u!222 &1917129968
 CanvasRenderer:
   m_ObjectHideFlags: 0
