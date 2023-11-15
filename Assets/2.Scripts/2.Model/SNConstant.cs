@@ -99,40 +99,40 @@ public class SNConstant
 
     #region API_URI
 
-    public const string LOGIN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/login";
-    public const string REGISTER = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/authentication/register";
+    public const string LOGIN = "https://survey-now-fptu-production.somee.com/api/v1/authentication/login";
+    public const string REGISTER = "https://survey-now-fptu-production.somee.com/api/v1/authentication/register";
 
-    public const string USER_UPDATE_INFO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/users/{0}";
-    public const string USER_CURRENT_INFO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/users/login-user";
-    public const string USER_GET_FIELDS = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/occupations/fields";
+    public const string USER_UPDATE_INFO = "https://survey-now-fptu-production.somee.com/api/v1/users/{0}";
+    public const string USER_CURRENT_INFO = "https://survey-now-fptu-production.somee.com/api/v1/users/login-user";
+    public const string USER_GET_FIELDS = "https://survey-now-fptu-production.somee.com/api/v1/occupations/fields";
 
-    public const string OCCUPATION = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/occupation";
+    public const string OCCUPATION = "https://survey-now-fptu-production.somee.com/api/v1/occupation";
 
-    public const string PACKS_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/all";
-    public const string PACKS_CALCULATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/calculate";
-    public const string PACKS_RECOMMEND = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/recommend";
-    public const string PACKS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/packs/purchase";
+    public const string PACKS_ALL = "https://survey-now-fptu-production.somee.com/api/v1/packs/all";
+    public const string PACKS_CALCULATE = "https://survey-now-fptu-production.somee.com/api/v1/packs/calculate";
+    public const string PACKS_RECOMMEND = "https://survey-now-fptu-production.somee.com/api/v1/packs/recommend";
+    public const string PACKS_PURCHASE = "https://survey-now-fptu-production.somee.com/api/v1/packs/purchase";
 
-    public const string POINTS_PURCHASE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo";
-    public const string POINTS_PURCHASE_REQUEST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/request";
-    public const string POINTS_PURCHASE_RETURN = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/purchase/momo/return";
-    public const string POINTS_PURCHASE_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/history";
+    public const string POINTS_PURCHASE = "https://survey-now-fptu-production.somee.com/api/v1/points/purchase/momo";
+    public const string POINTS_PURCHASE_REQUEST = "https://survey-now-fptu-production.somee.com/api/v1/points/purchase/request";
+    public const string POINTS_PURCHASE_RETURN = "https://survey-now-fptu-production.somee.com/api/v1/points/purchase/momo/return";
+    public const string POINTS_PURCHASE_HISTORY = "https://survey-now-fptu-production.somee.com/api/v1/points/history";
 
-    public const string SURVEY_CREATE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
-    public const string SURVEY_GET_HOME = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
-    public const string SURVEY_GET_ALL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys";
-    public const string SURVEY_GET_MY_SURVEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys";
-    public const string SURVEY_SET_ACTIVE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
-    public const string SURVEY_GET_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
-    public const string SURVEY_PUT = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
-    public const string SURVEY_PATCH = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/status/{0}";
-    public const string SURVEY_DO = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/do-survey";
-    public const string SURVEY_DELETE = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}";
-    public const string SURVEY_POST = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/surveys/{0}/post-survey";
-    public const string SURVEY_HISTORY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/history";
-    public const string SURVEY_HISTORY_DETAIL = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/account/surveys/{0}/answer";
+    public const string SURVEY_CREATE = "https://survey-now-fptu-production.somee.com/api/v1/surveys";
+    public const string SURVEY_GET_HOME = "https://survey-now-fptu-production.somee.com/api/v1/surveys";
+    public const string SURVEY_GET_ALL = "https://survey-now-fptu-production.somee.com/api/v1/surveys";
+    public const string SURVEY_GET_MY_SURVEY = "https://survey-now-fptu-production.somee.com/api/v1/account/surveys";
+    public const string SURVEY_SET_ACTIVE = "https://survey-now-fptu-production.somee.com/api/v1/surveys/status/{0}";
+    public const string SURVEY_GET_DETAIL = "https://survey-now-fptu-production.somee.com/api/v1/surveys/{0}";
+    public const string SURVEY_PUT = "https://survey-now-fptu-production.somee.com/api/v1/surveys/{0}";
+    public const string SURVEY_PATCH = "https://survey-now-fptu-production.somee.com/api/v1/surveys/status/{0}";
+    public const string SURVEY_DO = "https://survey-now-fptu-production.somee.com/api/v1/surveys/do-survey";
+    public const string SURVEY_DELETE = "https://survey-now-fptu-production.somee.com/api/v1/surveys/{0}";
+    public const string SURVEY_POST = "https://survey-now-fptu-production.somee.com/api/v1/surveys/{0}/post-survey";
+    public const string SURVEY_HISTORY = "https://survey-now-fptu-production.somee.com/api/v1/account/history";
+    public const string SURVEY_HISTORY_DETAIL = "https://survey-now-fptu-production.somee.com/api/v1/account/surveys/{0}/answer";
 
-    public const string REDEEM_MONEY = "http://survey-now.us-east-1.elasticbeanstalk.com/api/v1/points/redeem/request";
+    public const string REDEEM_MONEY = "https://survey-now-fptu-production.somee.com/api/v1/points/redeem/request";
 
     #endregion API_URI
 

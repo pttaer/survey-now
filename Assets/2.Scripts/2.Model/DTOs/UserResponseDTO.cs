@@ -13,7 +13,7 @@ public class UserResponseDTO : MonoBehaviour
 
     public string FullName { get; set; }
 
-    public Gender Gender { get; set; }
+    public Gender? Gender { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
 
@@ -23,15 +23,15 @@ public class UserResponseDTO : MonoBehaviour
 
     public Role Role { get; set; }
 
-    public RelationshipStatus RelationshipStatus { get; set; }
+    public RelationshipStatus? RelationshipStatus { get; set; }
 
     public string LangKey { get; set; }
 
     public string Currency { get; set; }
 
-    public AddressDto Address { get; set; }
+    public AddressDto? Address { get; set; }
 
-    public OccupationDto Occupation { get; set; }
+    public OccupationDto? Occupation { get; set; }
 }
 
 public class AddressDto

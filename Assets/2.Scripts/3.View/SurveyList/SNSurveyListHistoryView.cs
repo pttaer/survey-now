@@ -6,16 +6,29 @@ public class SNSurveyListHistoryView : MonoBehaviour
 {
     private List<SNSurveyRecordView> m_SurveyRecordList;
     private SNSurveyRecordView m_SurveyRecordPrefab;
+    private SNPnlEmptyView m_PnlEmptyView;
 
     public void InitMySurveyHistory()
     {
         StartCoroutine(SNApiControl.Api.GetListData<SNSurveyResponseDTO>(SNConstant.SURVEY_HISTORY, renderPage: RenderPage));
         m_SurveyRecordList = new();
         m_SurveyRecordPrefab = transform.parent.transform.Find("SpawnItem/SurveyRecord").GetComponent<SNSurveyRecordView>();
+        m_PnlEmptyView = transform.Find("PnlEmpty").GetComponent<SNPnlEmptyView>();
     }
 
     private void RenderPage<T>(T[] datas)
     {
+        m_PnlEmptyView.gameObject.SetActive(false);
+
+        if (datas.Length < 1)
+        {
+            m_PnlEmptyView.Init(onClickCallback: () =>
+            {
+                SNControl.Api.UnloadThenLoadScene(SNConstant.SCENE_HOME);
+            });
+            return;
+        }
+
         foreach (var data in datas)
         {
             bool isAlreadyOk = false;

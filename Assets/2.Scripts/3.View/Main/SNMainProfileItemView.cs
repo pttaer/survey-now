@@ -32,7 +32,6 @@ public class SNMainProfileItemView : MonoBehaviour
         {
             StartCoroutine(SNApiControl.Api.GetData<UserResponseDTO>(SNConstant.USER_CURRENT_INFO, renderPage: (data) =>
             {
-                Debug.Log("SHIEEE");
                 m_Data = data;
                 InitPnls();
             }));
