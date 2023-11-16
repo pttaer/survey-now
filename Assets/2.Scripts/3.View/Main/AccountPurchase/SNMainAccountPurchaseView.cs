@@ -111,14 +111,14 @@ public class SNMainAccountPurchaseView : MonoBehaviour
 
         m_PnlPointHistory.GetComponent<SNPointHistory>().Init();
         m_PnlPointExchange.GetComponent<SNPointRedeem>().Init();
-        
+
         DefaultValue();
     }
 
     private void DefaultValue()
     {
         m_PointsBalance.text = SNModel.Api.CurrentUser.Point.ToString();
-        m_PointsToMoneyBalance.text = SNModel.Api.CurrentUser.Point.ToString() + "000 VND";
+        m_PointsToMoneyBalance.text = SNModel.Api.CurrentUser.Point > 1 ? SNModel.Api.CurrentUser.Point.ToString() + "000 VND" : "--";
     }
 
     private void OnDestroy()

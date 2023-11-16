@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SNMainView : MonoBehaviour
 {
     private Button m_btnMenu;
+    private Text m_TxtProfileName;
 
     private GameObject m_PopupUpdateInfo;
     private GameObject m_PopupSuccessUpdatePassword;
@@ -24,6 +25,7 @@ public class SNMainView : MonoBehaviour
     public void Init()
     {
         m_btnMenu = transform.Find("TopBar/BtnMenu").GetComponent<Button>();
+        m_TxtProfileName = transform.Find("TopBar/TxtProfile").GetComponent<Text>();
 
         m_PopupUpdateInfo = transform.Find("Popups/PopupSuccessUpdateInfo").gameObject;
         m_PopupSuccessUpdatePassword = transform.Find("Popups/PopupSuccessUpdatePassword").gameObject;
@@ -45,6 +47,8 @@ public class SNMainView : MonoBehaviour
         SNMainControl.Api.OnOpenProfileEvent += OpenProfile;
         SNMainControl.Api.OnOpenAccountlEvent += OpenAccount;
         SNMainControl.Api.OnOpenAccountPurchaseEvent += OpenAccountPurchase;
+
+        m_TxtProfileName.text = SNModel.Api.CurrentUser.FullName;
 
     }
 

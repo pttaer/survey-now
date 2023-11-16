@@ -42,7 +42,7 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
     private void AddQuestion()
     {
         GameObject go = Instantiate(m_ItemQuestionOptionPref, transform);
-        InputField ipf = go.transform.Find("IpfOption").GetComponent<InputField>();
+        InputField ipf = go.GetComponent<InputField>();
         ipf.text = "";
         m_IpfRowQuestionsList.Add(ipf);
         go.transform.SetSiblingIndex(m_ItemQuestionOptionPref.transform.GetSiblingIndex() + 1);
@@ -55,8 +55,8 @@ public class SNSurveyQuestionLikertView : SNSurveyQuestionBaseView
         InputField ipf = go.transform.Find("IpfOption").GetComponent<InputField>();
         ipf.text = "";
         m_IpfColumnQuestionsList.Add(ipf);
-        m_ItemOptionPref = go; // For placing next option correctly
         go.transform.SetSiblingIndex(m_ItemOptionPref.transform.GetSiblingIndex() + 1);
+        m_ItemOptionPref = go; // For placing next option correctly
     }
 
     private void Validate()

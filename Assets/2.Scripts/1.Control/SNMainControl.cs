@@ -14,7 +14,8 @@ public class SNMainControl
     public Action OnOpenAccountPurchaseEvent;
     public Action OnOpenMySurveyEvent;
     public Action OnOpenPointsEvent;
-    public Action OnOpenPayment;
+    public Action OnOpenPaymentEvent;
+    public Action OnOpenCreateEvent;
     public Action<bool> OnSetPointAction;
     public Action<SNHistoryRecordType, string, string> OnCallHistoryRecorDetailEvent;
     public Action OnReloadProfileEvent;
@@ -56,7 +57,12 @@ public class SNMainControl
 
     public void OpenPayment()
     {
-        OnOpenPayment?.Invoke();
+        OnOpenPaymentEvent?.Invoke();
+    }
+
+    public void OpenCreate()
+    {
+        OnOpenCreateEvent?.Invoke();
     }
 
     public void SetPointAction(bool isPurchase)
